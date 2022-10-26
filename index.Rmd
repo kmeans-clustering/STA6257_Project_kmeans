@@ -1,14 +1,16 @@
 ---
 title: "K-Means Clustering"
-author: "Anand Pandey, Katie Hidden, Aakash Chandra"
-date: "Fall 2022"
-output:
-  html_document:
-    df_print: paged
-  pdf_document: default
+author: 
+  - Anand Pandey
+  - Katie Hidden
+  - Aakash Chandra
+date: '`r Sys.Date()`'
+format:
+  html:
+    code-fold: true
 course: STA 6257 - Advance Statistical Modeling
 bibliography: references.bib # file contains bibtex for references
-always_allow_html: true # this allows to get PDF with HTML features
+#always_allow_html: true # this allows to get PDF with HTML features
 ---
 
 ## Introduction
