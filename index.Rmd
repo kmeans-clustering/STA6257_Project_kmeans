@@ -3,7 +3,7 @@ title: "K-Means Clustering"
 author: 
   - Anand Pandey
   - Katie Hidden
-  - Aakash Chandra
+  - Akash Chandra
 date: '`r Sys.Date()`'
 format:
   html:
