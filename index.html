@@ -163,6 +163,7 @@ div.csl-indent {
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>K-means clustering is used for grouping similar observations together by minimizing the Euclidean distance between them. It uses “centroids”. Initially, it randomly chooses K different points in the data and assigns every data point to their nearest centroid. Once all of them are assigned, it moves the centroid to the average of points assigned to it. When the assigned centroid stops changing, we get the converged data points in separate clusters.</p>
+<p>There are some limitations of K-means clustering. It can be difficult to determine an appropriate initial K-value, especially with large and multidimensional datasets. The algorithm is sensitive to the initial centroid values and may fall into the local optimum solution. K-mean clustering typically classifies spherically shaped data well, but is less successful at classifying irregularly shaped data.</p>
 </section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
