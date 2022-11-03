@@ -1,23 +1,49 @@
 ---
 title: "K-Means Clustering"
+description: |
+  An unsupervised learning algorithm.
 author: 
   - Anand Pandey
   - Katie Hidden
   - Akash Chandra
 date: '`r Sys.Date()`'
+# output:
+#   html_document:
+#     df_print: paged
+#     code-folding: hide
+#     number_sections: true
+#   pdf_document:
+#     fig_caption: yes
+#     keep_tex: yes
+#     latex_engine: pdflatex
+#     number_sections: true
 format:
-  html:
-    code-fold: true
+ html:
+   code-fold: true
+   number-sections: true
 course: STA 6257 - Advance Statistical Modeling
 bibliography: references.bib # file contains bibtex for references
 #always_allow_html: true # this allows to get PDF with HTML features
 ---
 
-## Introduction
+------
+
+# Introduction
+
+Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. This is because the data is neither classified nor labeled and allows the algorithm to act on the information without supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern or association of the data and that helps the model in clustering or grouping the data without any human intervention.
+
+  The main goal of this paper is to discuss the concept and underlying methodology of one the unsupervised algorithm called K-Means clustering. We will also discuss how K-Means can be leveraged in real time applications like customer segmentation [@yul2020astudy]. In this paper, we will also be discussing various limitations and bottlenecks of K-Means clustering algorithm and would suggest some improved algorithms to overcome these limitations.
+
+## K-Means Clustering
 K-means clustering is used for grouping similar observations together by minimizing the Euclidean distance between them. It uses “centroids”. Initially, it randomly chooses K different points in the data and assigns every data point to their nearest centroid. Once all of them are assigned, it moves the centroid to the average of points assigned to it. When the assigned centroid stops changing, we get the converged data points in separate clusters.
 
-## Methods
+There are some limitations of K-means clustering. It can be difficult to determine an appropriate initial K-value, especially with large and multidimensional datasets. The algorithm is sensitive to the initial centroid values and may fall into the local optimum solution. K-mean clustering typically classifies spherically shaped data well, but is less successful at classifying irregularly shaped data.
 
+## Customer Segmentation
+
+Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes.
+
+# Methods
 
 The common non-parametric regression model is $Y_i = m(X_i) + \varepsilon_i$, where
 $Y_i$ can be defined as the sum of the regression function value $m(x)$ for $X_i$.
@@ -33,8 +59,9 @@ $$
 $W_n(x)$ is the sum of weights that belongs to all real numbers. Weights
 are positive numbers and small if $X_i$ is far from $x$.
 
-## Analysis and Results
-### Data and Vizualisation
+# Analysis and Results
+
+## Data and Vizualisation
 A study was conducted to determine how...
 
 ```{r, warning=FALSE, echo=T, message=FALSE}
@@ -67,8 +94,8 @@ ggplot1 = murders %>% ggplot(mapping = aes(x=population/10^6, y=total))
 
 ```
 
-### Statistical Modeling
+## Statistical Modeling
 
-### Conlusion
+# Conlusion
 
-## References
+# References
