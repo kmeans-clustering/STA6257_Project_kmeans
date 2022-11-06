@@ -149,7 +149,9 @@ For conducting our analysis, we will be applying below listed data pre-processin
 2. Select appropriate attributes that helps in our analysis - *Invoice*, *StockCode*,*CustomerID*, *Quantity*,*InvoiceDate*,*Price*,*Country*
 3. Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent.
 4. Remove time component from the *InvoiceDate*. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.
-5. Scale the data
+5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping.
+6. Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen
+7. Scale the data
 
 ```{r, warning=FALSE, echo=TRUE}
 #remove missing value
@@ -164,8 +166,15 @@ data['Amount'] = data['Quantity'] * data['Price']
 #remove time component from date in InvoiceDate
 data$InvoiceDate = as.Date(data$InvoiceDate)
 
+#create a new attribute LastSeen
+data['LastSeen'] = as.numeric(max(data$InvoiceDate) - data$InvoiceDate)
+
+#Detect outliers and remove them
+
+
 #scale numeric attributes
 data <- data %>% mutate(across(where(is.numeric), scale))
+
 ```
 
 

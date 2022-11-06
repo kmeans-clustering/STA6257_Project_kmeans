@@ -322,6 +322,8 @@ div.csl-indent {
 <li>Select appropriate attributes that helps in our analysis - <em>Invoice</em>, <em>StockCode</em>,<em>CustomerID</em>, <em>Quantity</em>,<em>InvoiceDate</em>,<em>Price</em>,<em>Country</em></li>
 <li>Create a new attribute <em>Amount</em>. This will help in clustering these customers by the total amount spent.</li>
 <li>Remove time component from the <em>InvoiceDate</em>. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.</li>
+<li>Create a new attribute <em>LastSeen</em>. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping.</li>
+<li>Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from numeric columns Amount, Invoice and LastSeen</li>
 <li>Scale the data</li>
 </ol>
 <div class="cell">
@@ -339,8 +341,14 @@ div.csl-indent {
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#remove time component from date in InvoiceDate</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>InvoiceDate <span class="ot">=</span> <span class="fu">as.Date</span>(data<span class="sc">$</span>InvoiceDate)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#scale numeric attributes</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new attribute LastSeen</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'LastSeen'</span>] <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate) <span class="sc">-</span> data<span class="sc">$</span>InvoiceDate)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Detect outliers and remove them</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#scale numeric attributes</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
