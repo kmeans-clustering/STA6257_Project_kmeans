@@ -122,18 +122,19 @@ head(df) %>%
 ```
 
 Let us check the distribution of each field by doing univariate analysis. 
-Plot
+
+Plot:
 
 -   Bar chart for categorical attributes
 -   Histogram for numeric attributes
 
 ```{r, warning=FALSE, echo=FALSE}
 df=na.omit(df, cols="CustomerID")
-df$QuantityRange <- cut(df$Quantity, c(-Inf, 0, 10, 20, 30, 40, 50, 100, Inf))
+df$QuantityRange <- cut(df$Quantity, c(-Inf, 1, 5, 10, 20, 30, 50, Inf))
 g1 <- ggplot(df,aes(QuantityRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Quantity Histogram")+xlab('Quantity')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
 #g1
-df$PriceRange <- cut(df$Price, c(-Inf, 0, 2, 4, 6, 8, 10, 50, Inf))
+df$PriceRange <- cut(df$Price, c(-Inf, 1, 2, 4, 6, 8, 10, 50, Inf))
 g2 <- ggplot(df,aes(PriceRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Price Histogram")+xlab('Price')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
 #g2
@@ -155,17 +156,14 @@ g4 <- df %>%
 plot_grid(g1, g2, g3, g4,
           labels = c("A", "B", "C", "D"),
           ncol = 2, nrow = 2)
-
-
-
-# ggplot(df, aes(Quantity)) + geom_histogram(binwidth=5000) +
-#   geom_histogram(
-#     breaks = seq(-10000, 100000, by = 5000), 
-#     aes(fill = ..count..,
-#     colour = "black")) + 
-# scale_x_continuous(breaks = seq(-10000, 10000, by=5000))
-
 ```
+
+From the visualizations, we get a good amount of information about the structure of our chosen data. Below are the observations:
+
+A.    The Quantity is is heavily skewed right and most of the transactions involved a quantity in the range of 1 to 5
+B.    The unit Price is also skewed right and most of the items have unit price between 1 and 4
+C.    The item with StockCode 85123A was sold most
+D.    Most of the customers belong to United Kingdom
 
 ## Data Preparation
 
