@@ -1,7 +1,8 @@
+
 ---
-title: "K-Means Clustering"
+title: "<span style='color: #0366D6;'>K-Means Clustering</span>"
 description: |
-  An unsupervised learning algorithm.
+  An unsupervised learning algorithm<br/><hr/>
 author: 
   - Anand Pandey
   - Katie Hidden

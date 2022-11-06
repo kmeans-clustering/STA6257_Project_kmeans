@@ -22,16 +22,6 @@
   \usepackage[]{microtype}
   \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
 \usepackage{xcolor}
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
@@ -74,16 +64,6 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{longtable,booktabs,array}
-\usepackage{calc} % for calculating minipage widths
-% Correct order of tables after \paragraph or \subparagraph
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
-\makeatother
-% Allow footnotes in longtable head/foot
-\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
-\makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -100,7 +80,7 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\setcounter{secnumdepth}{5}
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
@@ -124,6 +104,20 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -138,13 +132,42 @@
 
 \title{K-Means Clustering}
 \author{Anand Pandey \and Katie Hidden \and Akash Chandra}
-\date{2022-11-01}
+\date{2022-11-05}
 
 \begin{document}
 \maketitle
 
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
 \hypertarget{introduction}{%
-\subsection{Introduction}\label{introduction}}
+\section{Introduction}\label{introduction}}
+
+We have often heard of training machine learning models with labeled
+data. Imaging if there is a massive volume of data with no labels and we
+want to come up with a scalable approach to process these data and find
+insights. Difficult as it may seem, this is possible with clustering
+algorithms like K-Means.
+
+Unsupervised machine learning is a type of algorithm that works on
+detecting patterns from a dataset when outcomes are not known or
+labeled. In unsupervised learning models it is not possible to train the
+algorithm the way we would normally do in case of supervised learning.
+This is because the data is neither classified nor labeled and allows
+the algorithm to act on the information without supervision. An
+unsupervised algorithm works on discovering the underlying hidden
+structure, pattern or association of the data and that helps the model
+in clustering or grouping the data without any human intervention.
+
+The main goal of this paper is to discuss the concept and underlying
+methodology of one the unsupervised algorithm called K-Means clustering.
+We will also discuss how K-Means can be leveraged in real time
+applications like customer segmentation (Yulin 2020). In this paper, we
+will also be discussing various limitations and bottlenecks of K-Means
+clustering algorithm and would suggest some improved algorithms to
+overcome these limitations.
+
+\hypertarget{k-means-clustering}{%
+\subsection{K-Means Clustering}\label{k-means-clustering}}
 
 K-means clustering is used for grouping similar observations together by
 minimizing the Euclidean distance between them. It uses ``centroids''.
@@ -154,100 +177,157 @@ assigned, it moves the centroid to the average of points assigned to it.
 When the assigned centroid stops changing, we get the converged data
 points in separate clusters.
 
+There are some limitations of K-means clustering. It can be difficult to
+determine an appropriate initial K-value, especially with large and
+multidimensional datasets. The algorithm is sensitive to the initial
+centroid values and may fall into the local optimum solution. K-mean
+clustering typically classifies spherically shaped data well, but is
+less successful at classifying irregularly shaped data.
+
+\hypertarget{customer-segmentation}{%
+\subsection{Customer Segmentation}\label{customer-segmentation}}
+
+Customer segmentation helps divide customers into different groups based
+on their common set of characteristics (like age, gender, spending
+habit, credit score, etc.) that helps in targeting those customers for
+marketing purposes. The primary focus of customer segmentation is to
+come up with strategies that helps in identifying customers in each
+category in order to maximize the profit by optimizing the services and
+products. Therefore, customer segmentation helps businesses in promoting
+the right product to the right customer to increase profits(Tabianan
+2022).
+
+Customer segmentation is not only helpful for business but also helps
+customers by providing them information relevant to their needs. If
+customers receive too much information which is not related to their
+regular purchase or their interest on the products, it can cause
+confusion on deciding their needs. This might lead their customers to
+give up on purchasing the items they required and effect the business to
+lose their potential customers. The clustering analysis will help to
+categorize the customer according to their spending habit, purchase
+habit or specific product or brand the customers interested in. Customer
+segmentation can be broadly divided into four factors - demographic
+psychographic, behavioral, and geographic(Tabianan 2022). In this paper,
+customer behavioral factor has been primarily focused.
+
+K-Means clustering algorithm can help effectively extract groups of
+customers with similar characteristics and purchasing behavior which in
+turn helps businesses to specify their differentiated marketing campaign
+and become more customer-centric.(Yulin 2020)
+
 \hypertarget{methods}{%
-\subsection{Methods}\label{methods}}
-
-The common non-parametric regression model is
-\(Y_i = m(X_i) + \varepsilon_i\), where \(Y_i\) can be defined as the
-sum of the regression function value \(m(x)\) for \(X_i\). Here \(m(x)\)
-is unknown and \(\varepsilon_i\) some errors. With the help of this
-definition, we can create the estimation for local averaging
-i.e.~\(m(x)\) can be estimated with the product of \(Y_i\) average and
-\(X_i\) is near to \(x\). In other words, this means that we are
-discovering the line through the data points with the help of
-surrounding data points. The estimation formula is printed below (R Core
-Team 2019):
-
-\[
-M_n(x) = \sum_{i=1}^{n} W_n (X_i) Y_i  \tag{1}
-\] \(W_n(x)\) is the sum of weights that belongs to all real numbers.
-Weights are positive numbers and small if \(X_i\) is far from \(x\).
+\section{Methods}\label{methods}}
 
 \hypertarget{analysis-and-results}{%
-\subsection{Analysis and Results}\label{analysis-and-results}}
+\section{Analysis and Results}\label{analysis-and-results}}
+
+\hypertarget{dataset-description}{%
+\subsection{Dataset Description}\label{dataset-description}}
+
+For the customer segmentation, we will be using a data set that contains
+all the transactions that has occurred for a UK-based non-store online
+retail between 01/12/2009 and 09/12/2011. The company mainly sells
+unique all-occasion gift-ware. Many customers of the company are
+wholesalers. The company was established in 80s as a storefront and
+relied on direct mailing catalogues and taken order over phone. In
+recent years, the company launched a website and shifted completely to a
+web based online retail to take technological advantage of
+customer-centric targeted marketing approach(Chen 2010).
+
+The customer transactions dataset has 8 variables as shown in below data
+definition table.
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-2}Data Definition}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\centering}X>{\raggedright}X}
+\hline
+\cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Attribute}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Type}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Description}}}\\
+\hline
+Invoice & Nominal & Invoice number. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter `c`, it indicates a cancellation.\\
+\hline
+StockCode & Nominal & Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.\\
+\hline
+Description & Nominal & Product (item) name.\\
+\hline
+Quantity & Numeric & The quantities of each product (item) per transaction.\\
+\hline
+InvoiceDate & Numeric & Invice date and time. The day and time when a transaction was generated.\\
+\hline
+Price & Numeric & Product price per unit in sterling (£).\\
+\hline
+CustomerID & Numeric & Customer number. A 5-digit integral number uniquely assigned to each customer.\\
+\hline
+Country & Nominal & Country name. The name of the country where a customer resides.\\
+\hline
+\end{tabu}
+\end{table}
+
+\hypertarget{data-preparation}{%
+\subsection{Data Preparation}\label{data-preparation}}
+
+Before we prepare the data, let's take a look at the summary and see if
+there are any missing values or other trends.
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-5}Summary of Data}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\centering}X>{\centering}X>{\raggedright}X>{\centering}X>{\centering}X>{\raggedright}X>{\centering}X>{\centering}X>{\raggedright}X}
+\hline
+\cellcolor[HTML]{666666}{\textcolor{white}{\textbf{}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{N}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Missing}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Mean}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{SD}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Min}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Q1}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Median}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Q3}}} & \cellcolor[HTML]{666666}{\textcolor{white}{\textbf{Max}}}\\
+\hline
+Quantity & 525461 & 0 & 10.34 & 107.42 & -9600.00 & 1.00 & 3.0 & 10.00 & 19152.00\\
+\hline
+Price & 525461 & 0 & 4.69 & 146.13 & -53594.36 & 1.25 & 2.1 & 4.21 & 25111.09\\
+\hline
+Customer Id & 417534 & 107927 & - & - & - & - & - & - & -\\
+\hline
+\end{tabu}
+\end{table}
+
+The CustomerID contains unique Id for each unique Customer. However, we
+have 107,927 customers with no customer ids. We will be removing these
+customer before starting our analysis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\OtherTok{=}\FunctionTok{na.omit}\NormalTok{(df, }\AttributeTok{cols=}\StringTok{"CustomerID"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{data-and-vizualisation}{%
-\subsubsection{Data and Vizualisation}\label{data-and-vizualisation}}
-
-A study was conducted to determine how\ldots{}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# loading packages }
-\FunctionTok{library}\NormalTok{(tidyverse)}
-\FunctionTok{library}\NormalTok{(knitr)}
-\FunctionTok{library}\NormalTok{(ggthemes)}
-\FunctionTok{library}\NormalTok{(ggrepel)}
-\FunctionTok{library}\NormalTok{(dslabs)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Load Data}
-\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(murders))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{longtable}[]{@{}lllrr@{}}
-\toprule()
-state & abb & region & population & total \\
-\midrule()
-\endhead
-Alabama & AL & South & 4779736 & 135 \\
-Alaska & AK & West & 710231 & 19 \\
-Arizona & AZ & West & 6392017 & 232 \\
-Arkansas & AR & South & 2915918 & 93 \\
-California & CA & West & 37253956 & 1257 \\
-Colorado & CO & West & 5029196 & 65 \\
-\bottomrule()
-\end{longtable}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ggplot1 }\OtherTok{=}\NormalTok{ murders }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{population}\SpecialCharTok{/}\DecValTok{10}\SpecialCharTok{\^{}}\DecValTok{6}\NormalTok{, }\AttributeTok{y=}\NormalTok{total)) }
-
-\NormalTok{  ggplot1 }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{col=}\NormalTok{region), }\AttributeTok{size =} \DecValTok{4}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_text\_repel}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label=}\NormalTok{abb)) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_log10}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{scale\_y\_log10}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{formula =} \StringTok{"y\textasciitilde{}x"}\NormalTok{, }\AttributeTok{method=}\NormalTok{lm,}\AttributeTok{se =}\NormalTok{ F)}\SpecialCharTok{+}
-  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Populations in millions (log10 scale)"}\NormalTok{) }\SpecialCharTok{+} 
-  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Total number of murders (log10 scale)"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"US Gun Murders in 2010"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{scale\_color\_discrete}\NormalTok{(}\AttributeTok{name =} \StringTok{"Region"}\NormalTok{)}\SpecialCharTok{+}
-      \FunctionTok{theme\_wsj}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{index_files/figure-latex/unnamed-chunk-2-1.pdf}
+\subsection{Data and Vizualisation}\label{data-and-vizualisation}}
 
 \hypertarget{statistical-modeling}{%
-\subsubsection{Statistical Modeling}\label{statistical-modeling}}
+\subsection{Statistical Modeling}\label{statistical-modeling}}
 
 \hypertarget{conlusion}{%
-\subsubsection{Conlusion}\label{conlusion}}
+\section{Conlusion}\label{conlusion}}
 
 \hypertarget{references}{%
-\subsection*{References}\label{references}}
-\addcontentsline{toc}{subsection}{References}
+\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-R-base}{}}%
-R Core Team. 2019. \emph{R: A Language and Environment for Statistical
-Computing}. Vienna, Austria: R Foundation for Statistical Computing.
-\url{https://www.R-project.org}.
+\leavevmode\vadjust pre{\hypertarget{ref-online2010Chen}{}}%
+Chen, Dr. Daqing. 2010. {``Online Retail II Data Set.''} School of
+Engineering, London South Bank University, London SE1 0AA, UK.
+\url{https://archive.ics.uci.edu/ml/datasets/Online+Retail+II}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-tab2022kmeans}{}}%
+Tabianan, S., Velu. 2022. {``K-Means Clustering Approach for Intelligent
+Customer Segmentation Using Customer Purchase Behavior Data.''}
+\emph{Analytical Methods} 14 (12): 7243.
+\url{https://doi.org/10.3390/su14127243}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-yul2020astudy}{}}%
+Yulin, \& Qianying, D. 2020. {``A Study on e-Commerce Customer
+Segmentation Management Based on Improved k-Means Algorithm.''}
+\emph{Information Systems and e-Business Management} 18 (4): 497--510.
+\url{https://doi.org/10.1007/s10257-018-0381-3}.
 
 \end{CSLReferences}
 
