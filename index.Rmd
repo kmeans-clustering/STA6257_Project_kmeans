@@ -141,12 +141,21 @@ kable(a,
   row_spec(0, bold = T, background = "#666666", color = "white") 
 ```
 
-The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis.
+
+
+
+For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:
+
+1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis. 
+2. Select appropriate attributes that helps in our analysis - *Invoice*, *StockCode*, *Quantity*,*InvoiceDate*,*Price*,*Country*
+3. Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent.
+4. Remove time component from the *InvoiceDate*. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.
+
+### Missing value removal
 
 ```{r, warning=FALSE, echo=TRUE}
 df=na.omit(df, cols="CustomerID")
 ```
-
 
 
 ## Data and Vizualisation
