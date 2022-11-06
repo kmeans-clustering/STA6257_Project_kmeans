@@ -72,6 +72,7 @@ library(xtable)
 library(kableExtra)
 library(Hmisc)
 library(qwraps2)
+library(cowplot)
 ```
 
 
@@ -122,15 +123,41 @@ head(df) %>%
 
 Let us check the distribution of each field by doing univariate analysis. 
 Plot
-- Bar chart for categorical attributes
-- Histogram for numeric attributes
+
+-   Bar chart for categorical attributes
+-   Histogram for numeric attributes
 
 ```{r, warning=FALSE, echo=FALSE}
+df=na.omit(df, cols="CustomerID")
+df$QuantityRange <- cut(df$Quantity, c(-Inf, 0, 10, 20, 30, 40, 50, 100, Inf))
+g1 <- ggplot(df,aes(QuantityRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Quantity Histogram")+xlab('Quantity')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+#g1
+df$PriceRange <- cut(df$Price, c(-Inf, 0, 2, 4, 6, 8, 10, 50, Inf))
+g2 <- ggplot(df,aes(PriceRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Price Histogram")+xlab('Price')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+#g2
 
-df$cut <- cut(df$Quantity, c(-Inf, 0, 10, 20, 30, 40, 50, 100, Inf))
-ggplot(df,aes(cut))+geom_histogram(stat= "count", aes(fill = ..count..))
+g3 <- df %>%
+    group_by(StockCode) %>%
+    summarise(count = n()) %>%
+    top_n(n = 5, wt = count)  %>% ggplot(aes(x=reorder(StockCode, -count), y=count, fill=StockCode))+geom_bar(stat= "identity")+ labs(title="Top 5 StockCode")+xlab('StockCode')+ylab('Count')+  theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+  
+#g3
 
-# 
+g4 <- df %>%
+    group_by(Country) %>%
+    summarise(count = n()) %>%
+    top_n(n = 5, wt = count) %>% 
+    ggplot(aes(x=reorder(Country, -count), y=count, fill=Country))+geom_bar(stat="identity")+ labs(title="Top 5 Country")+xlab('Country')+ylab('Count')+ theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+#g4
+
+plot_grid(g1, g2, g3, g4,
+          labels = c("A", "B", "C", "D"),
+          ncol = 2, nrow = 2)
+
+
+
 # ggplot(df, aes(Quantity)) + geom_histogram(binwidth=5000) +
 #   geom_histogram(
 #     breaks = seq(-10000, 100000, by = 5000), 
