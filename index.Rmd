@@ -107,6 +107,8 @@ kable(a,
 
 ## Load and Preview Data
 
+Load the dataset and summarize column statistics.
+
 ```{r, warning = FALSE, echo=FALSE}
 filename <- "online_retail_II.xlsx"
 df = read_excel(filename) 
