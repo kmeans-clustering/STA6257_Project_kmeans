@@ -250,12 +250,100 @@ div.csl-indent {
 </table>
 
 </div>
+</section>
+<section id="load-and-preview-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="load-and-preview-data"><span class="header-section-number">3.2</span> Load and Preview Data</h2>
 <div class="cell">
+<div class="cell-output-display">
+
+<table class=" lightable-paper lightable-hover" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Invoice </th>
+   <th style="text-align:left;"> StockCode </th>
+   <th style="text-align:left;"> Description </th>
+   <th style="text-align:right;"> Quantity </th>
+   <th style="text-align:left;"> InvoiceDate </th>
+   <th style="text-align:right;"> Price </th>
+   <th style="text-align:right;"> CustomerID </th>
+   <th style="text-align:left;"> Country </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 489434 </td>
+   <td style="text-align:left;"> 85048 </td>
+   <td style="text-align:left;"> 15CM CHRISTMAS GLASS BALL 20 LIGHTS </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:left;"> 2009-12-01 07:45:00 </td>
+   <td style="text-align:right;"> 6.95 </td>
+   <td style="text-align:right;"> 13085 </td>
+   <td style="text-align:left;"> United Kingdom </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 489434 </td>
+   <td style="text-align:left;"> 79323P </td>
+   <td style="text-align:left;"> PINK CHERRY LIGHTS </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:left;"> 2009-12-01 07:45:00 </td>
+   <td style="text-align:right;"> 6.75 </td>
+   <td style="text-align:right;"> 13085 </td>
+   <td style="text-align:left;"> United Kingdom </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 489434 </td>
+   <td style="text-align:left;"> 79323W </td>
+   <td style="text-align:left;"> WHITE CHERRY LIGHTS </td>
+   <td style="text-align:right;"> 12 </td>
+   <td style="text-align:left;"> 2009-12-01 07:45:00 </td>
+   <td style="text-align:right;"> 6.75 </td>
+   <td style="text-align:right;"> 13085 </td>
+   <td style="text-align:left;"> United Kingdom </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 489434 </td>
+   <td style="text-align:left;"> 22041 </td>
+   <td style="text-align:left;"> RECORD FRAME 7" SINGLE SIZE </td>
+   <td style="text-align:right;"> 48 </td>
+   <td style="text-align:left;"> 2009-12-01 07:45:00 </td>
+   <td style="text-align:right;"> 2.10 </td>
+   <td style="text-align:right;"> 13085 </td>
+   <td style="text-align:left;"> United Kingdom </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 489434 </td>
+   <td style="text-align:left;"> 21232 </td>
+   <td style="text-align:left;"> STRAWBERRY CERAMIC TRINKET BOX </td>
+   <td style="text-align:right;"> 24 </td>
+   <td style="text-align:left;"> 2009-12-01 07:45:00 </td>
+   <td style="text-align:right;"> 1.25 </td>
+   <td style="text-align:right;"> 13085 </td>
+   <td style="text-align:left;"> United Kingdom </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 489434 </td>
+   <td style="text-align:left;"> 22064 </td>
+   <td style="text-align:left;"> PINK DOUGHNUT TRINKET POT </td>
+   <td style="text-align:right;"> 24 </td>
+   <td style="text-align:left;"> 2009-12-01 07:45:00 </td>
+   <td style="text-align:right;"> 1.65 </td>
+   <td style="text-align:right;"> 13085 </td>
+   <td style="text-align:left;"> United Kingdom </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
+</div>
+<p>Let us check the distribution of each field by doing univariate analysis. Plot - Bar chart for categorical attributes - Histogram for numeric attributes</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
-<section id="data-preparation" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">3.2</span> Data Preparation</h2>
+<section id="data-preparation" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">3.3</span> Data Preparation</h2>
 <p>Before we prepare the data, let’s take a look at the summary and see if there are any missing values or other trends.</p>
 <div class="cell-output-display">
 
@@ -324,7 +412,7 @@ div.csl-indent {
 <li>Remove time component from the <em>InvoiceDate</em>. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.</li>
 <li>Create a new attribute <em>LastSeen</em>. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping.</li>
 <li>Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from numeric columns Amount, Invoice and LastSeen</li>
-<li>Scale the data</li>
+<li>Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.</li>
 </ol>
 <div class="cell">
 <details>
@@ -352,11 +440,11 @@ div.csl-indent {
 </details>
 </div>
 </section>
-<section id="data-and-vizualisation" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="data-and-vizualisation"><span class="header-section-number">3.3</span> Data and Vizualisation</h2>
+<section id="data-and-vizualisation" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="data-and-vizualisation"><span class="header-section-number">3.4</span> Data and Vizualisation</h2>
 </section>
-<section id="statistical-modeling" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="statistical-modeling"><span class="header-section-number">3.4</span> Statistical Modeling</h2>
+<section id="statistical-modeling" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="statistical-modeling"><span class="header-section-number">3.5</span> Statistical Modeling</h2>
 </section>
 </section>
 <section id="conlusion" class="level1" data-number="4">

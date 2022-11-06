@@ -105,13 +105,38 @@ kable(a,
 ```
 
 
+## Load and Preview Data
+
 ```{r, warning = FALSE, echo=FALSE}
 filename <- "online_retail_II.xlsx"
 df = read_excel(filename) 
 
 names(df)[names(df) == 'Customer ID'] <- 'CustomerID'
+
+head(df) %>%
+  kbl() %>%
+  kable_paper("hover", full_width = T)
 ```
 
+Let us check the distribution of each field by doing univariate analysis. 
+Plot
+- Bar chart for categorical attributes
+- Histogram for numeric attributes
+
+```{r, warning=FALSE, echo=FALSE}
+
+df$cut <- cut(df$Quantity, c(-Inf, 0, 10, 20, 30, 40, 50, 100, Inf))
+ggplot(df,aes(cut))+geom_histogram(stat= "count", aes(fill = ..count..))
+
+# 
+# ggplot(df, aes(Quantity)) + geom_histogram(binwidth=5000) +
+#   geom_histogram(
+#     breaks = seq(-10000, 100000, by = 5000), 
+#     aes(fill = ..count..,
+#     colour = "black")) + 
+# scale_x_continuous(breaks = seq(-10000, 10000, by=5000))
+
+```
 
 ## Data Preparation
 
@@ -151,7 +176,7 @@ For conducting our analysis, we will be applying below listed data pre-processin
 4. Remove time component from the *InvoiceDate*. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.
 5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping.
 6. Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen
-7. Scale the data
+7. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
 
 ```{r, warning=FALSE, echo=TRUE}
 #remove missing value

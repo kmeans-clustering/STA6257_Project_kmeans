@@ -7,16 +7,16 @@ author:
   - Katie Hidden
   - Akash Chandra 
 date: '`r Sys.Date()`'
-# output:
-#   html_document:
-#     df_print: paged
-#     code-folding: hide
-#     number_sections: true
-#   pdf_document:
-#     fig_caption: yes
-#     keep_tex: yes
-#     latex_engine: pdflatex
-#     number_sections: true
+output:
+  html_document:
+    df_print: paged
+    code-folding: hide
+    number_sections: true
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    latex_engine: pdflatex
+    number_sections: true
 format:
  html:
    code-fold: true
