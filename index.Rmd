@@ -41,7 +41,9 @@ Customer segmentation is not only helpful for business but also helps customers 
 
 K-Means clustering algorithm can help effectively extract groups of customers with similar characteristics and purchasing behavior which in turn helps businesses to specify their differentiated marketing campaign and become more customer-centric.[@yul2020astudy]
 
+<center>
 ![](CustomerSegmentation.png)
+</center>
 
 # Methods
 
