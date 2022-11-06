@@ -7,12 +7,23 @@ author:
   - Katie Hidden
   - Akash Chandra 
 date: '`r Sys.Date()`'
+# output:
+#   html_document:
+#     df_print: paged
+#     code-folding: hide
+#     number_sections: true
+#   pdf_document:
+#     fig_caption: yes
+#     keep_tex: yes
+#     latex_engine: pdflatex
+#     number_sections: true
 format:
  html:
    code-fold: true
    number-sections: true
 course: STA 6257 - Advance Statistical Modeling
-bibliography: references.bib 
+bibliography: references.bib # file contains bibtex for references
+#always_allow_html: true # this allows to get PDF with HTML features
 indent: true
 ---
 
@@ -49,6 +60,7 @@ K-Means clustering algorithm can help effectively extract groups of customers wi
 
 
 ```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# loading packages 
 if(!require('readxl')) {
   install.packages('readxl')
   library('readxl')
@@ -99,7 +111,10 @@ kable(a,
       col.names = c("Attribute", "Type", "Description"),
       align="lcl", escape = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
+  #add_indent(c(10:13,15:18)) %>%
   row_spec(0, bold = T, background = "#666666", color = "white") 
+  #%>%
+  #row_spec(c(1,3), bold = T, background = "#CCCCCC")
 ```
 
 
@@ -108,8 +123,33 @@ filename <- "online_retail_II.xlsx"
 df = read_excel(filename) 
 
 names(df)[names(df) == 'Customer ID'] <- 'CustomerID'
+
+# d <- structure(list( 
+#    attribute = as.factor(c('Invoice', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'Price', 'Customer ID', 'Country'))
+#    ,dataType = as.factor(c('Nominal', 'Nominal', 'Nominal', 'Numeric', 'Numeric', 'Numeric','Numeric','Nominal')) 
+#   ,Description = as.factor(c(
+#     'Invoice number. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter `c`, it indicates a cancellation.',
+#     'Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.', 
+#     'Product (item) name.',
+#     'The quantities of each product (item) per transaction.',
+#     'Invice date and time. The day and time when a transaction was generated.',
+#     'Product price per unit in sterling (£).',
+#     'Customer number. A 5-digit integral number uniquely assigned to each customer.',
+#     'Country name. The name of the country where a customer resides.'))) 
+#   ,.Names = c("Attribute", "DataType", "Description") 
+#   ,row.names = c(NA, -8L) 
+#   ,class = "data.frame")
+# 
+# d %>%
+#   kbl() %>%
+#   kable_paper("hover", full_width = T)
 ```
 
+```{r, warning = FALSE, echo=FALSE}
+# head(df, n=5L) %>%
+#   kbl() %>%
+#   kable_paper("hover", full_width = T)
+```
 
 ## Data Preparation
 
@@ -137,20 +177,57 @@ kable(a,
       col.names = c("", "N", "Missing", "Mean", "SD", "Min", "Q1", "Median", "Q3", "Max"),
       align="lcc", escape = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
+  #add_indent(c(10:13,15:18)) %>%
   row_spec(0, bold = T, background = "#666666", color = "white") 
+  #%>%
+  #row_spec(c(1,3), bold = T, background = "#CCCCCC")
 ```
 
 The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis.
 
-```{r, warning=FALSE, echo=TRUE}
+```{r}
 df=na.omit(df, cols="CustomerID")
 ```
 
+Create a new attribute "Amount" that reflects the total money that the customer spent
+
+
+```{r}
+df['Amount'] = df['Quantity'] * df['Price']
+```
+
+Now, we will create a new dataset "df_by_customer" that will group customers and will have the total amount spent by each customer. This will help in clustering these customers by the amount spent.
+
+
+```{r}
+df_by_customer = df %>% group_by(CustomerID) %>%
+                    summarise(Amount = sum(Amount),
+                              .groups = 'drop')
+```
 
 
 ## Data and Vizualisation
 
 
+```{r, warning=FALSE, echo=TRUE}
+# Load Data
+#kable(head(df))
+
+# ggplot1 = murders %>% ggplot(mapping = aes(x=population/10^6, y=total)) 
+# 
+#   ggplot1 + geom_point(aes(col=region), size = 4) +
+#   geom_text_repel(aes(label=abb)) +
+#   scale_x_log10() +
+#   scale_y_log10() +
+#   geom_smooth(formula = "y~x", method=lm,se = F)+
+#   xlab("Populations in millions (log10 scale)") + 
+#   ylab("Total number of murders (log10 scale)") +
+#   ggtitle("US Gun Murders in 2010") +
+#   scale_color_discrete(name = "Region")+
+#       theme_wsj()
+  
+
+```
 
 ## Statistical Modeling
 

@@ -191,8 +191,8 @@ div.csl-indent {
 </div>
 <section id="dataset-description" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="dataset-description"><span class="header-section-number">3.1</span> Dataset Description</h2>
-<p>For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion gift-ware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach.</p>
-<p>The definition of the customer transactions dataset has 8 variables as shown in below table.</p>
+<p>For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion gift-ware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach<span class="citation" data-cites="online2010Chen">(<a href="#ref-online2010Chen" role="doc-biblioref">Chen 2010</a>)</span>.</p>
+<p>The customer transactions dataset has 8 variables as shown in below data definition table.</p>
 <div class="cell-output-display">
 
 <table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
@@ -247,9 +247,6 @@ div.csl-indent {
   </tr>
 </tbody>
 </table>
-
-</div>
-<div class="cell">
 
 </div>
 <div class="cell">
@@ -318,52 +315,16 @@ div.csl-indent {
 </table>
 
 </div>
-<p>The Customer ID contains unique Ids for each unique Customers. However, we have 107927 customers with no customer ids. We will be removing these customer before starting our analysis.</p>
+<p>The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Create a new attribute “Amount” that reflects the total money that the customer spent</p>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Amount'</span>] <span class="ot">=</span> df[<span class="st">'Quantity'</span>] <span class="sc">*</span> df[<span class="st">'Price'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>Now, we will create a new dataset “df_by_customer” that will group customers and will have the total amount spent by each customer. This will help in clustering these customers by the amount spent.</p>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_by_customer <span class="ot">=</span> df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">summarise</span>(<span class="at">Amount =</span> <span class="fu">sum</span>(Amount),</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">.groups =</span> <span class="st">'drop'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
 <section id="data-and-vizualisation" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="data-and-vizualisation"><span class="header-section-number">3.3</span> Data and Vizualisation</h2>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Data</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#kable(head(df))</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot1 = murders %&gt;% ggplot(mapping = aes(x=population/10^6, y=total)) </span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot1 + geom_point(aes(col=region), size = 4) +</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_text_repel(aes(label=abb)) +</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_x_log10() +</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_y_log10() +</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(formula = "y~x", method=lm,se = F)+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   xlab("Populations in millions (log10 scale)") + </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab("Total number of murders (log10 scale)") +</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggtitle("US Gun Murders in 2010") +</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_discrete(name = "Region")+</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#       theme_wsj()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
 <section id="statistical-modeling" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="statistical-modeling"><span class="header-section-number">3.4</span> Statistical Modeling</h2>
@@ -378,6 +339,9 @@ div.csl-indent {
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">5 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-online2010Chen" class="csl-entry" role="doc-biblioentry">
+Chen, Dr. Daqing. 2010. <span>“Online Retail II Data Set.”</span> School of Engineering, London South Bank University, London SE1 0AA, UK. <a href="https://archive.ics.uci.edu/ml/datasets/Online+Retail+II">https://archive.ics.uci.edu/ml/datasets/Online+Retail+II</a>.
+</div>
 <div id="ref-tab2022kmeans" class="csl-entry" role="doc-biblioentry">
 Tabianan, S., Velu. 2022. <span>“K-Means Clustering Approach for Intelligent Customer Segmentation Using Customer Purchase Behavior Data.”</span> <em>Analytical Methods</em> 14 (12): 7243. <a href="https://doi.org/10.3390/su14127243">https://doi.org/10.3390/su14127243</a>.
 </div>
