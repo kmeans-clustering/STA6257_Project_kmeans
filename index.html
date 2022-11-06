@@ -9,7 +9,7 @@
 <meta name="author" content="Anand Pandey">
 <meta name="author" content="Katie Hidden">
 <meta name="author" content="Akash Chandra">
-<meta name="dcterms.date" content="2022-11-05">
+<meta name="dcterms.date" content="2022-11-06">
 <meta name="description" content="An unsupervised learning algorithm ">
 
 <title>K-Means Clustering</title>
@@ -155,7 +155,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 5, 2022</p>
+      <p class="date">November 6, 2022</p>
     </div>
   </div>
     
@@ -319,19 +319,30 @@ div.csl-indent {
 <p>For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:</p>
 <ol type="1">
 <li>The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis.</li>
-<li>Select appropriate attributes that helps in our analysis - <em>Invoice</em>, <em>StockCode</em>, <em>Quantity</em>,<em>InvoiceDate</em>,<em>Price</em>,<em>Country</em></li>
+<li>Select appropriate attributes that helps in our analysis - <em>Invoice</em>, <em>StockCode</em>,<em>CustomerID</em>, <em>Quantity</em>,<em>InvoiceDate</em>,<em>Price</em>,<em>Country</em></li>
 <li>Create a new attribute <em>Amount</em>. This will help in clustering these customers by the total amount spent.</li>
 <li>Remove time component from the <em>InvoiceDate</em>. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.</li>
+<li>Scale the data</li>
 </ol>
-<section id="missing-value-removal" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="missing-value-removal"><span class="header-section-number">3.2.1</span> Missing value removal</h3>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove missing value</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#remove description</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">subset</span>(df, <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(Description) )</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new attribute Amount</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'Amount'</span>] <span class="ot">=</span> data[<span class="st">'Quantity'</span>] <span class="sc">*</span> data[<span class="st">'Price'</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#remove time component from date in InvoiceDate</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>InvoiceDate <span class="ot">=</span> <span class="fu">as.Date</span>(data<span class="sc">$</span>InvoiceDate)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#scale numeric attributes</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
 </section>
 <section id="data-and-vizualisation" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="data-and-vizualisation"><span class="header-section-number">3.3</span> Data and Vizualisation</h2>
