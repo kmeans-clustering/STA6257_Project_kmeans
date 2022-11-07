@@ -65,9 +65,17 @@ Other researchers have developed methods utilizing data density to determine the
 
 # Methods
 
+Below diagram illustrates how the convergence is achieved in K-Means in several iterations.
+
 <center>
 ![](kmeans.png)
 </center>
+
+In the first round of the iteration:
+
+A.    A random selection is made to assign initial centers (Shown as K1, K2 and K3)
+B.    Distance between these initial centers and other points are analyzed. Points are assigned to appropriate clusters based on their distance from these center points
+C.    
 
 # Analysis and Results
 
