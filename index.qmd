@@ -81,7 +81,13 @@ There are multiple iterations performed with different initial cluster centers. 
 
 Looking at the mathematical implementation of this algorithm[@yul2020astudy],
 
-Suppose there is a dataset D that contains n data and it was decided that there will be k clusters (and hence k initial cluster centers) $\sf{Z_{j}}$(I), j = 1, 2, 3, ...k.
+Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
+
+$$Z_j(I), j = 1, 2, 3,...k.$$
+
+Calculate the distance between each data point and the cluster center,
+
+$$D(x_i, Z_j(I)), i = 1, 2, ...n; j = 2, 3,...k.$$
 
 
 

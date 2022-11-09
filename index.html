@@ -215,7 +215,10 @@ There are multiple iterations performed with different initial cluster centers. 
 <li>Steps A, B and C are repeated in multiple iterations until there is no shift detected in the cluster centers K, K2 and K3</li>
 </ul>
 <p>Looking at the mathematical implementation of this algorithm<span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span>,</p>
-<p>Suppose there is a dataset D that contains n data and it was decided that there will be k clusters (and hence k initial cluster centers) <span class="math inline">\(\sf{Z_{j}}\)</span>(I), j = 1, 2, 3, …k.</p>
+<p>Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).</p>
+<p><span class="math display">\[Z_j(I), j = 1, 2, 3,...k.\]</span></p>
+<p>Calculate the distance between each data point and the cluster center,</p>
+<p><span class="math display">\[D(x_i, Z_j(I)), i = 1, 2, ...n; j = 2, 3,...k.\]</span></p>
 </section>
 <section id="analysis-and-results" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Analysis and Results</h1>
