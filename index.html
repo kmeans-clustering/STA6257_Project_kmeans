@@ -9,7 +9,7 @@
 <meta name="author" content="Anand Pandey">
 <meta name="author" content="Katie Hidden">
 <meta name="author" content="Akash Chandra">
-<meta name="dcterms.date" content="2022-11-08">
+<meta name="dcterms.date" content="2022-11-09">
 <meta name="description" content="An unsupervised learning algorithm ">
 
 <title>K-Means Clustering</title>
@@ -156,7 +156,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 8, 2022</p>
+      <p class="date">November 9, 2022</p>
     </div>
   </div>
     
@@ -214,11 +214,25 @@ There are multiple iterations performed with different initial cluster centers. 
 <li>New cluster centers are sought by finding the mean of the newly formed clusters. You can see how K1, K2 and K3 are shifting in this step</li>
 <li>Steps A, B and C are repeated in multiple iterations until there is no shift detected in the cluster centers K, K2 and K3</li>
 </ul>
-<p>Looking at the mathematical implementation of this algorithm<span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span>,</p>
+<p>Let’s look at the mathematical implementation of this algorithm<span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span>,</p>
+<p><strong>Proximity Measures</strong></p>
+<p>K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. <strong><em>Euclidean distance</em></strong> measurement is the most general method used.</p>
+<p><span class="math display">\[
+D(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+\]</span></p>
+<p><strong>Algorithm</strong></p>
 <p>Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).</p>
-<p><span class="math display">\[Z_j(I), j = 1, 2, 3,...k.\]</span></p>
-<p>Calculate the distance between each data point and the cluster center,</p>
-<p><span class="math display">\[D(x_i, Z_j(I)), i = 1, 2, ...n; j = 2, 3,...k.\]</span></p>
+<p><span class="math display">\[
+Z_j(I), j = 1, 2, 3,...k.
+\]</span></p>
+<p>Calculate the Euclidean distance between each data point and the cluster center, <span class="math inline">\(D(x_i, Z_j(I)), i = 1, 2, ...n; j = 1, 2,...k.\)</span>, if below is satisfied:</p>
+<p><span class="math display">\[
+D(x_i, Z_k(I)) = min{D(x_i, Z_j(I)), j = 1, 2,...n}
+\]</span></p>
+<p>Now, calculate the new cluster center by calculating the error square sum criterion function <strong>J</strong>:</p>
+<p><span class="math display">\[
+J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
+\]</span></p>
 </section>
 <section id="analysis-and-results" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Analysis and Results</h1>

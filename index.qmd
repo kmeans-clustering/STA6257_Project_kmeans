@@ -79,16 +79,35 @@ There are multiple iterations performed with different initial cluster centers. 
 -   New cluster centers are sought by finding the mean of the newly formed clusters. You can see how K1, K2 and K3 are shifting in this step
 -   Steps A, B and C are repeated in multiple iterations until there is no shift detected in the cluster centers K, K2 and K3
 
-Looking at the mathematical implementation of this algorithm[@yul2020astudy],
+Let's look at the mathematical implementation of this algorithm[@yul2020astudy],
+
+**Proximity Measures**
+
+K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. **_Euclidean distance_** measurement is the most general method used.
+
+$$
+D(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+$$
+
+**Algorithm**
 
 Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
 
-$$Z_j(I), j = 1, 2, 3,...k.$$
+$$
+Z_j(I), j = 1, 2, 3,...k.
+$$
 
-Calculate the distance between each data point and the cluster center,
+Calculate the Euclidean distance between each data point and the cluster center, $D(x_i, Z_j(I)), i = 1, 2, ...n; j = 1, 2,...k.$, if below is satisfied:
 
-$$D(x_i, Z_j(I)), i = 1, 2, ...n; j = 2, 3,...k.$$
+$$
+D(x_i, Z_k(I)) = min{D(x_i, Z_j(I)), j = 1, 2,...n}
+$$
 
+Now, calculate the new cluster center by calculating the error square sum criterion function **J**:
+
+$$
+J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
+$$
 
 
 # Analysis and Results
