@@ -126,6 +126,10 @@ if(!require('Hmisc')) {
   install.packages('Hmisc')
   library('Hmisc')
 }
+if(!require('reshape2')) {
+  install.packages('reshape2')
+  library('reshape2')
+}
 library(dplyr)
 library(tidyverse)
 library(knitr)
@@ -292,6 +296,8 @@ customer_monetary <- as.data.frame(data %>%
 ```{r, warning=FALSE, echo=TRUE}
 
 customer_frequency <- as.data.frame(data %>% group_by(CustomerID) %>% summarise(Invoice = n()))
+
+names(customer_frequency)[names(customer_frequency) == "Invoice"] <- "Frequency"
 # customer_frequency
 ```
 
@@ -313,11 +319,18 @@ customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
 # head(customer)
-# summary(customer)
+summary(customer)
 # nrow(customer)
 ```
 
 7. Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen
+
+```{r, warning=FALSE, echo=TRUE}
+
+melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
+```
+
+Looking at the above graph, there are outliers that need to be addressed to get accurate clustering results.
 
 ```{r, warning=FALSE, echo=TRUE}
 # create detect outlier function
@@ -354,20 +367,25 @@ remove_outlier <- function(dataframe,
 ```
 ```{r, warning=FALSE, echo=TRUE}
 # detect_outlier(customer$Amount)
-customer <- remove_outlier(customer, c('Amount','Invoice','LastSeen'))
+customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
 # summary(customer)
 # customer
 # nrow(customer)
+```
+
+Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.
+
+```{r, warning=FALSE, echo=TRUE}
+melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
 
 8. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
 
 ```{r, warning=FALSE, echo=TRUE}
 # scale numeric attributes
-customer <- customer %>% mutate_at(c("Amount", "Invoice", "LastSeen"), ~(scale(.) %>% as.vector))
-
-head(customer)
-summary(customer)
+customer <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
+# head(customer)
+# summary(customer)
 ```
 
 <!-- 
