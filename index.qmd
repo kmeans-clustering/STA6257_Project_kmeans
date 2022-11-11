@@ -325,7 +325,7 @@ summary(customer)
 
 7. Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen
 
-```{r, warning=FALSE, echo=TRUE}
+```{r, warning=FALSE, echo=TRUE, message=FALSE}
 
 melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
@@ -375,7 +375,7 @@ customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
 
 Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.
 
-```{r, warning=FALSE, echo=TRUE}
+```{r, warning=FALSE, echo=TRUE, message=FALSE}
 melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
 
@@ -400,7 +400,7 @@ customer <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale
  -->
 
 
-## Data and Vizualisation
+## Number of Clusters
 
 
 
