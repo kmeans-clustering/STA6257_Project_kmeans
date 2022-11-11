@@ -1,4 +1,3 @@
-
 ---
 title: "<span style='color: #0366D6;'>K-Means Clustering</span>"
 description: |
@@ -16,6 +15,7 @@ course: STA 6257 - Advance Statistical Modeling
 bibliography: references.bib 
 indent: true
 ---
+
 
 ------
 
@@ -85,32 +85,41 @@ Let's look at the mathematical implementation of this algorithm[@yul2020astudy],
 
 K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. **_Euclidean distance_** measurement is the most general method used.
 
+
 $$
 D(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
 $$
+
 
 **Algorithm**
 
 Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
 
+
 $$
 Z_j(I), j = 1, 2, 3,...k.
 $$
 
+
 Calculate the Euclidean distance between each data point and the cluster center, $D(x_i, Z_j(I)), i = 1, 2, ...n; j = 1, 2,...k.$, if below is satisfied:
+
 
 $$
 D(x_i, Z_k(I)) = min{D(x_i, Z_j(I)), j = 1, 2,...n}
 $$
 
+
 Now, calculate the new cluster center by calculating the error square sum criterion function **J**:
 changes
+
 $$
 J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 $$
 
 
+
 # Analysis and Results
+
 
 
 ```{r, warning=FALSE, echo=FALSE, message=FALSE}
@@ -140,11 +149,13 @@ library(cowplot)
 ```
 
 
+
 ## Dataset Description
 
 For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion gift-ware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach[@online2010Chen].  
 
 The customer transactions dataset has 8 variables as shown in below data definition table.
+
 
 
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
@@ -170,9 +181,11 @@ kable(a,
 ```
 
 
+
 ## Load and Preview Data
 
 Load the dataset and summarize column statistics.
+
 
 ```{r, warning = FALSE, echo=FALSE}
 filename <- "online_retail_II.xlsx"
@@ -185,12 +198,14 @@ head(df) %>%
   kable_paper("hover", full_width = T)
 ```
 
+
 Let us check the distribution of each field by doing univariate analysis. 
 
 Plot:
 
 -   Bar chart for categorical attributes
 -   Histogram for numeric attributes
+
 
 ```{r, warning=FALSE, echo=FALSE}
 df=na.omit(df, cols="CustomerID")
@@ -222,6 +237,7 @@ plot_grid(g1, g2, g3, g4,
           ncol = 2, nrow = 2)
 ```
 
+
 From the visualizations, we get a good amount of information about the structure of our chosen data. Below are the observations:
 
 A.    The Quantity is heavily skewed right and most of the transactions involved a quantity in the range of 1 to 5
@@ -232,6 +248,7 @@ D.    Most of the customers belong to United Kingdom
 ## Data Preparation
 
 Before we prepare the data, let's take a look at the summary and see if there are any missing values or other trends.
+
 
 ```{r, include=F}
 summary(df)
@@ -259,6 +276,7 @@ kable(a,
 ```
 
 
+
 For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:
 
 1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis. 
@@ -268,6 +286,7 @@ For conducting our analysis, we will be applying below listed data pre-processin
 5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping.
 6. Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen
 7. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
+
 
 ```{r, warning=FALSE, echo=TRUE}
 #remove missing value
@@ -294,6 +313,7 @@ data <- data %>% mutate(across(where(is.numeric), scale))
 ```
 
 
+
 ## Data and Vizualisation
 
 
@@ -304,5 +324,6 @@ data <- data %>% mutate(across(where(is.numeric), scale))
 
 
 # References
+
 
 
