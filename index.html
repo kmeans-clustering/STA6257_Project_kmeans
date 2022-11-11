@@ -229,7 +229,7 @@ Z_j(I), j = 1, 2, 3,...k.
 <p><span class="math display">\[
 D(x_i, Z_k(I)) = min{D(x_i, Z_j(I)), j = 1, 2,...n}
 \]</span></p>
-<p>Now, calculate the new cluster center by calculating the error square sum criterion function <strong>J</strong>:</p>
+<p>Now, calculate the new cluster center by calculating the error square sum criterion function <strong>J</strong>: changes</p>
 <p><span class="math display">\[
 J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 \]</span></p>
@@ -498,7 +498,10 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#scale numeric attributes</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert Invoice date to Unix Epoc time</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>InvoiceDate <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.POSIXct</span>(data<span class="sc">$</span>InvoiceDate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>

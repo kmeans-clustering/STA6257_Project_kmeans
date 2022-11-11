@@ -291,6 +291,10 @@ data['LastSeen'] = as.numeric(max(data$InvoiceDate) - data$InvoiceDate)
 #scale numeric attributes
 data <- data %>% mutate(across(where(is.numeric), scale))
 
+#Convert Invoice date to Unix Epoc time
+data$InvoiceDate <- as.numeric(as.POSIXct(data$InvoiceDate))
+
+
 ```
 
 
