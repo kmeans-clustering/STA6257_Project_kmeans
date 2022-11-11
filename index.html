@@ -9,7 +9,7 @@
 <meta name="author" content="Anand Pandey">
 <meta name="author" content="Katie Hidden">
 <meta name="author" content="Akash Chandra">
-<meta name="dcterms.date" content="2022-11-10">
+<meta name="dcterms.date" content="2022-11-11">
 <meta name="description" content="An unsupervised learning algorithm ">
 
 <title>K-Means Clustering</title>
@@ -156,7 +156,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 10, 2022</p>
+      <p class="date">November 11, 2022</p>
     </div>
   </div>
     
@@ -469,41 +469,173 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <p>For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:</p>
 <ol type="1">
 <li>The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis.</li>
-<li>Select appropriate attributes that helps in our analysis - <em>Invoice</em>, <em>StockCode</em>,<em>CustomerID</em>, <em>Quantity</em>,<em>InvoiceDate</em>,<em>Price</em>,<em>Country</em></li>
-<li>Create a new attribute <em>Amount</em>. This will help in clustering these customers by the total amount spent.</li>
-<li>Remove time component from the <em>InvoiceDate</em>. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.</li>
-<li>Create a new attribute <em>LastSeen</em>. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping.</li>
-<li>Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from numeric columns Amount, Invoice and LastSeen</li>
-<li>Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.</li>
 </ol>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove missing value</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#remove description</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">subset</span>(df, <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(Description) )</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new attribute Amount</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'Amount'</span>] <span class="ot">=</span> data[<span class="st">'Quantity'</span>] <span class="sc">*</span> data[<span class="st">'Price'</span>]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#remove time component from date in InvoiceDate</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>InvoiceDate <span class="ot">=</span> <span class="fu">as.Date</span>(data<span class="sc">$</span>InvoiceDate)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new attribute LastSeen</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'LastSeen'</span>] <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate) <span class="sc">-</span> data<span class="sc">$</span>InvoiceDate)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Detect outliers and remove them</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#scale numeric attributes</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale))</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert Invoice date to Unix Epoc time</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>InvoiceDate <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.POSIXct</span>(data<span class="sc">$</span>InvoiceDate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<ol start="2" type="1">
+<li>Select appropriate attributes that helps in our analysis - <em>Invoice</em>, <em>StockCode</em>,<em>CustomerID</em>, <em>Quantity</em>,<em>InvoiceDate</em>,<em>Price</em>,<em>Country</em></li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove description</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">subset</span>(df, <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(Description) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="3" type="1">
+<li>Create a new attribute <em>Amount</em>. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Amount <span class="ot">=</span> data<span class="sc">$</span>Quantity <span class="sc">*</span> data<span class="sc">$</span>Price</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>customer_monetary <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Amount =</span> <span class="fu">sum</span>(Amount)))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># customer_monetary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="4" type="1">
+<li>Group the data by customer id to get each unique customer and the number of times (<em>Frequency</em>) they visited the store (by counting their numebr of invoices)</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>customer_frequency <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Invoice =</span> <span class="fu">n</span>()))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># customer_frequency</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="5" type="1">
+<li>Create a new attribute <em>LastSeen</em>. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data$LastSeen = as.numeric(max(data$InvoiceDate) - data$InvoiceDate)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>LastSeen <span class="ot">=</span><span class="fu">as.integer</span>(<span class="fu">difftime</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate), data<span class="sc">$</span>InvoiceDate, <span class="at">units =</span> <span class="st">"days"</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">LastSeen =</span> <span class="fu">min</span>(LastSeen)))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># head(customer_lastseen)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(customer_lastseen)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="6" type="1">
+<li>Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer_monetary, customer_frequency, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer, customer_lastseen, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># head(customer)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(customer)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># nrow(customer)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="7" type="1">
+<li>Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from numeric columns Amount, Invoice and LastSeen</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create detect outlier function</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>detect_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate first quantile</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    Quantile1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate third quantile</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    Quantile3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate inter quartile range</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    IQR <span class="ot">=</span> Quantile3<span class="sc">-</span>Quantile1</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return true or false</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;</span> Quantile3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> x <span class="sc">&lt;</span> Quantile1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># create remove outlier function</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>remove_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                            <span class="at">columns=</span><span class="fu">names</span>(dataframe)) {</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for loop to traverse in columns vector</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> columns) {</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># remove observation if it satisfies outlier function</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        dataframe <span class="ot">&lt;-</span> dataframe[<span class="sc">!</span><span class="fu">detect_outlier</span>(dataframe[[col]]), ]</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(dataframe)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print("Remove outliers")</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(dataframe)</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># detect_outlier(customer$Amount)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">remove_outlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Invoice'</span>,<span class="st">'LastSeen'</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(customer)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># customer</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># nrow(customer)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol start="8" type="1">
+<li>Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.</li>
+</ol>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scale numeric attributes</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span> <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"Amount"</span>, <span class="st">"Invoice"</span>, <span class="st">"LastSeen"</span>), <span class="sc">~</span>(<span class="fu">scale</span>(.) <span class="sc">%&gt;%</span> as.vector))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(customer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  CustomerID     Amount     Invoice   LastSeen
+1      12346 -1.1074843 -0.05006784 -0.3531494
+2      12347  0.7199544  0.53153467 -0.9849785
+3      12348 -0.7298312 -0.65493444 -0.2840431
+4      12349  2.4626963  1.36904227 -0.5900853
+5      12351 -0.6261228 -0.63167034 -0.9059998
+6      12352 -0.5696802 -0.70146264 -0.9059998</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(customer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   CustomerID        Amount           Invoice           LastSeen      
+ Min.   :12346   Min.   :-3.1271   Min.   :-1.0970   Min.   :-1.0047  
+ 1st Qu.:13879   1st Qu.:-0.7044   1st Qu.:-0.7713   1st Qu.:-0.7777  
+ Median :15366   Median :-0.3441   Median :-0.3292   Median :-0.3926  
+ Mean   :15361   Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000  
+ 3rd Qu.:16860   3rd Qu.: 0.4147   3rd Qu.: 0.5083   3rd Qu.: 0.6045  
+ Max.   :18287   Max.   : 3.8295   Max.   : 3.1371   Max.   : 2.6777  </code></pre>
+</div>
+</div>
+<!-- 
+9. Remove time component from the *InvoiceDate*. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.
+
+
+::: {.cell}
+
+```{.r .cell-code}
+# #remove time component from date in InvoiceDate
+# data$InvoiceDate = as.Date(data$InvoiceDate)
+# #Convert Invoice date to Unix Epoc time
+# data$InvoiceDate <- as.numeric(as.POSIXct(data$InvoiceDate))
+```
+:::
+
+ -->
 </section>
 <section id="data-and-vizualisation" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="data-and-vizualisation"><span class="header-section-number">3.4</span> Data and Vizualisation</h2>
