@@ -441,8 +441,7 @@ kable(a,
 
 
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
-a <- data.frame(vars = c('Amount', 'Frequency', 'LastSeen'),
-                N = c('3674', '3674', '3674'),               
+a <- data.frame(vars = c('Amount', 'Frequency', 'LastSeen'),                        
                 Mean = c('776.5', '48.15', '101.8'),              
                 Min = c('-1598.7','1','0'),
                 Q1 = c('241.5', '15.0', '23.0'),
@@ -452,8 +451,8 @@ a <- data.frame(vars = c('Amount', 'Frequency', 'LastSeen'),
                 stringsAsFactors = FALSE)
 
 kable(a,
-      caption = "Summary of Target Dataset",
-      col.names = c("", "N", "Mean","Min", "Q1", "Median", "Q3", "Max"),
+      caption = "Summary of Target Dataset (3674 Records)",
+      col.names = c("", "Mean","Min", "Q1", "Median", "Q3", "Max"),
       align="lcc", escape = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
   row_spec(0, bold = T, background = "#666666", color = "white") 
