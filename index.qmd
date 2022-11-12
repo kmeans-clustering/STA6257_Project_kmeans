@@ -330,6 +330,7 @@ customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(
 ```{r, warning=FALSE, echo=TRUE}
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
+customer <- customer %>% select(-CustomerID)
 # head(customer)
 summary(customer)
 # nrow(customer)
@@ -339,7 +340,7 @@ summary(customer)
 
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
 
-melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
+melt(customer) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
 
 Looking at the above graph, there are outliers that need to be addressed to get accurate clustering results.
@@ -388,7 +389,7 @@ customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
 Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.
 
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
-melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
+melt(customer) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
 
 8. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
@@ -516,7 +517,7 @@ customer$Cluster <- as.factor(m1.kmean$cluster)
 #      add_markers(size=1.5)
 # print(p)
 
-fviz_cluster(m1.kmean, data = customer[, -5],
+fviz_cluster(m1.kmean, data = customer[, -4],
              palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
              geom = "point",
              ellipse.type = "convex", 
