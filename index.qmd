@@ -554,7 +554,7 @@ fviz_cluster(m1.kmean, data = customer,choose.vars = c("LastSeen","Frequency"),
 
 colors <- c("#999999", "#E69F00", "#56B4E9")
 colors <- colors[as.numeric(customer$Cluster)]
-s3d <- scatterplot3d(customer[,2:4], pch = 16, color=colors)
+s3d <- scatterplot3d(customer[,1:3], pch = 16, color=colors)
 legend("right",legend = paste("Cluster", 1:3),
        col =  c("#999999", "#E69F00", "#56B4E9"), pch = 16)                              
 ```
