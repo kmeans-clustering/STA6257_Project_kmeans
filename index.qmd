@@ -413,7 +413,15 @@ summary(customer_scaled)
 
 ## Target Dataset Analysis
 
+We started our analysis with total 525461 records but after preparing and cleansing the data, we are left with total 3674 records to be analyzed.
+
+<!-- ```{r}
+summarize(customer)
+nrow(customer)
+summary(customer)
+``` -->
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
+
 a <- data.frame(vars = c('CustomerID', 'Amount', 'Frequency', 'LastSeen'),
                 
                 DataType = c('Numeric', 'Numeric', 'Numeric', 'Numeric'),
@@ -432,6 +440,24 @@ kable(a,
 ```
 
 
+```{r, echo=FALSE, warning=FALSE, results = "asis"}
+a <- data.frame(vars = c('Amount', 'Frequency', 'LastSeen'),
+                N = c('3674', '3674', '3674'),               
+                Mean = c('776.5', '48.15', '101.8'),              
+                Min = c('-1598.7','1','0'),
+                Q1 = c('241.5', '15.0', '23.0'),
+                Median = c('515.1', '34.0', '62.0'),
+                Q3 = c('1091.4', '70.0', '163.0'),
+                Max = c('3685.1', '183.0','373.0'),
+                stringsAsFactors = FALSE)
+
+kable(a,
+      caption = "Summary of Target Dataset",
+      col.names = c("", "N", "Mean","Min", "Q1", "Median", "Q3", "Max"),
+      align="lcc", escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
+  row_spec(0, bold = T, background = "#666666", color = "white") 
+```
 ## Statistical Modeling
 
 ### Number of clusters (K)
