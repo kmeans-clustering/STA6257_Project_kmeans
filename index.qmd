@@ -130,6 +130,14 @@ if(!require('reshape2')) {
   install.packages('reshape2')
   library('reshape2')
 }
+if(!require('plotly')) {
+  install.packages('plotly')
+  library('plotly')
+}
+if(!require('factoextra')) {
+  install.packages('factoextra')
+  library('factoextra')
+}
 library(dplyr)
 library(tidyverse)
 library(knitr)
@@ -383,9 +391,9 @@ melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=va
 
 ```{r, warning=FALSE, echo=TRUE}
 # scale numeric attributes
-customer <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
-head(customer)
-summary(customer)
+customer_scaled <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
+head(customer_scaled)
+summary(customer_scaled)
 ```
 
 <!-- 
@@ -399,8 +407,9 @@ summary(customer)
 ```
  -->
 
+## Statistical Modeling
 
-## Number of clusters (K)
+### Number of clusters (K)
 
 One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K). 
 
@@ -412,7 +421,7 @@ set.seed(123)
 # Compute and plot wss for k = 1 to k = 15.
 k.max <- 15
 wss <- sapply(1:k.max, 
-              function(k){kmeans(customer, k, nstart=50,iter.max = 15 )$tot.withinss})
+              function(k){kmeans(customer_scaled, k, nstart=50,iter.max = 15 )$tot.withinss})
 # wss
 plot(1:k.max, wss,
      type="b", pch = 19, frame = FALSE, 
@@ -435,8 +444,60 @@ $$
 K = 3
 $$
 
-## Statistical Modeling
+### K-Means Model
 
+```{r}
+# Compute k-means with k = 3
+set.seed(123)
+k = 3
+m1.kmean <- customer_scaled %>% kmeans(k, nstart = 25)
+#nstart option that attempts multiple initial configurations and reports on the best one
+
+#m1.kmean
+
+customer$Cluster <- m1.kmean$cluster
+
+#customer
+
+# p <- plot_ly(customer, x=~Amount, y=~Frequency, 
+# z=~LastSeen, color=~Cluster) %>%
+#      add_markers(size=1.5)
+# print(p)
+
+fviz_cluster(m1.kmean, data = customer[, -5],
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+             )
+             
+```
+
+The above graph shows the clusters created using all columns of customer dataframe using the first two principle components to define the X-Y coordinates of each observation.
+
+```{r, warning=FALSE, echo=TRUE}
+
+fviz_cluster(m1.kmean, data = customer,choose.vars = c("LastSeen","Amount"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+             )
+
+fviz_cluster(m1.kmean, data = customer,choose.vars = c("Frequency","Amount"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+             )
+
+fviz_cluster(m1.kmean, data = customer,choose.vars = c("LastSeen","Frequency"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+             )                          
+```
 # Conlusion
 
 
