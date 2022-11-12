@@ -629,9 +629,30 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scale numeric attributes</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span> <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"Amount"</span>, <span class="st">"Frequency"</span>, <span class="st">"LastSeen"</span>), <span class="sc">~</span>(<span class="fu">scale</span>(.) <span class="sc">%&gt;%</span> as.vector))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># head(customer)</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(customer)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(customer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  CustomerID     Amount   Frequency   LastSeen
+1      12346 -1.1074843 -0.05006784 -0.3531494
+2      12347  0.7199544  0.53153467 -0.9849785
+3      12348 -0.7298312 -0.65493444 -0.2840431
+4      12349  2.4626963  1.36904227 -0.5900853
+5      12351 -0.6261228 -0.63167034 -0.9059998
+6      12352 -0.5696802 -0.70146264 -0.9059998</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(customer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   CustomerID        Amount          Frequency          LastSeen      
+ Min.   :12346   Min.   :-3.1271   Min.   :-1.0970   Min.   :-1.0047  
+ 1st Qu.:13879   1st Qu.:-0.7044   1st Qu.:-0.7713   1st Qu.:-0.7777  
+ Median :15366   Median :-0.3441   Median :-0.3292   Median :-0.3926  
+ Mean   :15361   Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000  
+ 3rd Qu.:16860   3rd Qu.: 0.4147   3rd Qu.: 0.5083   3rd Qu.: 0.6045  
+ Max.   :18287   Max.   : 3.8295   Max.   : 3.1371   Max.   : 2.6777  </code></pre>
+</div>
 </div>
 <!-- 
 9. Remove time component from the *InvoiceDate*. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.
@@ -649,8 +670,41 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 
  -->
 </section>
-<section id="number-of-clusters" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="number-of-clusters"><span class="header-section-number">3.4</span> Number of Clusters</h2>
+<section id="number-of-clusters-k" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="number-of-clusters-k"><span class="header-section-number">3.4</span> Number of clusters (K)</h2>
+<p>One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).</p>
+<p>We will be using a popular method called <em>Elbow Method</em> to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.<span class="citation" data-cites="ste2011Choosing">(<a href="#ref-ste2011Choosing" role="doc-biblioref">STEINLEY 2011</a>)</span></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Elbow Method for finding the optimal number of clusters</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute and plot wss for k = 1 to k = 15.</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>k.max <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>wss <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>k.max, </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>              <span class="cf">function</span>(k){<span class="fu">kmeans</span>(customer, k, <span class="at">nstart=</span><span class="dv">50</span>,<span class="at">iter.max =</span> <span class="dv">15</span> )<span class="sc">$</span>tot.withinss})</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># wss</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>k.max, wss,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Number of clusters K"</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Total within-clusters sum of squares"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a data frame containing both k and wss</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># elbow_df &lt;- data.frame(</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   k = 1:k.max,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   wss = wss</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># elbow_df %&gt;% ggplot(aes(x = k, y = wss)) +</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_line() + geom_point()+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_x_continuous(breaks = 1:k.max)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="statistical-modeling" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="statistical-modeling"><span class="header-section-number">3.5</span> Statistical Modeling</h2>
@@ -682,6 +736,9 @@ Sinaga, Kristina P., and Miin-Shen Yang. 2020. <span>“Unsupervised k-Means Clu
 </div>
 <div id="ref-ste2008Selective" class="csl-entry" role="doc-biblioentry">
 Stefanowski, S., &amp; Wilk. 2008. <span>“Selective Pre-Processing of Imbalanced Data for Improving Classification Performance.”</span> <em>Data Warehousing and Knowledge Discovery</em>, 283–92. <a href="https://doi.org/10.1007/978-3-540-85836-2_27">https://doi.org/10.1007/978-3-540-85836-2_27</a>.
+</div>
+<div id="ref-ste2011Choosing" class="csl-entry" role="doc-biblioentry">
+STEINLEY, M. J, &amp; BRUSCO. 2011. <span>“Choosing the Number of Clusters in k-Means Clustering.”</span> <em>Psychological Methods</em> 16 (3): 285–97.
 </div>
 <div id="ref-tab2022kmeans" class="csl-entry" role="doc-biblioentry">
 Tabianan, S., Velu. 2022. <span>“K-Means Clustering Approach for Intelligent Customer Segmentation Using Customer Purchase Behavior Data.”</span> <em>Analytical Methods</em> 14 (12): 7243. <a href="https://doi.org/10.3390/su14127243">https://doi.org/10.3390/su14127243</a>.

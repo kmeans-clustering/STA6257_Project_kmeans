@@ -384,8 +384,8 @@ melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=va
 ```{r, warning=FALSE, echo=TRUE}
 # scale numeric attributes
 customer <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
-# head(customer)
-# summary(customer)
+head(customer)
+summary(customer)
 ```
 
 <!-- 
@@ -400,9 +400,35 @@ customer <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale
  -->
 
 
-## Number of Clusters
+## Number of clusters (K)
 
+One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K). 
 
+We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.[@ste2011Choosing]
+
+```{r, warning=FALSE, echo=TRUE}
+#Elbow Method for finding the optimal number of clusters
+set.seed(123)
+# Compute and plot wss for k = 1 to k = 15.
+k.max <- 15
+wss <- sapply(1:k.max, 
+              function(k){kmeans(customer, k, nstart=50,iter.max = 15 )$tot.withinss})
+# wss
+plot(1:k.max, wss,
+     type="b", pch = 19, frame = FALSE, 
+     xlab="Number of clusters K",
+     ylab="Total within-clusters sum of squares")
+
+# Generate a data frame containing both k and wss
+# elbow_df <- data.frame(
+#   k = 1:k.max,
+#   wss = wss
+# )
+
+# elbow_df %>% ggplot(aes(x = k, y = wss)) +
+#   geom_line() + geom_point()+
+#   scale_x_continuous(breaks = 1:k.max)
+```
 
 ## Statistical Modeling
 
