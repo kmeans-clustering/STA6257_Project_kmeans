@@ -429,6 +429,11 @@ plot(1:k.max, wss,
 #   geom_line() + geom_point()+
 #   scale_x_continuous(breaks = 1:k.max)
 ```
+From the above Elbow graphs we can observe the elbow point is at '3'. So, we can pick 3 as our k value for number of clusters.
+
+$$
+K = 3
+$$
 
 ## Statistical Modeling
 
