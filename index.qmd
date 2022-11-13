@@ -475,7 +475,7 @@ fviz_nbclust(customer_scaled, kmeans, method = "wss") +
 #### Silhouette Method
  
 Another way to find the optimal number of clusters in K-Means is Silhouette Method. We will be using it to double check the results we obtained from the above Elbow method.
-The silhouette method calculates a coefficient (called silhouette coefficient) which is a measure of how similar a data point is within-cluster (cohesion) compared to other clusters (separation).
+The silhouette method calculates a coefficient (called silhouette coefficient) which is a measure of how similar a data point is within-cluster (cohesion) compared to other clusters (separation).[@li2013application]
  
 ```{r, warning=FALSE, echo=TRUE}
 fviz_nbclust(customer_scaled, kmeans, method = "silhouette")+ theme_classic()+
@@ -627,6 +627,9 @@ For this business, its a matter of concern that most of their customers (49%) ar
 
 # Conlusion
  
+ For businesses, the customer segmentation play pivotal role in identifying the customers by grouping them based on their buying habits and patterns. With increasingly large volume of transactions and unprecedented business activities, a clustering algorithm like K-Means is a great tool to achieve the segmentation of customers with speed and accuracy. In this paper, we have tried a real-time online business data to show how K-Means helped the business in identifying customers who are at risk of switching to other stores. We have also explained that there are multiple steps in the data mining processes and it started with data selection, then to data preparation, visualization, and finally to model creation and interpretation. 
+
+ We also understand that K-Means is not always accurate and is dependent on initial choice of centroids and optimal number of clusters chosen. Hiowever, there are some improved algorithms that helps overcome these shortcomings.
 
 # References
 
