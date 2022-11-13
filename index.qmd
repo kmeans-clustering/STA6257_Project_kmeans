@@ -110,6 +110,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 $$
  
 
+
 # Analysis and Results
  
 
@@ -246,6 +247,7 @@ B.    The unit Price is also skewed right and most of the items have unit price 
 C.    The item with StockCode 85123A was sold most
 D.    Most of the customers belong to United Kingdom
  
+
 ## Data Preparation
  
 Before we prepare the data, let's take a look at the summary and see if there are any missing values or other trends.
@@ -278,14 +280,12 @@ kable(a,
 
 For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:
  
-1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis.
- 
+1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis. After removing these customers with no ids, the total records are 417, 534.
+
 ```{r, warning=FALSE, echo=TRUE}
 #remove missing value
 df=na.omit(df, cols="CustomerID")
 ```
- 
-Now, the total records are 417, 534
  
 2. Select appropriate attributes that helps in our analysis - *CustomerID*, *Invoice*, *Quantity*, *InvoiceDate* and *Price*
  
@@ -297,35 +297,27 @@ data = subset(df, select = -c(Description, Country, StockCode) )
 3. Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them
  
 ```{r, warning=FALSE, echo=TRUE}
- 
 data$Amount = data$Quantity * data$Price
- 
+
 customer_monetary <- as.data.frame(data %>%
   group_by(CustomerID) %>%
   summarise(Amount = sum(Amount)))
-# customer_monetary
 ```
  
 4. Group the data by customer id to get each unique customer and the number of times (*Frequency*) they visited the store (by counting their numebr of invoices)
- 
+
 ```{r, warning=FALSE, echo=TRUE}
- 
 customer_frequency <- as.data.frame(data %>% group_by(CustomerID) %>% summarise(Invoice = n()))
  
 names(customer_frequency)[names(customer_frequency) == "Invoice"] <- "Frequency"
-# customer_frequency
 ```
  
 5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.
  
 ```{r, warning=FALSE, echo=TRUE}
- 
-# data$LastSeen = as.numeric(max(data$InvoiceDate) - data$InvoiceDate)
 data$LastSeen =as.integer(difftime(max(data$InvoiceDate), data$InvoiceDate, units = "days"))
  
 customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(LastSeen = min(LastSeen)))
-# head(customer_lastseen)
-# summary(customer_lastseen)
 ```
  
 6. Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store
@@ -333,20 +325,15 @@ customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(
 ```{r, warning=FALSE, echo=TRUE}
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
- 
-# head(customer)
-# summary(customer)
-# nrow(customer)
 ```
  
 7. Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen
  
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
- 
 melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
  
-Looking at the above graph, there are outliers that need to be addressed to get accurate clustering results.
+Above graph shows that there are outliers that need to be addressed to get accurate clustering results.
  
 ```{r, warning=FALSE, echo=TRUE}
 # create detect outlier function
@@ -372,13 +359,9 @@ remove_outlier <- function(dataframe,
     # print("Remove outliers")
     # print(dataframe)
 }
-```
-```{r, warning=FALSE, echo=TRUE}
+
 # detect_outlier(customer$Amount)
 customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
-# summary(customer)
-# customer
-# nrow(customer)
 ```
  
 Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.
@@ -392,33 +375,16 @@ melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fil
 ```{r, warning=FALSE, echo=TRUE}
 customer_details <- customer
 customer <-  customer %>% select(-CustomerID)
-
 # scale numeric attributes
 customer_scaled <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
-# head(customer_scaled)
-# summary(customer_scaled)
 ```
- 
-<!--
-9. Remove time component from the *InvoiceDate*. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.
- 
-```{r, warning=FALSE, echo=TRUE}
-# #remove time component from date in InvoiceDate
-# data$InvoiceDate = as.Date(data$InvoiceDate)
-# #Convert Invoice date to Unix Epoc time
-# data$InvoiceDate <- as.numeric(as.POSIXct(data$InvoiceDate))
-```
--->
+
  
 ## Target Dataset Analysis
  
 We started our analysis with total 525461 records but after preparing and cleansing the data, we are left with total 3674 records to be analyzed.
- 
-<!-- ```{r}
-summarize(customer)
-nrow(customer)
-summary(customer)
-``` -->
+
+
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
  
 a <- data.frame(vars = c('CustomerID', 'Amount', 'Frequency', 'LastSeen'),               
@@ -459,7 +425,7 @@ kable(a,
 
 ## Statistical Modeling
  
-### Number of clusters (K)
+### Optimal Number of Clusters (K)
  
 One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).
  
@@ -493,16 +459,17 @@ gap_stat <- clusGap(customer_scaled, FUN = kmeans, nstart = 25, K.max = 10, B = 
 fviz_gap_stat(gap_stat)
 ```
  
-From the above Elbow, Silhouette and Gap Statistics graphs we can observe the elbow point is at '3'. So, we can pick 3 as our k value for number of clusters.
- 
+From the above graphs for Elbow, Silhouette and Gap Statistics methods, we can observe the critical point is at '3'. So, we will pick 3 as our k value for number of clusters.
+
+
 $$
 K = 3
 $$
- 
+
 
 ### K-Means Model
 
-Now, we will create the K-Means model for K = 3.
+Now, we will create the K-Means model with K = 3.
 
 ```{r, warning=FALSE, echo=TRUE}
 # Compute k-means with k = 3
@@ -511,14 +478,11 @@ k = 3
 m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 20, nstart = 25)
 #nstart option that attempts multiple initial configurations and reports on the best one
  
-# m1.kmean$cluster
- 
 #Add Clusters to the original dataframe
 customer$Cluster <- as.factor(m1.kmean$cluster)
- 
 ```
 
-From the above model, we can observe that 3 clusters are formed with sizes 1807, 953, 914.
+The model results in 3 clusters as was decided and the clusters are formed with sizes 1807, 953, 914.
 
 Now, we can extract the clusters and add to our initial data to do some descriptive statistics at the cluster level. Below table summarizes the original dataset grouped by clusters to show the mean of the variables:
  
