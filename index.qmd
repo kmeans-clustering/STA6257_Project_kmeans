@@ -13,7 +13,7 @@ format:
     code-block-bg: true
     code-block-border-left: "#31BAE9"
     code-overflow: wrap
-    code-fold: true
+    code-fold: show
     code-tools: true
     number-sections: true
 course: STA 6257 - Advance Statistical Modeling
@@ -360,8 +360,6 @@ remove_outlier <- function(dataframe,
         dataframe <- dataframe[!detect_outlier(dataframe[[col]]), ]
     }
     return(dataframe)
-    # print("Remove outliers")
-    # print(dataframe)
 }
 
 # detect_outlier(customer$Amount)
