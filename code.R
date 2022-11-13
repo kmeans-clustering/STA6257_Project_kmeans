@@ -131,12 +131,16 @@ fviz_nbclust(customer_scaled, kmeans, method = "silhouette")+ theme_classic()+
 
 set.seed(123)
 k = 3
-m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 20, nstart = 100)
-m2.kmean <- customer_scaled$Amount %>% kmeans(k, iter.max = 20, nstart = 100)
-m3.kmean <- customer_scaled$Frequency %>% kmeans(k, iter.max = 20, nstart = 100)
-m4.kmean <- customer_scaled$LastSeen %>% kmeans(k, iter.max = 20, nstart = 100)
-m5.kmean <- c(customer_scaled$Amount, customer_scaled$Frequency) %>% kmeans(k, iter.max = 20, nstart = 100)
+m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 10, nstart = 100)
+# m2.kmean <- customer_scaled$Amount %>% kmeans(k, iter.max = 20, nstart = 100)
+# m3.kmean <- customer_scaled$Frequency %>% kmeans(k, iter.max = 20, nstart = 100)
+# m4.kmean <- customer_scaled$LastSeen %>% kmeans(k, iter.max = 20, nstart = 100)
+# m5.kmean <- c(customer_scaled$Amount, customer_scaled$Frequency) %>% kmeans(k, iter.max = 20, nstart = 100)
+
+m1.kmean
 m1.kmean$tot.withinss
+
+# 66%, 3725.543
 
 customer$Cluster <- as.factor(m1.kmean$cluster)
 customer_details$Cluster <- as.factor(m1.kmean$cluster)
@@ -182,15 +186,18 @@ fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Freque
              ggtheme = theme_bw()
 )         
 
-head(customer_scaled)
-colors <- c("#999999", "#E69F00", "#56B4E9")
+
+
+
+# head(customer_scaled)
+colors <- c("#9f00e6", "#e69f00", "#00e69f")
 colors <- colors[as.numeric(m1.kmean$cluster)]
 s3d <- scatterplot3d(customer_scaled, pch = 16, color=colors)
 legend("top",legend = paste("Cluster", 1:3),
-       col =  c("#999999", "#E69F00", "#56B4E9"), pch = 16)    
-s3d$points3d(m1.kmean$centers,
-             col = "red", type = "h", pch = 8)
-
+       col =  c("#9f00e6", "#e69f00", "#00e69f"), pch = 16)    
+centers <- data.frame(m1.kmean$centers)
+s3dp <- s3d$points3d(centers,
+             col = c("#000000","#0e0a00","#000e0a"), type = "h", pch = 8)
 
 
 
@@ -206,6 +213,81 @@ customer %>% ggplot(aes(x=Cluster, y=LastSeen, fill=Cluster)) + geom_boxplot() +
 
 
 
+nrow(customer)
 
+nrow(customer %>% filter(Cluster == 1))
+nrow(customer %>% filter(Cluster == 2))
+nrow(customer %>% filter(Cluster == 3))
 
+m1.kmean
+
+# https://dl.acm.org/doi/10.5555/1283383.1283494
+#https://towardsdatascience.com/try-this-simple-trick-to-improve-your-clustering-b2d5d502039b
+my_kmeans <- function(df, k, n_iterations, init = c("kmeans++", "random")) {
+  # Check which initialization should be done
+  init <- match.arg(init)
+  
+  # Helper function for euclidean distance
+  euclidean_distance <- function(p1, p2) {
+    dist <- sqrt(sum((p1-p2)^2))
+    return(dist)
+  }
+  
+  # Helper function to calculate distances between all points and all centers
+  calculate_distances <- function(df, centers) {
+    distances <- matrix(NA, nrow = nrow(df), ncol = nrow(centers))
+    for (object_id in 1:nrow(df)) {
+      for (center_id in 1:nrow(centers)) {
+        distances[object_id, center_id] <- euclidean_distance(df[object_id, ], centers[center_id, ])
+      }
+    }
+    return(distances)
+  }
+  
+  if (init == "random") {
+    # Choose all centers randomly
+    centers <- df[sample(nrow(df), k, replace = FALSE), ]
+  } else if (init == "kmeans++") {
+    # Initialize according to kmeans++ algorithm
+    
+    # Choose first center randomly
+    next_center_id <- sample(seq_len(nrow(df)), 1)
+    centers <- df[next_center_id, ]
+    non_centers <- df[-next_center_id, ]
+    
+    # Choose next centers with probabilities proportional to their distance to 
+    # the closest center. Higher distance equals higher probability.
+    while(nrow(centers) < k) {
+      distances <- calculate_distances(non_centers, centers)
+      distances <- apply(distances, 1, min)
+      probabilities <- distances/max(distances)
+      next_center_id <- sample(seq_len(nrow(non_centers)), 1, prob = probabilities)
+      next_center <- non_centers[next_center_id, ]
+      centers <- rbind(centers, next_center)
+      non_centers <- non_centers[-next_center_id, ]
+    }
+  }
+  
+  # Perform n iterations
+  iteration <- 1
+  while(iteration < n_iterations) {
+    # Calculate distance of each point to each center
+    distances <- calculate_distances(df, centers)
+    
+    # Assign each point to the closest center
+    cluster_id <- apply(distances, 1, which.min)
+    
+    # Calculate new centers
+    for (i in seq_len(k)) {
+      this_cluster <- df[cluster_id == i,]
+      centers[k, ] <- colMeans(this_cluster)
+    }
+    
+    iteration <- iteration + 1
+  }
+  
+  return(cluster_id)
+}
+
+m1.kmean <- my_kmeans(customer_scaled, 3, 10, "random")
 m1.kmean
