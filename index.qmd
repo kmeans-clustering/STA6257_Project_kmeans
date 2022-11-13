@@ -629,7 +629,7 @@ For this business, its a matter of concern that most of their customers (49%) ar
  
  For businesses, the customer segmentation play pivotal role in identifying the customers by grouping them based on their buying habits and patterns. With increasingly large volume of transactions and unprecedented business activities, a clustering algorithm like K-Means is a great tool to achieve the segmentation of customers with speed and accuracy. In this paper, we have tried a real-time online business data to show how K-Means helped the business in identifying customers who are at risk of switching to other stores. We have also explained that there are multiple steps in the data mining processes and it started with data selection, then to data preparation, visualization, and finally to model creation and interpretation. 
 
- We also understand that K-Means is not always accurate and is dependent on initial choice of centroids and optimal number of clusters chosen. Hiowever, there are some improved algorithms that helps overcome these shortcomings.
+ We also understand that K-Means is not always accurate and is dependent on initial choice of centroids and optimal number of clusters chosen. However, there are some improved algorithms that can help overcome these shortcomings.
 
 # References
 
