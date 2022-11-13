@@ -1,70 +1,70 @@
-
+ 
 ---
 title: "<span style='color: #0366D6;'>K-Means Clustering</span>"
 description: |
   An unsupervised learning algorithm<br/><hr/>
-author: 
+author:
   - Anand Pandey
   - Katie Hidden
-  - Akash Chandra 
+  - Akash Chandra
 date: '`r Sys.Date()`'
 format:
- html:
-   code-fold: true
-   number-sections: true
+  html:
+    code-fold: true
+    number-sections: true
 course: STA 6257 - Advance Statistical Modeling
-bibliography: references.bib 
+bibliography: references.bib
 indent: true
 ---
-
+ 
 ------
-
+ 
 # Introduction
-
+ 
 We have often heard of training machine learning models with labeled data. Imagine if there is a massive volume of data with no labels and we want to come up with a scalable approach to process these data and find insights. Difficult as it may seem, this is possible with clustering algorithms like K-Means.
-
+ 
 Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. This is because the data is neither classified nor labeled and allows the algorithm to act on the information without supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern or association of the data and that helps the model in clustering or grouping the data without any human intervention.
-
+ 
 The main goal of this paper is to discuss the concept and underlying methodology of one the unsupervised algorithm called K-Means clustering. We will also discuss how K-Means can be leveraged in real time applications like customer segmentation [@yul2020astudy]. In this paper, we will also be discussing various limitations and bottlenecks of K-Means clustering algorithm and would suggest some improved algorithms to overcome these limitations.
-
+ 
 ## K-Means Clustering
-
+ 
 K-means clustering is used for grouping similar observations together by minimizing the Euclidean distance between them. It uses “centroids”. Initially, it randomly chooses K different points in the data and assigns every data point to their nearest centroid. Once all of them are assigned, it moves the centroid to the average of points assigned to it. When the assigned centroid stops changing, we get the converged data points in separate clusters.
-
+ 
 ## Customer Segmentation
-
-Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category in order to maximize the profit by optimizing the services and products. Therefore, customer segmentation helps businesses in promoting the right product to the right customer to increase profits[@tab2022kmeans]. 
-
+ 
+Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category in order to maximize the profit by optimizing the services and products. Therefore, customer segmentation helps businesses in promoting the right product to the right customer to increase profits[@tab2022kmeans].
+ 
 Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. This might lead their customers to give up on purchasing the items they required and effect the business to lose their potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic[@tab2022kmeans]. In this paper, customer behavioral factor has been primarily focused.
-
+ 
 <center>
 ![](CustomerSegmentation.png)
 </center>
-
+ 
 K-Means clustering algorithm can help effectively extract groups of customers with similar characteristics and purchasing behavior which in turn helps businesses to specify their differentiated marketing campaign and become more customer-centric.[@yul2020astudy]
+ 
 
-
-## Limitations 
-
+## Limitations
+ 
 One of the challenges of K-means clustering is determining an appropriate number of clusters, or the K-value. While this can be a challenge for datasets of any size, it is especially difficult to determine a reasonable K-value with very large datasets and those with high dimensionality, since it is much more difficult to visualize the data. The K-means clustering algorithm was developed in the 1960s, before the advent of the internet and the resulting era of big data, and as such, it was not designed for datasets of such large scale [@Sin2020Unsup].
-
+ 
 Another limitation is the algorithm’s tendency to converge to only the local optimum solution, rather than the global minimum. The algorithm is sensitive to the initial centroid values selected, to noise, and to outliers, all of which can cause cluster centers to veer off, resulting in a local minimum solution [@Jie2020Review].
-
-The shape of data clusters is another concern. K-means clustering typically classifies n-hyperspherically shaped data well but is less successful at classifying irregularly shaped clusters [@Ahmed2020TheK]. 
-
-## Improved K-Means 
-
-Researchers have developed methods to address the limitations of the K-means clustering algorithm. 
-
+ 
+The shape of data clusters is another concern. K-means clustering typically classifies n-hyperspherically shaped data well but is less successful at classifying irregularly shaped clusters [@Ahmed2020TheK].
+ 
+## Improved K-Means
+ 
+Researchers have developed methods to address the limitations of the K-means clustering algorithm.
+ 
 One popular approach to determining an appropriate K-value is to use the “elbow method”. This method estimates K by calculating the sum of squared error (SSE) for a range of K-values; the SSE values are plotted against the K values. The point before the change in SSE becomes visually minimal (the elbow) is selected as the K-value [@Nag2022Auto].
-
+ 
 To overcome the challenge of selecting a K-value for very large datasets, researchers have developed a “novel unsupervised k-means (U-k-means) clustering algorithm.” This algorithm has a built-in process to determine the K-value and perform K-means clustering using the concept of entropy, and thus does not require any parameter initialization by the user. On the first iteration, the K-value is initialized as the number of data points. Gradually, extra clusters are discarded until the “best” number of clusters is found [@Sin2020Unsup].
-
+ 
 Other researchers have developed methods utilizing data density to determine the K-value, approximate better initial cluster centroids, and detect outliers. For one proposed variation of the K-means algorithm, first, regional density is calculated using a CLIQUE grid (CLustering In QUEst). In the CLIQUE grid, each dimension is divided into equal parts and the number of data points is calculated within each cell. Cells with counts above a defined threshold are defined as dense units, and adjacent dense units are connected to determine regional density. Noise in areas of low density is removed. Next, a density-based clustering algorithm based on the Clustering by Fast Search and Find of Density Peaks (CFSFDP) algorithm is used to calculate the local density of each point to determine initial cluster centers. This method can be used with datasets of any shape and does not require that a K-value be initialized [@Xu2020AnImproved].
-
+ 
 
 # Methods
-
+ 
 Below diagram illustrates how the convergence is achieved in K-Means in several iterations.
 \
 \
@@ -73,45 +73,45 @@ Below diagram illustrates how the convergence is achieved in K-Means in several 
 </center>
 \
 There are multiple iterations performed with different initial cluster centers. However, in each round of the iteration, following steps are performed to achieve convergence[@ste2008Selective]:
-
+ 
 -   A random selection is made to assign initial centers (Shown as K1, K2 and K3)
 -   Distance between these initial centers and other points are analyzed. Points are assigned to appropriate clusters based on their distance from these center points
 -   New cluster centers are sought by finding the mean of the newly formed clusters. You can see how K1, K2 and K3 are shifting in this step
 -   Steps A, B and C are repeated in multiple iterations until there is no shift detected in the cluster centers K, K2 and K3
-
+ 
 Let's look at the mathematical implementation of this algorithm[@yul2020astudy],
-
+ 
 **Proximity Measures**
-
+ 
 K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. **_Euclidean distance_** measurement is the most general method used.
-
+ 
 $$
 D(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
 $$
-
+ 
 **Algorithm**
-
+ 
 Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
-
+ 
 $$
 Z_j(I), j = 1, 2, 3,...k.
 $$
-
+ 
 Calculate the Euclidean distance between each data point and the cluster center, $D(x_i, Z_j(I)), i = 1, 2, ...n; j = 1, 2,...k.$, if below is satisfied:
-
+ 
 $$
 D(x_i, Z_k(I)) = min{D(x_i, Z_j(I)), j = 1, 2,...n}
 $$
-
+ 
 Now, calculate the new cluster center by calculating the error square sum criterion function **J**:
 changes
 $$
 J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 $$
-
+ 
 
 # Analysis and Results
-
+ 
 
 ```{r, warning=FALSE, echo=FALSE, message=FALSE}
 if(!require('readxl')) {
@@ -153,22 +153,23 @@ library(kableExtra)
 library(Hmisc)
 library(qwraps2)
 library(cowplot)
+library(cluster)
 ```
-
+ 
 
 ## Dataset Description
-
-For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion gift-ware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach[@online2010Chen].  
-
+ 
+For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion gift-ware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach[@online2010Chen]. 
+ 
 The customer transactions dataset has 8 variables as shown in below data definition table.
-
+ 
 
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
 a <- data.frame(vars = c('Invoice', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'Price', 'CustomerID', 'Country'),
-                
+               
                 DataType = c('Nominal', 'Nominal', 'Nominal', 'Numeric', 'Numeric', 'Numeric','Numeric','Nominal'),
                 Description = c('Invoice number. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter `c`, it indicates a cancellation.',
-    'Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.', 
+    'Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.',
     'Product (item) name.',
     'The quantities of each product (item) per transaction.',
     'Invice date and time. The day and time when a transaction was generated.',
@@ -176,83 +177,83 @@ a <- data.frame(vars = c('Invoice', 'StockCode', 'Description', 'Quantity', 'Inv
     'Customer number. A 5-digit integral number uniquely assigned to each customer.',
     'Country name. The name of the country where a customer resides.'),
                 stringsAsFactors = FALSE)
-
+ 
 kable(a,
       caption = "Data Definition",
       col.names = c("Attribute", "Type", "Description"),
       align="lcl", escape = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
-  row_spec(0, bold = T, background = "#666666", color = "white") 
+  row_spec(0, bold = T, background = "#666666", color = "white")
 ```
-
+ 
 
 ## Load and Preview Data
-
+ 
 Load the dataset and summarize column statistics.
-
+ 
 ```{r, warning = FALSE, echo=FALSE}
 filename <- "online_retail_II.xlsx"
-df = read_excel(filename) 
-
+df = read_excel(filename)
+ 
 names(df)[names(df) == 'Customer ID'] <- 'CustomerID'
-
+ 
 head(df) %>%
   kbl() %>%
   kable_paper("hover", full_width = T)
 ```
-
-Let us check the distribution of each field by doing univariate analysis. 
-
+ 
+Let us check the distribution of each field by doing univariate analysis.
+ 
 Plot:
-
+ 
 -   Bar chart for categorical attributes
 -   Histogram for numeric attributes
-
+ 
 ```{r, warning=FALSE, echo=FALSE}
-df=na.omit(df, cols="CustomerID")
-df$QuantityRange <- cut(df$Quantity, c(-Inf, 1, 5, 10, 20, 30, 50, Inf))
-g1 <- ggplot(df,aes(QuantityRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Quantity Histogram")+xlab('Quantity')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+df1=na.omit(df, cols="CustomerID")
+df1$QuantityRange <- cut(df1$Quantity, c(-Inf, 1, 5, 10, 20, 30, 50, Inf))
+g1 <- ggplot(df1,aes(QuantityRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Quantity Histogram")+xlab('Quantity')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
 #g1
-df$PriceRange <- cut(df$Price, c(-Inf, 1, 2, 4, 6, 8, 10, 50, Inf))
-g2 <- ggplot(df,aes(PriceRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Price Histogram")+xlab('Price')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+df1$PriceRange <- cut(df1$Price, c(-Inf, 1, 2, 4, 6, 8, 10, 50, Inf))
+g2 <- ggplot(df1,aes(PriceRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Price Histogram")+xlab('Price')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
 #g2
-
-g3 <- df %>%
+ 
+g3 <- df1 %>%
     group_by(StockCode) %>%
     summarise(count = n()) %>%
     top_n(n = 5, wt = count)  %>% ggplot(aes(x=reorder(StockCode, -count), y=count, fill=StockCode))+geom_bar(stat= "identity")+ labs(title="Top 5 StockCode")+xlab('StockCode')+ylab('Count')+  theme(axis.text.x=element_blank(),axis.text.y=element_blank())
-  
+ 
 #g3
-
-g4 <- df %>%
+ 
+g4 <- df1 %>%
     group_by(Country) %>%
     summarise(count = n()) %>%
-    top_n(n = 5, wt = count) %>% 
+    top_n(n = 5, wt = count) %>%
     ggplot(aes(x=reorder(Country, -count), y=count, fill=Country))+geom_bar(stat="identity")+ labs(title="Top 5 Country")+xlab('Country')+ylab('Count')+ theme(axis.text.x=element_blank(),axis.text.y=element_blank())
 #g4
-
+ 
 plot_grid(g1, g2, g3, g4,
           labels = c("A", "B", "C", "D"),
           ncol = 2, nrow = 2)
 ```
-
+ 
 From the visualizations, we get a good amount of information about the structure of our chosen data. Below are the observations:
-
+ 
 A.    The Quantity is heavily skewed right and most of the transactions involved a quantity in the range of 1 to 5
 B.    The unit Price is also skewed right and most of the items have unit price between 1 and 4
 C.    The item with StockCode 85123A was sold most
 D.    Most of the customers belong to United Kingdom
-
+ 
 ## Data Preparation
-
+ 
 Before we prepare the data, let's take a look at the summary and see if there are any missing values or other trends.
-
+ 
 ```{r, include=F}
 summary(df)
 ```
-
+ 
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
 a <- data.frame(vars = c('Quantity', 'Price', 'Customer Id'),
                 N = c('525461', '525461', '417534'),
@@ -265,114 +266,109 @@ a <- data.frame(vars = c('Quantity', 'Price', 'Customer Id'),
                 Q3 = c('10.00', '4.21', '-'),
                 Max = c('19152.00', '25111.09','-'),
                 stringsAsFactors = FALSE)
-
+ 
 kable(a,
       caption = "Summary of Data",
       col.names = c("", "N", "Missing", "Mean", "SD", "Min", "Q1", "Median", "Q3", "Max"),
       align="lcc", escape = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
-  row_spec(0, bold = T, background = "#666666", color = "white") 
+  row_spec(0, bold = T, background = "#666666", color = "white")
 ```
-
+ 
 
 For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:
-
+ 
 1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis.
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
 #remove missing value
 df=na.omit(df, cols="CustomerID")
 ```
-
-2. Select appropriate attributes that helps in our analysis - *Invoice*, *StockCode*,*CustomerID*, *Quantity*,*InvoiceDate*,*Price*,*Country*
-
+ 
+Now, the total records are 417, 534
+ 
+2. Select appropriate attributes that helps in our analysis - *CustomerID*, *Invoice*, *Quantity*, *InvoiceDate* and *Price*
+ 
 ```{r, warning=FALSE, echo=TRUE}
 #remove description
-data = subset(df, select = -c(Description) )
+data = subset(df, select = -c(Description, Country, StockCode) )
 ```
-
+ 
 3. Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
-
+ 
 data$Amount = data$Quantity * data$Price
-
+ 
 customer_monetary <- as.data.frame(data %>%
   group_by(CustomerID) %>%
   summarise(Amount = sum(Amount)))
 # customer_monetary
 ```
-
+ 
 4. Group the data by customer id to get each unique customer and the number of times (*Frequency*) they visited the store (by counting their numebr of invoices)
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
-
+ 
 customer_frequency <- as.data.frame(data %>% group_by(CustomerID) %>% summarise(Invoice = n()))
-
+ 
 names(customer_frequency)[names(customer_frequency) == "Invoice"] <- "Frequency"
 # customer_frequency
 ```
-
+ 
 5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
-
+ 
 # data$LastSeen = as.numeric(max(data$InvoiceDate) - data$InvoiceDate)
 data$LastSeen =as.integer(difftime(max(data$InvoiceDate), data$InvoiceDate, units = "days"))
-
+ 
 customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(LastSeen = min(LastSeen)))
 # head(customer_lastseen)
 # summary(customer_lastseen)
 ```
-
+ 
 6. Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
-customer <- customer %>% select(-CustomerID)
+ 
+customer <-  customer %>% select(-CustomerID)
 # head(customer)
-summary(customer)
+# summary(customer)
 # nrow(customer)
 ```
-
+ 
 7. Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen
-
+ 
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
-
+ 
 melt(customer) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
-
+ 
 Looking at the above graph, there are outliers that need to be addressed to get accurate clustering results.
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
 # create detect outlier function
 detect_outlier <- function(x) {
- 
     # calculate first quantile
     Quantile1 <- quantile(x, probs=.25)
- 
     # calculate third quantile
     Quantile3 <- quantile(x, probs=.75)
- 
     # calculate inter quartile range
     IQR = Quantile3-Quantile1
- 
     # return true or false
     x > Quantile3 + (IQR*1.5) | x < Quantile1 - (IQR*1.5)
 }
- 
 # create remove outlier function
 remove_outlier <- function(dataframe,
                             columns=names(dataframe)) {
- 
     # for loop to traverse in columns vector
     for (col in columns) {
- 
         # remove observation if it satisfies outlier function
         dataframe <- dataframe[!detect_outlier(dataframe[[col]]), ]
     }
- 
     return(dataframe)
     # print("Remove outliers")
     # print(dataframe)
@@ -385,201 +381,237 @@ customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
 # customer
 # nrow(customer)
 ```
-
+ 
 Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.
-
+ 
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
 melt(customer) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
-
+ 
 8. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
 # scale numeric attributes
 customer_scaled <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
-head(customer_scaled)
-summary(customer_scaled)
+# head(customer_scaled)
+# summary(customer_scaled)
 ```
-
-<!-- 
+ 
+<!--
 9. Remove time component from the *InvoiceDate*. This will help in grouping same day transactions without considering what time the transaction occur as long as the day is the same.
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
 # #remove time component from date in InvoiceDate
 # data$InvoiceDate = as.Date(data$InvoiceDate)
 # #Convert Invoice date to Unix Epoc time
 # data$InvoiceDate <- as.numeric(as.POSIXct(data$InvoiceDate))
 ```
- -->
-
+-->
+ 
 ## Target Dataset Analysis
-
+ 
 We started our analysis with total 525461 records but after preparing and cleansing the data, we are left with total 3674 records to be analyzed.
-
+ 
 <!-- ```{r}
 summarize(customer)
 nrow(customer)
 summary(customer)
 ``` -->
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
-
-a <- data.frame(vars = c('CustomerID', 'Amount', 'Frequency', 'LastSeen'),
-                
+ 
+a <- data.frame(vars = c('CustomerID', 'Amount', 'Frequency', 'LastSeen'),               
                 DataType = c('Numeric', 'Numeric', 'Numeric', 'Numeric'),
                 Description = c('Customer number. A 5-digit integral number uniquely assigned to each customer.',
-    'Total Amount spent by each unique customer', 
+    'Total Amount spent by each unique customer',
     'Number of times customer made purchases bases on their invoice.',
     'Days elapsed since the customer was last seen shopping.'),
                 stringsAsFactors = FALSE)
-
+ 
 kable(a,
       caption = "Target Data Definition",
       col.names = c("Attribute", "Type", "Description"),
       align="lcl", escape = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
-  row_spec(0, bold = T, background = "#666666", color = "white") 
+  row_spec(0, bold = T, background = "#666666", color = "white")
 ```
-
+ 
 
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
-a <- data.frame(vars = c('Amount', 'Frequency', 'LastSeen'),                        
-                Mean = c('776.5', '48.15', '101.8'),              
+a <- data.frame(vars = c('Amount', 'Frequency', 'LastSeen'),                       
+                Mean = c('776.5', '48.15', '101.8'),             
                 Min = c('-1598.7','1','0'),
                 Q1 = c('241.5', '15.0', '23.0'),
                 Median = c('515.1', '34.0', '62.0'),
                 Q3 = c('1091.4', '70.0', '163.0'),
                 Max = c('3685.1', '183.0','373.0'),
                 stringsAsFactors = FALSE)
-
+ 
 kable(a,
       caption = "Summary of Target Dataset (3674 Records)",
       col.names = c("", "Mean","Min", "Q1", "Median", "Q3", "Max"),
       align="lcc", escape = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
-  row_spec(0, bold = T, background = "#666666", color = "white") 
+  row_spec(0, bold = T, background = "#666666", color = "white")
 ```
-
+ 
 
 ## Statistical Modeling
-
+ 
 ### Number of clusters (K)
-
-One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K). 
-
+ 
+One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).
+ 
+#### Elbow Method
 We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.[@ste2011Choosing]
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
-#Elbow Method for finding the optimal number of clusters
-set.seed(123)
-# Compute and plot wss for k = 1 to k = 15.
-k.max <- 15
-wss <- sapply(1:k.max, 
-              function(k){kmeans(customer_scaled, k, nstart=50,iter.max = 15 )$tot.withinss})
-# wss
-plot(1:k.max, wss,
-     type="b", pch = 19, frame = FALSE, 
-     xlab="Number of clusters K",
-     ylab="Total within-clusters sum of squares")
-
-# Generate a data frame containing both k and wss
-# elbow_df <- data.frame(
-#   k = 1:k.max,
-#   wss = wss
-# )
-
-# elbow_df %>% ggplot(aes(x = k, y = wss)) +
-#   geom_line() + geom_point()+
-#   scale_x_continuous(breaks = 1:k.max)
+fviz_nbclust(customer_scaled, kmeans, method = "wss") +
+    geom_vline(xintercept = 3, linetype = 2)+
+  labs(subtitle = "Elbow Method")
 ```
-From the above Elbow graphs we can observe the elbow point is at '3'. So, we can pick 3 as our k value for number of clusters.
-
+ 
+#### Silhouette Method
+ 
+Another way to find the optimal number of clusters in K-Means is Silhouette Method. We will be using it to double check the results we obtained from the above Elbow method.
+The silhouette method calculates a coefficient (called silhouette coefficient) which is a measure of how similar a data point is within-cluster (cohesion) compared to other clusters (separation).
+ 
+```{r, warning=FALSE, echo=TRUE}
+fviz_nbclust(customer_scaled, kmeans, method = "silhouette")+ theme_classic()+
+  labs(subtitle = "Silhouette Method")
+```
+ 
+#### Gap Statistic Method
+ 
+The basic idea of the Gap Statistics is to choose the number of K, where the biggest jump in within-cluster distance occurred, based on the overall behavior of uniformly drawn samples.[@tibs2001Gap]
+ 
+```{r, warning=FALSE, echo=TRUE}
+set.seed(123)
+gap_stat <- clusGap(customer_scaled, FUN = kmeans, nstart = 25, K.max = 10, B = 50)
+ 
+fviz_gap_stat(gap_stat)
+```
+ 
+From the above Elbow, Silhouette and Gap Statistics graphs we can observe the elbow point is at '3'. So, we can pick 3 as our k value for number of clusters.
+ 
 $$
 K = 3
 $$
+ 
 
 ### K-Means Model
-
-```{r}
+ 
+```{r, warning=FALSE, echo=TRUE}
 # Compute k-means with k = 3
 set.seed(123)
 k = 3
-m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 200, nstart = 25)
+m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 20, nstart = 25)
 #nstart option that attempts multiple initial configurations and reports on the best one
-
-#m1.kmean
-
+ 
+# m1.kmean$cluster
+ 
+#Add Clusters to the original dataframe
 customer$Cluster <- as.factor(m1.kmean$cluster)
+ 
+```
+ 
+Now, we can extract the clusters and add to our initial data to do some descriptive statistics at the cluster level. Below table summarizes the original dataset grouped by clusters to show the mean of the variables:
+ 
+```{r, warning=FALSE, echo=TRUE}
+ 
+clustStats <- customer %>%
+  group_by(Cluster) %>%
+  summarise_all("mean")
+ 
+
+clustStats %>%
+  kbl() %>%
+  kable_paper("hover", full_width = T)
+ 
+```
+
+
+
+```{r, warning=FALSE, echo=TRUE}
+ 
+# centers <- data.frame(c(1:3), m1.kmean$centers)
+ 
+# names(centers)[names(centers) == "c.1.3."] <- "Cluster"
+ 
+
+# centers
+
+
 
 #customer
-
-# p <- plot_ly(customer, x=~Amount, y=~Frequency, 
+ 
+# p <- plot_ly(customer, x=~Amount, y=~Frequency,
 # z=~LastSeen, color=~Cluster) %>%
 #      add_markers(size=1.5)
 # print(p)
-
-fviz_cluster(m1.kmean, data = customer[, -4],
-             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+ 
+fviz_cluster(m1.kmean, data = customer_scaled,
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"),
              geom = "point",
-             ellipse.type = "convex", 
+             ellipse.type = "convex",
              ggtheme = theme_bw()
-             )
-             
+)
+ 
+            
 ```
-
+ 
 The above graph shows the clusters created using all columns of customer dataframe using the first two principle components to define the X-Y coordinates of each observation.
-
+ 
 ```{r, warning=FALSE, echo=TRUE}
-
-fviz_cluster(m1.kmean, data = customer,choose.vars = c("LastSeen","Amount"),
-             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+ 
+fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Amount"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"),
              geom = "point",
-             ellipse.type = "convex", 
+             ellipse.type = "convex",
              ggtheme = theme_bw()
              )
-
-fviz_cluster(m1.kmean, data = customer,choose.vars = c("Frequency","Amount"),
-             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+ 
+fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("Frequency","Amount"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"),
              geom = "point",
-             ellipse.type = "convex", 
+             ellipse.type = "convex",
              ggtheme = theme_bw()
              )
-
-fviz_cluster(m1.kmean, data = customer,choose.vars = c("LastSeen","Frequency"),
-             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+ 
+fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Frequency"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"),
              geom = "point",
-             ellipse.type = "convex", 
+             ellipse.type = "convex",
              ggtheme = theme_bw()
-             )         
-
+             )        
+ 
 
 colors <- c("#999999", "#E69F00", "#56B4E9")
-colors <- colors[as.numeric(customer$Cluster)]
-s3d <- scatterplot3d(customer[,1:3], pch = 16, color=colors)
-legend("right",legend = paste("Cluster", 1:3),
-       col =  c("#999999", "#E69F00", "#56B4E9"), pch = 16)                              
+colors <- colors[as.numeric(m1.kmean$cluster)]
+s3d <- scatterplot3d(customer_scaled, pch = 16, color=colors)
+legend("top",legend = paste("Cluster", 1:3),
+       col =  c("#999999", "#E69F00", "#56B4E9"), pch = 16)   
+s3d$points3d(m1.kmean$centers,
+             col = "red", type = "h", pch = 8)
+ 
+                           
 ```
+ 
 
-
-```{r}
-
-# customer
-
-# melted<- melt(customer[c(2:4, 5)],id.vars="Cluster")
-#  ggplot(melted, aes(x = Cluster, y = value)) + 
-#      geom_boxplot()+facet_wrap(~variable)
-
-
-customer %>% ggplot(aes(x=Cluster, y=Amount, color=Cluster)) + geom_boxplot() + facet_wrap(~Cluster)
-
-customer %>% ggplot(aes(x=Cluster, y=Frequency, color=Cluster)) + geom_boxplot() + facet_wrap(~Cluster)
-
-customer %>% ggplot(aes(x=Cluster, y=LastSeen, color=Cluster)) + geom_boxplot() + facet_wrap(~Cluster)
+```{r, warning=FALSE, echo=TRUE}
+ 
+customer %>% ggplot(aes(x=Cluster, y=Amount, color=Cluster)) + geom_boxplot()+  theme_classic()
+ 
+customer %>% ggplot(aes(x=Cluster, y=Frequency, color=Cluster)) + geom_boxplot() +  theme_classic()
+ 
+customer %>% ggplot(aes(x=Cluster, y=LastSeen, color=Cluster)) + geom_boxplot() +  theme_classic()
 ```
 ### Analysis
-
+ 
 # Conlusion
-
+ 
 
 # References
 
 
+
+ 
