@@ -931,29 +931,36 @@ K = 3
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Amount, <span class="at">color=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()<span class="sc">+</span>  <span class="fu">theme_classic</span>()  <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Amount, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()<span class="sc">+</span>  <span class="fu">theme_classic</span>()  <span class="sc">+</span> </span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on Amount Spent"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<p>Customers in Cluster# 3 are spending more whereas cluster 2 customers are spending the least.</p>
+<div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Frequency, <span class="at">color=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Frequency, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on Number of transactions"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<p>Customers in Cluster# 3 are most frequent customers indicating that the frequent customers spend the most.</p>
+<div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>LastSeen, <span class="at">color=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>LastSeen, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on customer last seen shopping"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-28-3.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Customers in Cluster 2 have not been seen shopping recently. The most recently seen shoppers are in Cluster 3 and that also explains why they have spent more money and bought frequently.</p>
 </section>
 <section id="analysis" class="level3" data-number="3.5.3">
 <h3 data-number="3.5.3" class="anchored" data-anchor-id="analysis"><span class="header-section-number">3.5.3</span> Analysis</h3>

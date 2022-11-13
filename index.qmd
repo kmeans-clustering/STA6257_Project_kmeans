@@ -600,18 +600,28 @@ s3d$points3d(m1.kmean$centers,
                            
 ```
  
+```{r, warning=FALSE, echo=TRUE}
+customer %>% ggplot(aes(x=Cluster, y=Amount, fill=Cluster)) + geom_boxplot()+  theme_classic()  + 
+  labs(title = "Clusters based on Amount Spent", subtitle = "K-Means Model m1.kmeans")
+```
+
+Customers in Cluster# 3 are spending more whereas cluster 2 customers are spending the least.
 
 ```{r, warning=FALSE, echo=TRUE}
-customer %>% ggplot(aes(x=Cluster, y=Amount, color=Cluster)) + geom_boxplot()+  theme_classic()  + 
-  labs(title = "Clusters based on Amount Spent", subtitle = "K-Means Model m1.kmeans")
-
-customer %>% ggplot(aes(x=Cluster, y=Frequency, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+customer %>% ggplot(aes(x=Cluster, y=Frequency, fill=Cluster)) + geom_boxplot() +  theme_classic() + 
   labs(title = "Clusters based on Number of transactions", subtitle = "K-Means Model m1.kmeans")
+```
 
-customer %>% ggplot(aes(x=Cluster, y=LastSeen, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+Customers in Cluster# 3 are most frequent customers indicating that the frequent customers spend  the most.
+
+```{r, warning=FALSE, echo=TRUE}
+customer %>% ggplot(aes(x=Cluster, y=LastSeen, fill=Cluster)) + geom_boxplot() +  theme_classic() + 
   labs(title = "Clusters based on customer last seen shopping", subtitle = "K-Means Model m1.kmeans")
 
 ```
+
+Customers in Cluster 2 have not been seen shopping recently. The most recently seen shoppers are in Cluster 3 and that also explains why they have spent more money and bought frequently.
+
 ### Analysis
  
 # Conlusion
