@@ -536,33 +536,13 @@ clustStats %>%
 ```
 
 
-
 ```{r, warning=FALSE, echo=TRUE}
- 
-# centers <- data.frame(c(1:3), m1.kmean$centers)
- 
-# names(centers)[names(centers) == "c.1.3."] <- "Cluster"
- 
-
-# centers
-
-
-
-#customer
- 
-# p <- plot_ly(customer, x=~Amount, y=~Frequency,
-# z=~LastSeen, color=~Cluster) %>%
-#      add_markers(size=1.5)
-# print(p)
- 
 fviz_cluster(m1.kmean, data = customer_scaled,
              palette = c("#2E9FDF", "#00AFBB", "#E7B800"),
              geom = "point",
              ellipse.type = "convex",
              ggtheme = theme_bw()
 )
- 
-            
 ```
  
 The above graph shows the clusters created using all columns of customer dataframe using the first two principle components to define the X-Y coordinates of each observation.
@@ -575,32 +555,47 @@ fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Amount
              ellipse.type = "convex",
              ggtheme = theme_bw()
              )
- 
+```
+
+The above graph shows that the clusters 1 and 3 are seen in the store often. Cluster 3 customers are spending more whenever they visit. Cluster 2 not seen recently so spend less.
+
+```{r, warning=FALSE, echo=TRUE}
+
 fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("Frequency","Amount"),
              palette = c("#2E9FDF", "#00AFBB", "#E7B800"),
              geom = "point",
              ellipse.type = "convex",
              ggtheme = theme_bw()
              )
- 
-fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Frequency"),
-             palette = c("#2E9FDF", "#00AFBB", "#E7B800"),
-             geom = "point",
-             ellipse.type = "convex",
-             ggtheme = theme_bw()
-             )        
- 
+```
 
-colors <- c("#999999", "#E69F00", "#56B4E9")
+The above graph shows that the Cluster 3 are more frequently buying and hence spending more. Cluster 1 and 2 are almost having similar trends in terms of number of purchases and amount spent.
+
+```{r, warning=FALSE, echo=TRUE}
+fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Frequency"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+             )       
+```
+
+The above graph shows that the Cluster 1 and 3 are seen buying often and whenever they are seen buying, they make lot of purchases.
+
+```{r, warning=FALSE, echo=TRUE}
+colors <- c("#9f00e6", "#e69f00", "#00e69f")
 colors <- colors[as.numeric(m1.kmean$cluster)]
 s3d <- scatterplot3d(customer_scaled, pch = 16, color=colors)
 legend("top",legend = paste("Cluster", 1:3),
-       col =  c("#999999", "#E69F00", "#56B4E9"), pch = 16)   
-s3d$points3d(m1.kmean$centers,
-             col = "red", type = "h", pch = 8)
- 
-                           
+       col =  c("#9f00e6", "#e69f00", "#00e69f"), pch = 16)    
+centers <- data.frame(m1.kmean$centers)
+s3dp <- s3d$points3d(centers,
+             col = c("#000000","#0e0a00","#000e0a"), type = "h", pch = 8)
 ```
+
+From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more and they purchase frequently.
+
+Customers in cluster 2 are of concern. They do not visit the website often but spend almost similar to cluster 1 and also purchase as frequently as cluster 1. So, we can either target cluster 1 to make them buy when they visit store (since they are visiting often but buying less) or make cluster 2 visit often as they are buying more when they visit but visiting less.
  
 ```{r, warning=FALSE, echo=TRUE}
 customer %>% ggplot(aes(x=Cluster, y=Amount, fill=Cluster)) + geom_boxplot()+  theme_classic()  + 
@@ -628,7 +623,7 @@ Customers in Cluster 2 have not been seen shopping recently. The most recently s
  
 ![Image Source: ©Anand](RFM.png)
 
-For this business, its a matter of grave concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.
+For this business, its a matter of concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.
 
 # Conlusion
  
