@@ -48,11 +48,15 @@ customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(
 
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
-# head(customer)
+
+customer <-  customer %>% select(-CustomerID)
+
+
+head(customer)
 summary(customer)
 
 
-melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + 
+melt(customer) %>% ggplot(aes(x=variable, y=value)) + 
   geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 
 
@@ -92,13 +96,12 @@ customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
 # summary(customer)
 # customer
 # nrow(customer)
-melt(subset(customer, select = -c(CustomerID) )) %>% ggplot(aes(x=variable, y=value)) + 
+melt(customer) %>% ggplot(aes(x=variable, y=value)) + 
   geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 
 
 customer_scaled <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
 
-customer_scaled = subset(customer_scaled, select = -c(CustomerID) )
 
 nrow(customer_scaled)
 head(customer_scaled)
@@ -124,11 +127,17 @@ fviz_nbclust(customer_scaled, kmeans, method = "silhouette")+ theme_classic()+
 
 set.seed(123)
 k = 3
-m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 20, nstart = 25)
+m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 20, nstart = 100)
+m2.kmean <- customer_scaled$Amount %>% kmeans(k, iter.max = 20, nstart = 100)
+m3.kmean <- customer_scaled$Frequency %>% kmeans(k, iter.max = 20, nstart = 100)
+m4.kmean <- customer_scaled$LastSeen %>% kmeans(k, iter.max = 20, nstart = 100)
+m5.kmean <- c(customer_scaled$Amount, customer_scaled$Frequency) %>% kmeans(k, iter.max = 20, nstart = 100)
+m1.kmean$tot.withinss
 
 customer$Cluster <- as.factor(m1.kmean$cluster)
 
-clustStats <- customer[,2:5] %>%
+summary(customer)
+clustStats <- customer %>%
   group_by(Cluster) %>%
   summarise_all("mean")
 
@@ -154,37 +163,38 @@ fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Amount
              ggtheme = theme_bw()
 )
 
-fviz_cluster(m1.kmean, data = customer,choose.vars = c("Frequency","Amount"),
+fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("Frequency","Amount"),
              palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
              geom = "point",
              ellipse.type = "convex", 
              ggtheme = theme_bw()
 )
 
-fviz_cluster(m1.kmean, data = customer,choose.vars = c("LastSeen","Frequency"),
+fviz_cluster(m1.kmean, data = customer_scaled,choose.vars = c("LastSeen","Frequency"),
              palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
              geom = "point",
              ellipse.type = "convex", 
              ggtheme = theme_bw()
 )         
 
-
+head(customer_scaled)
 colors <- c("#999999", "#E69F00", "#56B4E9")
-colors <- colors[as.numeric(customer$Cluster)]
-s3d <- scatterplot3d(customer[,2:4], pch = 16, color=colors)
+colors <- colors[as.numeric(m1.kmean$cluster)]
+s3d <- scatterplot3d(customer_scaled, pch = 16, color=colors)
 legend("top",legend = paste("Cluster", 1:3),
        col =  c("#999999", "#E69F00", "#56B4E9"), pch = 16)    
+s3d$points3d(m1.kmean$centers,
+             col = "red", type = "h", pch = 8)
 
 
-centers <- data.frame(c(1:3), m1.kmean$center)
 
-names(centers)[names(centers) == "c.1.3."] <- "Cluster"
 
-head(centers)
+head(customer)
+customer %>% ggplot(aes(x=Cluster, y=Amount, color=Cluster)) + geom_boxplot()+  theme_classic()  + 
+  labs(title = "Clusters based on Amount Spent", subtitle = "K-Means Model m1.kmeans")
 
-colors1 <- c("#999999", "#E69F00", "#56B4E9")
-colors1 <- colors1[as.numeric(centers$Cluster)]
-colors1
-s3d1 <- scatterplot3d(centers[,2:4],  pch = 15, color=colors1)
-legend("top",legend = paste("Cluster", 1:3),
-       col =  c("#999999", "#E69F00", "#56B4E9"), pch = 16)    
+customer %>% ggplot(aes(x=Cluster, y=Frequency, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+  labs(title = "Clusters based on Number of transactions", subtitle = "K-Means Model m1.kmeans")
+
+customer %>% ggplot(aes(x=Cluster, y=LastSeen, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+  labs(title = "Clusters based on customer last seen shopping", subtitle = "K-Means Model m1.kmeans")

@@ -499,7 +499,9 @@ $$
  
 
 ### K-Means Model
- 
+
+Now, we will create the K-Means model for K = 3.
+
 ```{r, warning=FALSE, echo=TRUE}
 # Compute k-means with k = 3
 set.seed(123)
@@ -513,7 +515,9 @@ m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 20, nstart = 25)
 customer$Cluster <- as.factor(m1.kmean$cluster)
  
 ```
- 
+
+From the above model, we can observe that 3 clusters are formed with sizes 1807, 953, 914.
+
 Now, we can extract the clusters and add to our initial data to do some descriptive statistics at the cluster level. Below table summarizes the original dataset grouped by clusters to show the mean of the variables:
  
 ```{r, warning=FALSE, echo=TRUE}
@@ -598,12 +602,15 @@ s3d$points3d(m1.kmean$centers,
  
 
 ```{r, warning=FALSE, echo=TRUE}
- 
-customer %>% ggplot(aes(x=Cluster, y=Amount, color=Cluster)) + geom_boxplot()+  theme_classic()
- 
-customer %>% ggplot(aes(x=Cluster, y=Frequency, color=Cluster)) + geom_boxplot() +  theme_classic()
- 
-customer %>% ggplot(aes(x=Cluster, y=LastSeen, color=Cluster)) + geom_boxplot() +  theme_classic()
+customer %>% ggplot(aes(x=Cluster, y=Amount, color=Cluster)) + geom_boxplot()+  theme_classic()  + 
+  labs(title = "Clusters based on Amount Spent", subtitle = "K-Means Model m1.kmeans")
+
+customer %>% ggplot(aes(x=Cluster, y=Frequency, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+  labs(title = "Clusters based on Number of transactions", subtitle = "K-Means Model m1.kmeans")
+
+customer %>% ggplot(aes(x=Cluster, y=LastSeen, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+  labs(title = "Clusters based on customer last seen shopping", subtitle = "K-Means Model m1.kmeans")
+
 ```
 ### Analysis
  
