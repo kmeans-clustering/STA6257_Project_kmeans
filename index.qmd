@@ -10,7 +10,11 @@ author:
 date: '`r Sys.Date()`'
 format:
   html:
+    code-block-bg: true
+    code-block-border-left: "#31BAE9"
+    code-overflow: wrap
     code-fold: true
+    code-tools: true
     number-sections: true
 course: STA 6257 - Advance Statistical Modeling
 bibliography: references.bib
