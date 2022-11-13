@@ -49,14 +49,13 @@ customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
 
-customer <-  customer %>% select(-CustomerID)
 
 
 head(customer)
 summary(customer)
 
 
-melt(customer) %>% ggplot(aes(x=variable, y=value)) + 
+melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + 
   geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 
 
@@ -95,14 +94,19 @@ remove_outlier <- function(dataframe,
 customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
 # summary(customer)
 # customer
-# nrow(customer)
-melt(customer) %>% ggplot(aes(x=variable, y=value)) + 
+# nrow(customer_details)
+melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + 
   geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 
+customer_details <- customer
+customer <-  customer %>% select(-CustomerID)
+head(customer)
+head(customer_details)
 
 customer_scaled <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
 
-
+nrow(customer)
+nrow(customer_details)
 nrow(customer_scaled)
 head(customer_scaled)
 summary(customer_scaled)
@@ -135,6 +139,7 @@ m5.kmean <- c(customer_scaled$Amount, customer_scaled$Frequency) %>% kmeans(k, i
 m1.kmean$tot.withinss
 
 customer$Cluster <- as.factor(m1.kmean$cluster)
+customer_details$Cluster <- as.factor(m1.kmean$cluster)
 
 summary(customer)
 clustStats <- customer %>%
@@ -190,11 +195,17 @@ s3d$points3d(m1.kmean$centers,
 
 
 head(customer)
-customer %>% ggplot(aes(x=Cluster, y=Amount, color=Cluster)) + geom_boxplot()+  theme_classic()  + 
+customer %>% ggplot(aes(x=Cluster, y=Amount, fill=Cluster)) + geom_boxplot()+  theme_classic()  + 
   labs(title = "Clusters based on Amount Spent", subtitle = "K-Means Model m1.kmeans")
 
-customer %>% ggplot(aes(x=Cluster, y=Frequency, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+customer %>% ggplot(aes(x=Cluster, y=Frequency, fill=Cluster)) + geom_boxplot() +  theme_classic() + 
   labs(title = "Clusters based on Number of transactions", subtitle = "K-Means Model m1.kmeans")
 
-customer %>% ggplot(aes(x=Cluster, y=LastSeen, color=Cluster)) + geom_boxplot() +  theme_classic() + 
+customer %>% ggplot(aes(x=Cluster, y=LastSeen, fill=Cluster)) + geom_boxplot() +  theme_classic() + 
   labs(title = "Clusters based on customer last seen shopping", subtitle = "K-Means Model m1.kmeans")
+
+
+
+
+
+m1.kmean

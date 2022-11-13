@@ -38,7 +38,7 @@ Customer segmentation helps divide customers into different groups based on thei
 Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. This might lead their customers to give up on purchasing the items they required and effect the business to lose their potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic[@tab2022kmeans]. In this paper, customer behavioral factor has been primarily focused.
  
 <center>
-![](CustomerSegmentation.png)
+![Image Source: ©Anand](CustomerSegmentation.png)
 </center>
  
 K-Means clustering algorithm can help effectively extract groups of customers with similar characteristics and purchasing behavior which in turn helps businesses to specify their differentiated marketing campaign and become more customer-centric.[@yul2020astudy]
@@ -69,7 +69,7 @@ Below diagram illustrates how the convergence is achieved in K-Means in several 
 \
 \
 <center>
-![](kmeans.png)
+![Image Source: ©Anand](kmeans.png)
 </center>
 \
 There are multiple iterations performed with different initial cluster centers. However, in each round of the iteration, following steps are performed to achieve convergence[@ste2008Selective]:
@@ -334,7 +334,6 @@ customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
  
-customer <-  customer %>% select(-CustomerID)
 # head(customer)
 # summary(customer)
 # nrow(customer)
@@ -344,7 +343,7 @@ customer <-  customer %>% select(-CustomerID)
  
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
  
-melt(customer) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
+melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
  
 Looking at the above graph, there are outliers that need to be addressed to get accurate clustering results.
@@ -385,12 +384,15 @@ customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
 Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.
  
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
-melt(customer) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
+melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
  
 8. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
  
 ```{r, warning=FALSE, echo=TRUE}
+customer_details <- customer
+customer <-  customer %>% select(-CustomerID)
+
 # scale numeric attributes
 customer_scaled <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))
 # head(customer_scaled)
@@ -624,6 +626,10 @@ Customers in Cluster 2 have not been seen shopping recently. The most recently s
 
 ### Analysis
  
+![Image Source: ©Anand](RFM.png)
+
+For this business, its a matter of grave concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.
+
 # Conlusion
  
 
