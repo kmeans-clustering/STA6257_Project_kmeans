@@ -224,7 +224,7 @@ There are multiple iterations performed with different initial cluster centers. 
 <li>New cluster centers are sought by finding the mean of the newly formed clusters. You can see how K1, K2 and K3 are shifting in this step</li>
 <li>Steps A, B and C are repeated in multiple iterations until there is no shift detected in the cluster centers K, K2 and K3</li>
 </ul>
-<p>Let’s look at the mathematical implementation of this algorithm<span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span>,</p>
+<p>Let’s look at the mathematical implementation of this algorithm <span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span>,</p>
 <p><strong>Proximity Measures</strong></p>
 <p>K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. <strong><em>Euclidean distance</em></strong> measurement is the most general method used.</p>
 <p><span class="math display">\[
@@ -288,7 +288,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
   <tr>
    <td style="text-align:left;"> InvoiceDate </td>
    <td style="text-align:center;"> Numeric </td>
-   <td style="text-align:left;"> Invice date and time. The day and time when a transaction was generated. </td>
+   <td style="text-align:left;"> Invoice timestamp. The day and time when a transaction was generated. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Price </td>
@@ -478,7 +478,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 </div>
 <p>For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:</p>
 <ol type="1">
-<li>The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis. After removing these customers with no ids, the total records are 417, 534.</li>
+<li>The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customers before starting our analysis. After removing these customers with no ids, the total records are 417, 534.</li>
 </ol>
 <div class="cell">
 <details>
@@ -511,7 +511,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 </details>
 </div>
 <ol start="4" type="1">
-<li>Group the data by customer id to get each unique customer and the number of times (<em>Frequency</em>) they visited the store (by counting their numebr of invoices)</li>
+<li>Group the data by customer id to get each unique customer and the number of times (<em>Frequency</em>) they visited the store (by counting their number of invoices)</li>
 </ol>
 <div class="cell">
 <details>
@@ -522,7 +522,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 </details>
 </div>
 <ol start="5" type="1">
-<li>Create a new attribute <em>LastSeen</em>. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.</li>
+<li>Create a new attribute <em>LastSeen</em>. This will be calculated by subtracting the InvoiceDate from the max (InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.</li>
 </ol>
 <div class="cell">
 <details>
@@ -892,7 +892,7 @@ K = 3
 <p><img src="index_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more and they purchase frequently.</p>
+<p>From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more, and they purchase frequently.</p>
 <p>Customers in cluster 2 are of concern. They do not visit the website often but spend almost similar to cluster 1 and also purchase as frequently as cluster 1. So, we can either target cluster 1 to make them buy when they visit store (since they are visiting often but buying less) or make cluster 2 visit often as they are buying more when they visit but visiting less.</p>
 <div class="cell">
 <details>
@@ -936,7 +936,7 @@ K = 3
 <p></p><figcaption class="figure-caption">Image Source: ©Anand</figcaption><p></p>
 </figure>
 </div>
-<p>For this business, its a matter of concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.</p>
+<p>For this business, it is a matter of concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.</p>
 </section>
 </section>
 </section>

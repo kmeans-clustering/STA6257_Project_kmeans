@@ -79,7 +79,7 @@ There are multiple iterations performed with different initial cluster centers. 
 -   New cluster centers are sought by finding the mean of the newly formed clusters. You can see how K1, K2 and K3 are shifting in this step
 -   Steps A, B and C are repeated in multiple iterations until there is no shift detected in the cluster centers K, K2 and K3
  
-Let's look at the mathematical implementation of this algorithm[@yul2020astudy],
+Let's look at the mathematical implementation of this algorithm [@yul2020astudy],
  
 **Proximity Measures**
  
@@ -173,7 +173,7 @@ a <- data.frame(vars = c('Invoice', 'StockCode', 'Description', 'Quantity', 'Inv
     'Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.',
     'Product (item) name.',
     'The quantities of each product (item) per transaction.',
-    'Invice date and time. The day and time when a transaction was generated.',
+    'Invoice timestamp. The day and time when a transaction was generated.',
     'Product price per unit in sterling (£).',
     'Customer number. A 5-digit integral number uniquely assigned to each customer.',
     'Country name. The name of the country where a customer resides.'),
@@ -280,7 +280,7 @@ kable(a,
 
 For conducting our analysis, we will be applying below listed data pre-processing steps on the original dataset:
  
-1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customer before starting our analysis. After removing these customers with no ids, the total records are 417, 534.
+1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customers before starting our analysis. After removing these customers with no ids, the total records are 417, 534.
 
 ```{r, warning=FALSE, echo=TRUE}
 #remove missing value
@@ -304,7 +304,7 @@ customer_monetary <- as.data.frame(data %>%
   summarise(Amount = sum(Amount)))
 ```
  
-4. Group the data by customer id to get each unique customer and the number of times (*Frequency*) they visited the store (by counting their numebr of invoices)
+4. Group the data by customer id to get each unique customer and the number of times (*Frequency*) they visited the store (by counting their number of invoices)
 
 ```{r, warning=FALSE, echo=TRUE}
 customer_frequency <- as.data.frame(data %>% group_by(CustomerID) %>% summarise(Invoice = n()))
@@ -312,7 +312,7 @@ customer_frequency <- as.data.frame(data %>% group_by(CustomerID) %>% summarise(
 names(customer_frequency)[names(customer_frequency) == "Invoice"] <- "Frequency"
 ```
  
-5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max(InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.
+5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max (InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.
  
 ```{r, warning=FALSE, echo=TRUE}
 data$LastSeen =as.integer(difftime(max(data$InvoiceDate), data$InvoiceDate, units = "days"))
@@ -557,7 +557,7 @@ s3dp <- s3d$points3d(centers,
              col = c("#000000","#0e0a00","#000e0a"), type = "h", pch = 8)
 ```
 
-From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more and they purchase frequently.
+From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more, and they purchase frequently.
 
 Customers in cluster 2 are of concern. They do not visit the website often but spend almost similar to cluster 1 and also purchase as frequently as cluster 1. So, we can either target cluster 1 to make them buy when they visit store (since they are visiting often but buying less) or make cluster 2 visit often as they are buying more when they visit but visiting less.
  
@@ -587,7 +587,7 @@ Customers in Cluster 2 have not been seen shopping recently. The most recently s
  
 ![Image Source: ©Anand](RFM.png)
 
-For this business, its a matter of concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.
+For this business, it is a matter of concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.
 
 # Conclusion
  
