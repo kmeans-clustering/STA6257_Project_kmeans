@@ -90,12 +90,24 @@ Let's look at the mathematical implementation of this algorithm [@yul2020astudy]
  
 **Proximity Measures**
  
-K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. **_Euclidean distance_** measurement is the most general method used.
+K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. 
+
+_Euclidean distance_ measurement is the most general method used. However, there are several different calculations that can be used to measure inter and intra cluster proximities. Some of these methods are detailed below:
+
+*Euclidean distance:*
  
 $$
-D(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
 $$
- 
+
+*Manhattan distance:*
+
+$$
+D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
+$$
+
+Note: x and y are vectors with length n.
+'s Changes'
 **Algorithm**
  
 Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
