@@ -479,11 +479,11 @@ fviz_gap_stat(gap_stat)
  
 From the above graphs for Elbow, Silhouette and Gap Statistics methods, we can observe the critical point is at '3'. So, we will pick 3 as our k value for number of clusters.
 
-
+<div style="border:1px solid #333">
 $$
 K = 3
 $$
-
+</div>
 
 ### K-Means Model
 
