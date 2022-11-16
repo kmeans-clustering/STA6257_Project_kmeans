@@ -94,20 +94,21 @@ K-means calculates proximity between data points and centroids to place the data
 
 _Euclidean distance_ measurement is the most general method used. However, there are several different calculations that can be used to measure inter and intra cluster proximities. Some of these methods are detailed below:
 
-*Euclidean distance:*
+_Euclidean distance_:
  
 $$
 D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
 $$
 
-*Manhattan distance:*
+_Manhattan distance_:
 
 $$
 D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 $$
 
 Note: x and y are vectors with length n.
-'s Changes'
+
+
 **Algorithm**
  
 Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
