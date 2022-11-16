@@ -27,7 +27,7 @@ indent: true
  
 We have often heard of training machine learning models with labeled data. Imagine if there is a massive volume of data with no labels and we want to come up with a scalable approach to process these data and find insights. Difficult as it may seem, this is possible with clustering algorithms like K-Means.
  
-Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. This is because the data is neither classified nor labeled and allows the algorithm to act on the information without supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern or association of the data and that helps the model in clustering or grouping the data without any human intervention.
+Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labelled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern or association of the data and that helps the model in clustering or grouping the data without any human intervention.
  
 The main goal of this paper is to discuss the concept and underlying methodology of one the unsupervised algorithm called K-Means clustering. We will also discuss how K-Means can be leveraged in real time applications like customer segmentation [@yul2020astudy]. In this paper, we will also be discussing various limitations and bottlenecks of K-Means clustering algorithm and would suggest some improved algorithms to overcome these limitations.
  
@@ -37,12 +37,14 @@ K-means clustering is used for grouping similar observations together by minimiz
  
 ## Customer Segmentation
  
-Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category in order to maximize the profit by optimizing the services and products. Therefore, customer segmentation helps businesses in promoting the right product to the right customer to increase profits[@tab2022kmeans].
+Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category in order to maximize the profit by optimizing the services and products. Its all about connecting the right products with the right consumer keeping business profitability in mind. Most of the segmentation algorithm is based around analyzing what we call RFM - customer recency (i.e. when the customer last visited the store), frequency (i.e. how many times customer bought the products), and monetary (i.e. how much money the customer spent) [@tab2022kmeans].
  
 Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue and potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic[@tab2022kmeans]. In this paper, customer behavioral factor has been primarily focused.
- 
+
+@fig-1 illustrates the overall process of customer segmentation starting from sourcing the data, selecting the variables, applying the K-Means clustering to creating the marketing strategy for a business.
+
 <center>
-![Image Source: ©Anand](CustomerSegmentation.png)
+![Customer Segmentation Process (Image Source: ©Anand)](CustomerSegmentation.png){#fig-1}
 </center>
  
 K-Means clustering algorithm can help effectively extract groups of customers with similar characteristics and purchasing behavior which in turn helps businesses to specify their differentiated marketing campaign and become more customer-centric.[@yul2020astudy]
@@ -69,30 +71,44 @@ Other researchers have developed methods utilizing data density to determine the
 
 # Methods
  
-Below diagram illustrates how the convergence is achieved in K-Means in several iterations.
-\
-\
-<center>
-![Image Source: ©Anand](kmeans.png)
-</center>
-\
-There are multiple iterations performed with different initial cluster centers. However, in each round of the iteration, following steps are performed to achieve convergence[@ste2008Selective]:
+The methodology for K-Means involve multiple iterations performed with different initial cluster centers or means. However, in each round of the iteration, following steps are performed to achieve convergence[@ste2008Selective]:
  
 -   A random selection is made to assign initial centers (Shown as K1, K2 and K3)
 -   Distance between these initial centers and other points are analyzed. Points are assigned to appropriate clusters based on their distance from these center points
 -   New cluster centers are sought by finding the mean of the newly formed clusters. You can see how K1, K2 and K3 are shifting in this step
 -   Steps A, B and C are repeated in multiple iterations until there is no shift detected in the cluster centers K, K2 and K3
  
+@fig-2 illustrates how the convergence is achieved in K-Means in several iterations.
+\
+\
+<center>
+![K-Means Convergence Algorithm (Image Source: ©Anand. Inspired from [@yul2020astudy])](kmeans.png){#fig-2}
+</center>
+\
+
 Let's look at the mathematical implementation of this algorithm [@yul2020astudy],
  
 **Proximity Measures**
  
-K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. **_Euclidean distance_** measurement is the most general method used.
+K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster. 
+
+_Euclidean distance_ measurement is the most general method used. However, there are several different calculations that can be used to measure inter and intra cluster proximities. Some of these methods are detailed below:
+
+_Euclidean distance_:
  
 $$
-D(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
 $$
- 
+
+_Manhattan distance_:
+
+$$
+D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
+$$
+
+Note: x and y are vectors with length n.
+
+
 **Algorithm**
  
 Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
@@ -463,11 +479,11 @@ fviz_gap_stat(gap_stat)
  
 From the above graphs for Elbow, Silhouette and Gap Statistics methods, we can observe the critical point is at '3'. So, we will pick 3 as our k value for number of clusters.
 
-
+<div style="border:1px solid #333">
 $$
 K = 3
 $$
-
+</div>
 
 ### K-Means Model
 
