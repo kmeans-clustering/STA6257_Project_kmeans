@@ -1,0 +1,92 @@
+---
+title: "K-Means Clustering"
+author: "Anand Pandey, Katie Hidden, and Akash Chandra"
+format: 
+  revealjs:
+    theme: dark
+editor: visual
+---
+
+## K-Means Clustering
+
+Intro (this is just a very rough outline!)
+
+- What is K-Means clustering? What is unsupervised learning?
+- Why is it useful?
+- What are limitations? 
+- What is our project focus? (customer segmentation)
+- What are we trying to accomplish?
+
+To see the full project visit <http://kmean.scrib.ink>.
+
+
+## Testing Including an Image
+
+![Image Source: ©Anand](kmeans.png)
+
+
+## Testing Including some Code
+
+```{r}
+if(!require('readxl')) {
+  install.packages('readxl')
+  library('readxl')
+}
+if(!require('papeR')){
+  install.packages('papeR')
+  library('papeR')
+}
+if(!require('Hmisc')) {
+  install.packages('Hmisc')
+  library('Hmisc')
+}
+if(!require('reshape2')) {
+  install.packages('reshape2')
+  library('reshape2')
+}
+if(!require('plotly')) {
+  install.packages('plotly')
+  library('plotly')
+}
+if(!require('factoextra')) {
+  install.packages('factoextra')
+  library('factoextra')
+}
+if(!require('scatterplot3d')) {
+  install.packages('scatterplot3d')
+  library('scatterplot3d')
+}
+library(dplyr)
+library(tidyverse)
+library(knitr)
+library(ggthemes)
+library(ggrepel)
+library(dslabs)
+library(xtable)
+library(kableExtra)
+library(Hmisc)
+library(qwraps2)
+library(cowplot)
+library(cluster)
+
+a <- data.frame(vars = c('Invoice', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'Price', 'CustomerID', 'Country'),
+               
+                DataType = c('Nominal', 'Nominal', 'Nominal', 'Numeric', 'Numeric', 'Numeric','Numeric','Nominal'),
+                Description = c('Invoice number. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter `c`, it indicates a cancellation.',
+    'Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.',
+    'Product (item) name.',
+    'The quantities of each product (item) per transaction.',
+    'Invoice timestamp. The day and time when a transaction was generated.',
+    'Product price per unit in sterling (£).',
+    'Customer number. A 5-digit integral number uniquely assigned to each customer.',
+    'Country name. The name of the country where a customer resides.'),
+                stringsAsFactors = FALSE)
+ 
+kable(a,
+      caption = "Data Definition",
+      col.names = c("Attribute", "Type", "Description"),
+      align="lcl", escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) %>%
+  row_spec(0, bold = T, background = "#666666", color = "white")
+
+```
