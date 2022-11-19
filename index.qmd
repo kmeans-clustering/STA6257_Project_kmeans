@@ -27,7 +27,7 @@ indent: true
  
 We have often heard of training machine learning models with labeled data. Imagine if there is a massive volume of data with no labels and we want to come up with a scalable approach to process these data and find insights. Difficult as it may seem, this is possible with clustering algorithms like K-Means.
  
-Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labelled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern or association of the data and that helps the model in clustering or grouping the data without any human intervention.
+Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labelled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern, or association of the data and that helps the model in clustering or grouping the data without any human intervention.
  
 The main goal of this paper is to discuss the concept and underlying methodology of one the unsupervised algorithm called K-Means clustering. We will also discuss how K-Means can be leveraged in real time applications like customer segmentation [@yul2020astudy]. In this paper, we will also be discussing various limitations and bottlenecks of K-Means clustering algorithm and would suggest some improved algorithms to overcome these limitations.
  
@@ -37,9 +37,9 @@ K-means clustering is used for grouping similar observations together by minimiz
  
 ## Customer Segmentation
  
-Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category in order to maximize the profit by optimizing the services and products. Its all about connecting the right products with the right consumer keeping business profitability in mind. Most of the segmentation algorithm is based around analyzing what we call RFM - customer recency (i.e. when the customer last visited the store), frequency (i.e. how many times customer bought the products), and monetary (i.e. how much money the customer spent) [@tab2022kmeans].
+Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category to maximize the profit by optimizing the services and products. It's all about connecting the right products with the right consumer keeping business profitability in mind. Most of the segmentation algorithm is based around analyzing what we call RFM - customer recency (i.e. when the customer last visited the store), frequency (i.e. how many times customer bought the products), and monetary (i.e. how much money the customer spent) [@tab2022kmeans].
  
-Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue and potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic[@tab2022kmeans]. In this paper, customer behavioral factor has been primarily focused.
+Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue, and potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic[@tab2022kmeans]. In this paper, customer behavioral factor has been primarily focused.
 
 @fig-1 illustrates the overall process of customer segmentation starting from sourcing the data, selecting the variables, applying the K-Means clustering to creating the marketing strategy for a business.
 
@@ -114,13 +114,13 @@ Note: x and y are vectors with length n.
 Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
  
 $$
-Z_j(I), j = 1, 2, 3,...k.
+Z_j(I), j = 1, 2, 3...k.
 $$
  
-Calculate the Euclidean distance between each data point and the cluster center, $D(x_i, Z_j(I)), i = 1, 2, ...n; j = 1, 2,...k.$, if below is satisfied:
+Calculate the Euclidean distance between each data point and the cluster center, $D(x_i, Z_j(I)), i = 1, 2...n; j = 1, 2...k.$, if below is satisfied:
  
 $$
-D(x_i, Z_k(I)) = min{D(x_i, Z_j(I)), j = 1, 2,...n}
+D(x_i, Z_k(I)) = min{D(x_i, Z_j(I)), j = 1, 2...n}
 $$
  
 Now, calculate the new cluster center by calculating the error square sum criterion function **J**:
@@ -180,7 +180,7 @@ library(cluster)
 
 ## Dataset Description
  
-For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion gift-ware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach[@online2010Chen]. 
+For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion giftware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach[@online2010Chen]. 
  
 The customer transactions dataset has 8 variables as shown in below data definition table.
  
@@ -270,7 +270,7 @@ D.    Most of the customers belong to United Kingdom
 
 ## Data Preparation
  
-Before we prepare the data, let's take a look at the summary and see if there are any missing values or other trends.
+Before we prepare the data, let's look at the summary and see if there are any missing values or other trends.
  
 ```{r, include=F}
 summary(df)
@@ -478,7 +478,7 @@ fviz_nbclust(customer_scaled, kmeans, method = "silhouette")+ theme_classic()+
  
 #### Gap Statistic Method
  
-The basic idea of the Gap Statistics is to choose the number of K, where the biggest jump in within-cluster distance occurred, based on the overall behavior of uniformly drawn samples.[@tibs2001Gap]
+Gap Statistics relies on an approach where the number K is chosen based on the biggest fluctuation in the within-cluster distance.[@tibs2001Gap]
  
 ```{r, warning=FALSE, echo=TRUE}
 set.seed(123)
@@ -504,7 +504,7 @@ Now, we will create the K-Means model with K = 3.
 set.seed(123)
 k = 3
 m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 20, nstart = 25)
-#nstart option that attempts multiple initial configurations and reports on the best one
+#nstart: Runs multiple initial configurations and returns the best one.
  
 #Add Clusters to the original dataframe
 customer$Cluster <- as.factor(m1.kmean$cluster)
@@ -587,7 +587,7 @@ s3dp <- s3d$points3d(centers,
 
 From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more, and they purchase frequently.
 
-Customers in cluster 2 are of concern. They do not visit the website often but spend almost similar to cluster 1 and also purchase as frequently as cluster 1. So, we can either target cluster 1 to make them buy when they visit store (since they are visiting often but buying less) or make cluster 2 visit often as they are buying more when they visit but visiting less.
+Customers in cluster 2 are of concern. They do not visit the website often but spend almost like cluster 1 and purchase as frequently as cluster 1. So, we can either target cluster 1 to make them buy when they visit store (since they are visiting often but buying less) or make cluster 2 visit often as they are buying more when they visit but visiting less.
  
 ```{r, warning=FALSE, echo=TRUE}
 customer %>% ggplot(aes(x=Cluster, y=Amount, fill=Cluster)) + geom_boxplot()+  theme_classic()  + 
