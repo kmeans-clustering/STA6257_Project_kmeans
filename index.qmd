@@ -86,7 +86,7 @@ The methodology for K-Means involve multiple iterations performed with different
 </center>
 \
 
-Let's look at the mathematical implementation of this algorithm [@yul2020astudy],
+Let's look at the mathematical implementation of this algorithm,
  
 **Proximity Measures**
  
@@ -317,8 +317,10 @@ data = subset(df, select = -c(Description, Country, StockCode) )
 3. Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them
  
 ```{r, warning=FALSE, echo=TRUE}
+#Create a new attribute Amount
 data$Amount = data$Quantity * data$Price
 
+#Group by customer id and add amounts
 customer_monetary <- as.data.frame(data %>%
   group_by(CustomerID) %>%
   summarise(Amount = sum(Amount)))
@@ -327,22 +329,28 @@ customer_monetary <- as.data.frame(data %>%
 4. Group the data by customer id to get each unique customer and the number of times (*Frequency*) they visited the store (by counting their number of invoices)
 
 ```{r, warning=FALSE, echo=TRUE}
+
+#Group by customer id and count invoices
 customer_frequency <- as.data.frame(data %>% group_by(CustomerID) %>% summarise(Invoice = n()))
  
+#Change the name of the aggregated invoice attribute to a more appropriate name "frequency"
 names(customer_frequency)[names(customer_frequency) == "Invoice"] <- "Frequency"
 ```
  
 5. Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max (InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.
  
 ```{r, warning=FALSE, echo=TRUE}
+#Create a new attribute LastSeen
 data$LastSeen =as.integer(difftime(max(data$InvoiceDate), data$InvoiceDate, units = "days"))
  
+#Group by customer id and take min of LastSeen
 customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) %>% summarise(LastSeen = min(LastSeen)))
 ```
  
 6. Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store
  
 ```{r, warning=FALSE, echo=TRUE}
+#merge newly created attributes to form a new dataset customer
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
 customer <- merge(customer, customer_lastseen, by = 'CustomerID')
 ```
@@ -391,7 +399,9 @@ melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fil
 8. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
  
 ```{r, warning=FALSE, echo=TRUE}
+#copy customer dataset into a new dataset customer_details
 customer_details <- customer
+#Remove CustomerID attribute from customer for analysis
 customer <-  customer %>% select(-CustomerID)
 # scale numeric attributes
 customer_scaled <- customer %>% mutate_at(c("Amount", "Frequency", "LastSeen"), ~(scale(.) %>% as.vector))

@@ -9,7 +9,7 @@
 <meta name="author" content="Anand Pandey">
 <meta name="author" content="Katie Hidden">
 <meta name="author" content="Akash Chandra">
-<meta name="dcterms.date" content="2022-11-15">
+<meta name="dcterms.date" content="2022-11-19">
 <meta name="description" content="An unsupervised learning algorithm ">
 
 <title>K-Means Clustering</title>
@@ -156,7 +156,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 15, 2022</p>
+      <p class="date">November 19, 2022</p>
     </div>
   </div>
     
@@ -226,7 +226,7 @@ div.csl-indent {
 </center>
 <p><br>
 </p>
-<p>Let’s look at the mathematical implementation of this algorithm <span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span>,</p>
+<p>Let’s look at the mathematical implementation of this algorithm,</p>
 <p><strong>Proximity Measures</strong></p>
 <p>K-means calculates proximity between data points and centroids to place the data in appropriate cluster. There are several methods to calculate this proximity and the choice of the method plays a critical role in defining the shape of the cluster.</p>
 <p><em>Euclidean distance</em> measurement is the most general method used. However, there are several different calculations that can be used to measure inter and intra cluster proximities. Some of these methods are detailed below:</p>
@@ -512,11 +512,13 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Amount <span class="ot">=</span> data<span class="sc">$</span>Quantity <span class="sc">*</span> data<span class="sc">$</span>Price</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>customer_monetary <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Amount =</span> <span class="fu">sum</span>(Amount)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a new attribute Amount</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Amount <span class="ot">=</span> data<span class="sc">$</span>Quantity <span class="sc">*</span> data<span class="sc">$</span>Price</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Group by customer id and add amounts</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>customer_monetary <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Amount =</span> <span class="fu">sum</span>(Amount)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="4" type="1">
@@ -525,9 +527,11 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>customer_frequency <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Invoice =</span> <span class="fu">n</span>()))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(customer_frequency)[<span class="fu">names</span>(customer_frequency) <span class="sc">==</span> <span class="st">"Invoice"</span>] <span class="ot">&lt;-</span> <span class="st">"Frequency"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Group by customer id and count invoices</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>customer_frequency <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Invoice =</span> <span class="fu">n</span>()))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Change the name of the aggregated invoice attribute to a more appropriate name "frequency"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(customer_frequency)[<span class="fu">names</span>(customer_frequency) <span class="sc">==</span> <span class="st">"Invoice"</span>] <span class="ot">&lt;-</span> <span class="st">"Frequency"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="5" type="1">
@@ -536,9 +540,11 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>LastSeen <span class="ot">=</span><span class="fu">as.integer</span>(<span class="fu">difftime</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate), data<span class="sc">$</span>InvoiceDate, <span class="at">units =</span> <span class="st">"days"</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">LastSeen =</span> <span class="fu">min</span>(LastSeen)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a new attribute LastSeen</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>LastSeen <span class="ot">=</span><span class="fu">as.integer</span>(<span class="fu">difftime</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate), data<span class="sc">$</span>InvoiceDate, <span class="at">units =</span> <span class="st">"days"</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Group by customer id and take min of LastSeen</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">LastSeen =</span> <span class="fu">min</span>(LastSeen)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="6" type="1">
@@ -547,8 +553,9 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer_monetary, customer_frequency, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer, customer_lastseen, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#merge newly created attributes to form a new dataset customer</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer_monetary, customer_frequency, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer, customer_lastseen, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ol start="7" type="1">
@@ -609,10 +616,12 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>customer_details <span class="ot">&lt;-</span> customer</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span>  customer <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>CustomerID)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># scale numeric attributes</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>customer_scaled <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span> <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"Amount"</span>, <span class="st">"Frequency"</span>, <span class="st">"LastSeen"</span>), <span class="sc">~</span>(<span class="fu">scale</span>(.) <span class="sc">%&gt;%</span> as.vector))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#copy customer dataset into a new dataset customer_details</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>customer_details <span class="ot">&lt;-</span> customer</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Remove CustomerID attribute from customer for analysis</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span>  customer <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>CustomerID)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># scale numeric attributes</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>customer_scaled <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span> <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"Amount"</span>, <span class="st">"Frequency"</span>, <span class="st">"LastSeen"</span>), <span class="sc">~</span>(<span class="fu">scale</span>(.) <span class="sc">%&gt;%</span> as.vector))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -1235,7 +1244,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/center&gt;</span></span>
 <span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a>\</span>
 <span id="cb24-87"><a href="#cb24-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a>Let's look at the mathematical implementation of this algorithm <span class="co">[</span><span class="ot">@yul2020astudy</span><span class="co">]</span>,</span>
+<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a>Let's look at the mathematical implementation of this algorithm,</span>
 <span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-90"><a href="#cb24-90" aria-hidden="true" tabindex="-1"></a>**Proximity Measures**</span>
 <span id="cb24-91"><a href="#cb24-91" aria-hidden="true" tabindex="-1"></a> </span>
@@ -1466,307 +1475,317 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-316"><a href="#cb24-316" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them</span>
 <span id="cb24-317"><a href="#cb24-317" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-318"><a href="#cb24-318" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-319"><a href="#cb24-319" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Amount <span class="ot">=</span> data<span class="sc">$</span>Quantity <span class="sc">*</span> data<span class="sc">$</span>Price</span>
-<span id="cb24-320"><a href="#cb24-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-321"><a href="#cb24-321" aria-hidden="true" tabindex="-1"></a>customer_monetary <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span></span>
-<span id="cb24-322"><a href="#cb24-322" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
-<span id="cb24-323"><a href="#cb24-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Amount =</span> <span class="fu">sum</span>(Amount)))</span>
-<span id="cb24-324"><a href="#cb24-324" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-325"><a href="#cb24-325" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-326"><a href="#cb24-326" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Group the data by customer id to get each unique customer and the number of times (*Frequency*) they visited the store (by counting their number of invoices)</span>
-<span id="cb24-327"><a href="#cb24-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-328"><a href="#cb24-328" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-329"><a href="#cb24-329" aria-hidden="true" tabindex="-1"></a>customer_frequency <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Invoice =</span> <span class="fu">n</span>()))</span>
-<span id="cb24-330"><a href="#cb24-330" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-331"><a href="#cb24-331" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(customer_frequency)[<span class="fu">names</span>(customer_frequency) <span class="sc">==</span> <span class="st">"Invoice"</span>] <span class="ot">&lt;-</span> <span class="st">"Frequency"</span></span>
-<span id="cb24-332"><a href="#cb24-332" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-333"><a href="#cb24-333" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-334"><a href="#cb24-334" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max (InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.</span>
-<span id="cb24-335"><a href="#cb24-335" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-336"><a href="#cb24-336" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-337"><a href="#cb24-337" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>LastSeen <span class="ot">=</span><span class="fu">as.integer</span>(<span class="fu">difftime</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate), data<span class="sc">$</span>InvoiceDate, <span class="at">units =</span> <span class="st">"days"</span>))</span>
+<span id="cb24-319"><a href="#cb24-319" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a new attribute Amount</span></span>
+<span id="cb24-320"><a href="#cb24-320" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Amount <span class="ot">=</span> data<span class="sc">$</span>Quantity <span class="sc">*</span> data<span class="sc">$</span>Price</span>
+<span id="cb24-321"><a href="#cb24-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-322"><a href="#cb24-322" aria-hidden="true" tabindex="-1"></a><span class="co">#Group by customer id and add amounts</span></span>
+<span id="cb24-323"><a href="#cb24-323" aria-hidden="true" tabindex="-1"></a>customer_monetary <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span></span>
+<span id="cb24-324"><a href="#cb24-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
+<span id="cb24-325"><a href="#cb24-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Amount =</span> <span class="fu">sum</span>(Amount)))</span>
+<span id="cb24-326"><a href="#cb24-326" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-327"><a href="#cb24-327" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-328"><a href="#cb24-328" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Group the data by customer id to get each unique customer and the number of times (*Frequency*) they visited the store (by counting their number of invoices)</span>
+<span id="cb24-329"><a href="#cb24-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-330"><a href="#cb24-330" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-331"><a href="#cb24-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-332"><a href="#cb24-332" aria-hidden="true" tabindex="-1"></a><span class="co">#Group by customer id and count invoices</span></span>
+<span id="cb24-333"><a href="#cb24-333" aria-hidden="true" tabindex="-1"></a>customer_frequency <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">Invoice =</span> <span class="fu">n</span>()))</span>
+<span id="cb24-334"><a href="#cb24-334" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-335"><a href="#cb24-335" aria-hidden="true" tabindex="-1"></a><span class="co">#Change the name of the aggregated invoice attribute to a more appropriate name "frequency"</span></span>
+<span id="cb24-336"><a href="#cb24-336" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(customer_frequency)[<span class="fu">names</span>(customer_frequency) <span class="sc">==</span> <span class="st">"Invoice"</span>] <span class="ot">&lt;-</span> <span class="st">"Frequency"</span></span>
+<span id="cb24-337"><a href="#cb24-337" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-338"><a href="#cb24-338" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-339"><a href="#cb24-339" aria-hidden="true" tabindex="-1"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">LastSeen =</span> <span class="fu">min</span>(LastSeen)))</span>
-<span id="cb24-340"><a href="#cb24-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-341"><a href="#cb24-341" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-342"><a href="#cb24-342" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store</span>
-<span id="cb24-343"><a href="#cb24-343" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-344"><a href="#cb24-344" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-345"><a href="#cb24-345" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer_monetary, customer_frequency, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
-<span id="cb24-346"><a href="#cb24-346" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer, customer_lastseen, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
+<span id="cb24-339"><a href="#cb24-339" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Create a new attribute *LastSeen*. This will be calculated by subtracting the InvoiceDate from the max (InvoiceDate) and will show how many days have passed since the customer was last seen shopping. Group the data by customer id to get each unique customer and the minimum of the LastSeen.</span>
+<span id="cb24-340"><a href="#cb24-340" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-341"><a href="#cb24-341" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-342"><a href="#cb24-342" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a new attribute LastSeen</span></span>
+<span id="cb24-343"><a href="#cb24-343" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>LastSeen <span class="ot">=</span><span class="fu">as.integer</span>(<span class="fu">difftime</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate), data<span class="sc">$</span>InvoiceDate, <span class="at">units =</span> <span class="st">"days"</span>))</span>
+<span id="cb24-344"><a href="#cb24-344" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-345"><a href="#cb24-345" aria-hidden="true" tabindex="-1"></a><span class="co">#Group by customer id and take min of LastSeen</span></span>
+<span id="cb24-346"><a href="#cb24-346" aria-hidden="true" tabindex="-1"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">LastSeen =</span> <span class="fu">min</span>(LastSeen)))</span>
 <span id="cb24-347"><a href="#cb24-347" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-348"><a href="#cb24-348" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-349"><a href="#cb24-349" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen</span>
+<span id="cb24-349"><a href="#cb24-349" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store</span>
 <span id="cb24-350"><a href="#cb24-350" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-351"><a href="#cb24-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE, message=FALSE}</span></span>
-<span id="cb24-352"><a href="#cb24-352" aria-hidden="true" tabindex="-1"></a><span class="fu">melt</span>(customer[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>variable, <span class="at">y=</span>value)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span>variable), <span class="at">outlier.colour =</span> <span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
-<span id="cb24-353"><a href="#cb24-353" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-354"><a href="#cb24-354" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-355"><a href="#cb24-355" aria-hidden="true" tabindex="-1"></a>Above graph shows that there are outliers that need to be addressed to get accurate clustering results.</span>
+<span id="cb24-351"><a href="#cb24-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-352"><a href="#cb24-352" aria-hidden="true" tabindex="-1"></a><span class="co">#merge newly created attributes to form a new dataset customer</span></span>
+<span id="cb24-353"><a href="#cb24-353" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer_monetary, customer_frequency, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
+<span id="cb24-354"><a href="#cb24-354" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer, customer_lastseen, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
+<span id="cb24-355"><a href="#cb24-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-356"><a href="#cb24-356" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-357"><a href="#cb24-357" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-358"><a href="#cb24-358" aria-hidden="true" tabindex="-1"></a><span class="co"># create detect outlier function</span></span>
-<span id="cb24-359"><a href="#cb24-359" aria-hidden="true" tabindex="-1"></a>detect_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb24-360"><a href="#cb24-360" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate first quantile</span></span>
-<span id="cb24-361"><a href="#cb24-361" aria-hidden="true" tabindex="-1"></a>    Quantile1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
-<span id="cb24-362"><a href="#cb24-362" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate third quantile</span></span>
-<span id="cb24-363"><a href="#cb24-363" aria-hidden="true" tabindex="-1"></a>    Quantile3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
-<span id="cb24-364"><a href="#cb24-364" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate inter quartile range</span></span>
-<span id="cb24-365"><a href="#cb24-365" aria-hidden="true" tabindex="-1"></a>    IQR <span class="ot">=</span> Quantile3<span class="sc">-</span>Quantile1</span>
-<span id="cb24-366"><a href="#cb24-366" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return true or false</span></span>
-<span id="cb24-367"><a href="#cb24-367" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;</span> Quantile3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> x <span class="sc">&lt;</span> Quantile1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
-<span id="cb24-368"><a href="#cb24-368" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb24-369"><a href="#cb24-369" aria-hidden="true" tabindex="-1"></a><span class="co"># create remove outlier function</span></span>
-<span id="cb24-370"><a href="#cb24-370" aria-hidden="true" tabindex="-1"></a>remove_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe,</span>
-<span id="cb24-371"><a href="#cb24-371" aria-hidden="true" tabindex="-1"></a>                            <span class="at">columns=</span><span class="fu">names</span>(dataframe)) {</span>
-<span id="cb24-372"><a href="#cb24-372" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for loop to traverse in columns vector</span></span>
-<span id="cb24-373"><a href="#cb24-373" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> columns) {</span>
-<span id="cb24-374"><a href="#cb24-374" aria-hidden="true" tabindex="-1"></a>        <span class="co"># remove observation if it satisfies outlier function</span></span>
-<span id="cb24-375"><a href="#cb24-375" aria-hidden="true" tabindex="-1"></a>        dataframe <span class="ot">&lt;-</span> dataframe[<span class="sc">!</span><span class="fu">detect_outlier</span>(dataframe[[col]]), ]</span>
-<span id="cb24-376"><a href="#cb24-376" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb24-377"><a href="#cb24-377" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(dataframe)</span>
-<span id="cb24-378"><a href="#cb24-378" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb24-379"><a href="#cb24-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-380"><a href="#cb24-380" aria-hidden="true" tabindex="-1"></a><span class="co"># detect_outlier(customer$Amount)</span></span>
-<span id="cb24-381"><a href="#cb24-381" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">remove_outlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Frequency'</span>,<span class="st">'LastSeen'</span>))</span>
-<span id="cb24-382"><a href="#cb24-382" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-383"><a href="#cb24-383" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-384"><a href="#cb24-384" aria-hidden="true" tabindex="-1"></a>Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.</span>
-<span id="cb24-385"><a href="#cb24-385" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-386"><a href="#cb24-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE, message=FALSE}</span></span>
-<span id="cb24-387"><a href="#cb24-387" aria-hidden="true" tabindex="-1"></a><span class="fu">melt</span>(customer[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>variable, <span class="at">y=</span>value)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span>variable), <span class="at">outlier.colour =</span> <span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
-<span id="cb24-388"><a href="#cb24-388" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-389"><a href="#cb24-389" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-390"><a href="#cb24-390" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.</span>
+<span id="cb24-357"><a href="#cb24-357" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Detect outliers and remove them. To create meaningful clusters, we will be removing outliers from  numeric columns Amount, Invoice and LastSeen</span>
+<span id="cb24-358"><a href="#cb24-358" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-359"><a href="#cb24-359" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE, message=FALSE}</span></span>
+<span id="cb24-360"><a href="#cb24-360" aria-hidden="true" tabindex="-1"></a><span class="fu">melt</span>(customer[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>variable, <span class="at">y=</span>value)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span>variable), <span class="at">outlier.colour =</span> <span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb24-361"><a href="#cb24-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-362"><a href="#cb24-362" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-363"><a href="#cb24-363" aria-hidden="true" tabindex="-1"></a>Above graph shows that there are outliers that need to be addressed to get accurate clustering results.</span>
+<span id="cb24-364"><a href="#cb24-364" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-365"><a href="#cb24-365" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-366"><a href="#cb24-366" aria-hidden="true" tabindex="-1"></a><span class="co"># create detect outlier function</span></span>
+<span id="cb24-367"><a href="#cb24-367" aria-hidden="true" tabindex="-1"></a>detect_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-368"><a href="#cb24-368" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate first quantile</span></span>
+<span id="cb24-369"><a href="#cb24-369" aria-hidden="true" tabindex="-1"></a>    Quantile1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
+<span id="cb24-370"><a href="#cb24-370" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate third quantile</span></span>
+<span id="cb24-371"><a href="#cb24-371" aria-hidden="true" tabindex="-1"></a>    Quantile3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
+<span id="cb24-372"><a href="#cb24-372" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate inter quartile range</span></span>
+<span id="cb24-373"><a href="#cb24-373" aria-hidden="true" tabindex="-1"></a>    IQR <span class="ot">=</span> Quantile3<span class="sc">-</span>Quantile1</span>
+<span id="cb24-374"><a href="#cb24-374" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return true or false</span></span>
+<span id="cb24-375"><a href="#cb24-375" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;</span> Quantile3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> x <span class="sc">&lt;</span> Quantile1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
+<span id="cb24-376"><a href="#cb24-376" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-377"><a href="#cb24-377" aria-hidden="true" tabindex="-1"></a><span class="co"># create remove outlier function</span></span>
+<span id="cb24-378"><a href="#cb24-378" aria-hidden="true" tabindex="-1"></a>remove_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe,</span>
+<span id="cb24-379"><a href="#cb24-379" aria-hidden="true" tabindex="-1"></a>                            <span class="at">columns=</span><span class="fu">names</span>(dataframe)) {</span>
+<span id="cb24-380"><a href="#cb24-380" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for loop to traverse in columns vector</span></span>
+<span id="cb24-381"><a href="#cb24-381" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> columns) {</span>
+<span id="cb24-382"><a href="#cb24-382" aria-hidden="true" tabindex="-1"></a>        <span class="co"># remove observation if it satisfies outlier function</span></span>
+<span id="cb24-383"><a href="#cb24-383" aria-hidden="true" tabindex="-1"></a>        dataframe <span class="ot">&lt;-</span> dataframe[<span class="sc">!</span><span class="fu">detect_outlier</span>(dataframe[[col]]), ]</span>
+<span id="cb24-384"><a href="#cb24-384" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb24-385"><a href="#cb24-385" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(dataframe)</span>
+<span id="cb24-386"><a href="#cb24-386" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-387"><a href="#cb24-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-388"><a href="#cb24-388" aria-hidden="true" tabindex="-1"></a><span class="co"># detect_outlier(customer$Amount)</span></span>
+<span id="cb24-389"><a href="#cb24-389" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">remove_outlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Frequency'</span>,<span class="st">'LastSeen'</span>))</span>
+<span id="cb24-390"><a href="#cb24-390" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-391"><a href="#cb24-391" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-392"><a href="#cb24-392" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-393"><a href="#cb24-393" aria-hidden="true" tabindex="-1"></a>customer_details <span class="ot">&lt;-</span> customer</span>
-<span id="cb24-394"><a href="#cb24-394" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span>  customer <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>CustomerID)</span>
-<span id="cb24-395"><a href="#cb24-395" aria-hidden="true" tabindex="-1"></a><span class="co"># scale numeric attributes</span></span>
-<span id="cb24-396"><a href="#cb24-396" aria-hidden="true" tabindex="-1"></a>customer_scaled <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span> <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"Amount"</span>, <span class="st">"Frequency"</span>, <span class="st">"LastSeen"</span>), <span class="sc">~</span>(<span class="fu">scale</span>(.) <span class="sc">%&gt;%</span> as.vector))</span>
-<span id="cb24-397"><a href="#cb24-397" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-398"><a href="#cb24-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-392"><a href="#cb24-392" aria-hidden="true" tabindex="-1"></a>Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.</span>
+<span id="cb24-393"><a href="#cb24-393" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-394"><a href="#cb24-394" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE, message=FALSE}</span></span>
+<span id="cb24-395"><a href="#cb24-395" aria-hidden="true" tabindex="-1"></a><span class="fu">melt</span>(customer[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>variable, <span class="at">y=</span>value)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span>variable), <span class="at">outlier.colour =</span> <span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
+<span id="cb24-396"><a href="#cb24-396" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-397"><a href="#cb24-397" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-398"><a href="#cb24-398" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.</span>
 <span id="cb24-399"><a href="#cb24-399" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-400"><a href="#cb24-400" aria-hidden="true" tabindex="-1"></a><span class="fu">## Target Dataset Analysis</span></span>
-<span id="cb24-401"><a href="#cb24-401" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-402"><a href="#cb24-402" aria-hidden="true" tabindex="-1"></a>We started our analysis with total 525461 records but after preparing and cleansing the data, we are left with total 3674 records to be analyzed.</span>
-<span id="cb24-403"><a href="#cb24-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-404"><a href="#cb24-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-405"><a href="#cb24-405" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, warning=FALSE, results = "asis"}</span></span>
-<span id="cb24-406"><a href="#cb24-406" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-407"><a href="#cb24-407" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">vars =</span> <span class="fu">c</span>(<span class="st">'CustomerID'</span>, <span class="st">'Amount'</span>, <span class="st">'Frequency'</span>, <span class="st">'LastSeen'</span>),               </span>
-<span id="cb24-408"><a href="#cb24-408" aria-hidden="true" tabindex="-1"></a>                <span class="at">DataType =</span> <span class="fu">c</span>(<span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>),</span>
-<span id="cb24-409"><a href="#cb24-409" aria-hidden="true" tabindex="-1"></a>                <span class="at">Description =</span> <span class="fu">c</span>(<span class="st">'Customer number. A 5-digit integral number uniquely assigned to each customer.'</span>,</span>
-<span id="cb24-410"><a href="#cb24-410" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Total Amount spent by each unique customer'</span>,</span>
-<span id="cb24-411"><a href="#cb24-411" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Number of times customer made purchases bases on their invoice.'</span>,</span>
-<span id="cb24-412"><a href="#cb24-412" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Days elapsed since the customer was last seen shopping.'</span>),</span>
-<span id="cb24-413"><a href="#cb24-413" aria-hidden="true" tabindex="-1"></a>                <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb24-414"><a href="#cb24-414" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-415"><a href="#cb24-415" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(a,</span>
-<span id="cb24-416"><a href="#cb24-416" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Target Data Definition"</span>,</span>
-<span id="cb24-417"><a href="#cb24-417" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Attribute"</span>, <span class="st">"Type"</span>, <span class="st">"Description"</span>),</span>
-<span id="cb24-418"><a href="#cb24-418" aria-hidden="true" tabindex="-1"></a>      <span class="at">align=</span><span class="st">"lcl"</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb24-419"><a href="#cb24-419" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb24-420"><a href="#cb24-420" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">0</span>, <span class="at">bold =</span> T, <span class="at">background =</span> <span class="st">"#666666"</span>, <span class="at">color =</span> <span class="st">"white"</span>)</span>
-<span id="cb24-421"><a href="#cb24-421" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-422"><a href="#cb24-422" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-423"><a href="#cb24-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-424"><a href="#cb24-424" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, warning=FALSE, results = "asis"}</span></span>
-<span id="cb24-425"><a href="#cb24-425" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">vars =</span> <span class="fu">c</span>(<span class="st">'Amount'</span>, <span class="st">'Frequency'</span>, <span class="st">'LastSeen'</span>),                       </span>
-<span id="cb24-426"><a href="#cb24-426" aria-hidden="true" tabindex="-1"></a>                <span class="at">Mean =</span> <span class="fu">c</span>(<span class="st">'776.5'</span>, <span class="st">'48.15'</span>, <span class="st">'101.8'</span>),             </span>
-<span id="cb24-427"><a href="#cb24-427" aria-hidden="true" tabindex="-1"></a>                <span class="at">Min =</span> <span class="fu">c</span>(<span class="st">'-1598.7'</span>,<span class="st">'1'</span>,<span class="st">'0'</span>),</span>
-<span id="cb24-428"><a href="#cb24-428" aria-hidden="true" tabindex="-1"></a>                <span class="at">Q1 =</span> <span class="fu">c</span>(<span class="st">'241.5'</span>, <span class="st">'15.0'</span>, <span class="st">'23.0'</span>),</span>
-<span id="cb24-429"><a href="#cb24-429" aria-hidden="true" tabindex="-1"></a>                <span class="at">Median =</span> <span class="fu">c</span>(<span class="st">'515.1'</span>, <span class="st">'34.0'</span>, <span class="st">'62.0'</span>),</span>
-<span id="cb24-430"><a href="#cb24-430" aria-hidden="true" tabindex="-1"></a>                <span class="at">Q3 =</span> <span class="fu">c</span>(<span class="st">'1091.4'</span>, <span class="st">'70.0'</span>, <span class="st">'163.0'</span>),</span>
-<span id="cb24-431"><a href="#cb24-431" aria-hidden="true" tabindex="-1"></a>                <span class="at">Max =</span> <span class="fu">c</span>(<span class="st">'3685.1'</span>, <span class="st">'183.0'</span>,<span class="st">'373.0'</span>),</span>
-<span id="cb24-432"><a href="#cb24-432" aria-hidden="true" tabindex="-1"></a>                <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb24-433"><a href="#cb24-433" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-434"><a href="#cb24-434" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(a,</span>
-<span id="cb24-435"><a href="#cb24-435" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Summary of Target Dataset (3674 Records)"</span>,</span>
-<span id="cb24-436"><a href="#cb24-436" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"Mean"</span>,<span class="st">"Min"</span>, <span class="st">"Q1"</span>, <span class="st">"Median"</span>, <span class="st">"Q3"</span>, <span class="st">"Max"</span>),</span>
-<span id="cb24-437"><a href="#cb24-437" aria-hidden="true" tabindex="-1"></a>      <span class="at">align=</span><span class="st">"lcc"</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb24-438"><a href="#cb24-438" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb24-439"><a href="#cb24-439" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">0</span>, <span class="at">bold =</span> T, <span class="at">background =</span> <span class="st">"#666666"</span>, <span class="at">color =</span> <span class="st">"white"</span>)</span>
-<span id="cb24-440"><a href="#cb24-440" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-441"><a href="#cb24-441" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-442"><a href="#cb24-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-443"><a href="#cb24-443" aria-hidden="true" tabindex="-1"></a><span class="fu">## Statistical Modeling</span></span>
-<span id="cb24-444"><a href="#cb24-444" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-445"><a href="#cb24-445" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optimal Number of Clusters (K)</span></span>
-<span id="cb24-446"><a href="#cb24-446" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-447"><a href="#cb24-447" aria-hidden="true" tabindex="-1"></a>One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).</span>
-<span id="cb24-448"><a href="#cb24-448" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-449"><a href="#cb24-449" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Elbow Method</span></span>
-<span id="cb24-450"><a href="#cb24-450" aria-hidden="true" tabindex="-1"></a>We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.<span class="co">[</span><span class="ot">@ste2011Choosing</span><span class="co">]</span></span>
+<span id="cb24-400"><a href="#cb24-400" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-401"><a href="#cb24-401" aria-hidden="true" tabindex="-1"></a><span class="co">#copy customer dataset into a new dataset customer_details</span></span>
+<span id="cb24-402"><a href="#cb24-402" aria-hidden="true" tabindex="-1"></a>customer_details <span class="ot">&lt;-</span> customer</span>
+<span id="cb24-403"><a href="#cb24-403" aria-hidden="true" tabindex="-1"></a><span class="co">#Remove CustomerID attribute from customer for analysis</span></span>
+<span id="cb24-404"><a href="#cb24-404" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span>  customer <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>CustomerID)</span>
+<span id="cb24-405"><a href="#cb24-405" aria-hidden="true" tabindex="-1"></a><span class="co"># scale numeric attributes</span></span>
+<span id="cb24-406"><a href="#cb24-406" aria-hidden="true" tabindex="-1"></a>customer_scaled <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span> <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"Amount"</span>, <span class="st">"Frequency"</span>, <span class="st">"LastSeen"</span>), <span class="sc">~</span>(<span class="fu">scale</span>(.) <span class="sc">%&gt;%</span> as.vector))</span>
+<span id="cb24-407"><a href="#cb24-407" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-408"><a href="#cb24-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-409"><a href="#cb24-409" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-410"><a href="#cb24-410" aria-hidden="true" tabindex="-1"></a><span class="fu">## Target Dataset Analysis</span></span>
+<span id="cb24-411"><a href="#cb24-411" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-412"><a href="#cb24-412" aria-hidden="true" tabindex="-1"></a>We started our analysis with total 525461 records but after preparing and cleansing the data, we are left with total 3674 records to be analyzed.</span>
+<span id="cb24-413"><a href="#cb24-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-414"><a href="#cb24-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-415"><a href="#cb24-415" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, warning=FALSE, results = "asis"}</span></span>
+<span id="cb24-416"><a href="#cb24-416" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-417"><a href="#cb24-417" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">vars =</span> <span class="fu">c</span>(<span class="st">'CustomerID'</span>, <span class="st">'Amount'</span>, <span class="st">'Frequency'</span>, <span class="st">'LastSeen'</span>),               </span>
+<span id="cb24-418"><a href="#cb24-418" aria-hidden="true" tabindex="-1"></a>                <span class="at">DataType =</span> <span class="fu">c</span>(<span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>),</span>
+<span id="cb24-419"><a href="#cb24-419" aria-hidden="true" tabindex="-1"></a>                <span class="at">Description =</span> <span class="fu">c</span>(<span class="st">'Customer number. A 5-digit integral number uniquely assigned to each customer.'</span>,</span>
+<span id="cb24-420"><a href="#cb24-420" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Total Amount spent by each unique customer'</span>,</span>
+<span id="cb24-421"><a href="#cb24-421" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Number of times customer made purchases bases on their invoice.'</span>,</span>
+<span id="cb24-422"><a href="#cb24-422" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Days elapsed since the customer was last seen shopping.'</span>),</span>
+<span id="cb24-423"><a href="#cb24-423" aria-hidden="true" tabindex="-1"></a>                <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-424"><a href="#cb24-424" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-425"><a href="#cb24-425" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(a,</span>
+<span id="cb24-426"><a href="#cb24-426" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Target Data Definition"</span>,</span>
+<span id="cb24-427"><a href="#cb24-427" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Attribute"</span>, <span class="st">"Type"</span>, <span class="st">"Description"</span>),</span>
+<span id="cb24-428"><a href="#cb24-428" aria-hidden="true" tabindex="-1"></a>      <span class="at">align=</span><span class="st">"lcl"</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-429"><a href="#cb24-429" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-430"><a href="#cb24-430" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">0</span>, <span class="at">bold =</span> T, <span class="at">background =</span> <span class="st">"#666666"</span>, <span class="at">color =</span> <span class="st">"white"</span>)</span>
+<span id="cb24-431"><a href="#cb24-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-432"><a href="#cb24-432" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-433"><a href="#cb24-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-434"><a href="#cb24-434" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, warning=FALSE, results = "asis"}</span></span>
+<span id="cb24-435"><a href="#cb24-435" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">vars =</span> <span class="fu">c</span>(<span class="st">'Amount'</span>, <span class="st">'Frequency'</span>, <span class="st">'LastSeen'</span>),                       </span>
+<span id="cb24-436"><a href="#cb24-436" aria-hidden="true" tabindex="-1"></a>                <span class="at">Mean =</span> <span class="fu">c</span>(<span class="st">'776.5'</span>, <span class="st">'48.15'</span>, <span class="st">'101.8'</span>),             </span>
+<span id="cb24-437"><a href="#cb24-437" aria-hidden="true" tabindex="-1"></a>                <span class="at">Min =</span> <span class="fu">c</span>(<span class="st">'-1598.7'</span>,<span class="st">'1'</span>,<span class="st">'0'</span>),</span>
+<span id="cb24-438"><a href="#cb24-438" aria-hidden="true" tabindex="-1"></a>                <span class="at">Q1 =</span> <span class="fu">c</span>(<span class="st">'241.5'</span>, <span class="st">'15.0'</span>, <span class="st">'23.0'</span>),</span>
+<span id="cb24-439"><a href="#cb24-439" aria-hidden="true" tabindex="-1"></a>                <span class="at">Median =</span> <span class="fu">c</span>(<span class="st">'515.1'</span>, <span class="st">'34.0'</span>, <span class="st">'62.0'</span>),</span>
+<span id="cb24-440"><a href="#cb24-440" aria-hidden="true" tabindex="-1"></a>                <span class="at">Q3 =</span> <span class="fu">c</span>(<span class="st">'1091.4'</span>, <span class="st">'70.0'</span>, <span class="st">'163.0'</span>),</span>
+<span id="cb24-441"><a href="#cb24-441" aria-hidden="true" tabindex="-1"></a>                <span class="at">Max =</span> <span class="fu">c</span>(<span class="st">'3685.1'</span>, <span class="st">'183.0'</span>,<span class="st">'373.0'</span>),</span>
+<span id="cb24-442"><a href="#cb24-442" aria-hidden="true" tabindex="-1"></a>                <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-443"><a href="#cb24-443" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-444"><a href="#cb24-444" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(a,</span>
+<span id="cb24-445"><a href="#cb24-445" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Summary of Target Dataset (3674 Records)"</span>,</span>
+<span id="cb24-446"><a href="#cb24-446" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"Mean"</span>,<span class="st">"Min"</span>, <span class="st">"Q1"</span>, <span class="st">"Median"</span>, <span class="st">"Q3"</span>, <span class="st">"Max"</span>),</span>
+<span id="cb24-447"><a href="#cb24-447" aria-hidden="true" tabindex="-1"></a>      <span class="at">align=</span><span class="st">"lcc"</span>, <span class="at">escape =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-448"><a href="#cb24-448" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-449"><a href="#cb24-449" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">0</span>, <span class="at">bold =</span> T, <span class="at">background =</span> <span class="st">"#666666"</span>, <span class="at">color =</span> <span class="st">"white"</span>)</span>
+<span id="cb24-450"><a href="#cb24-450" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-451"><a href="#cb24-451" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-452"><a href="#cb24-452" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-453"><a href="#cb24-453" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_nbclust</span>(customer_scaled, kmeans, <span class="at">method =</span> <span class="st">"wss"</span>) <span class="sc">+</span></span>
-<span id="cb24-454"><a href="#cb24-454" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span>, <span class="at">linetype =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb24-455"><a href="#cb24-455" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Elbow Method"</span>)</span>
-<span id="cb24-456"><a href="#cb24-456" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-457"><a href="#cb24-457" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-458"><a href="#cb24-458" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Silhouette Method</span></span>
-<span id="cb24-459"><a href="#cb24-459" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-460"><a href="#cb24-460" aria-hidden="true" tabindex="-1"></a>Another way to find the optimal number of clusters in K-Means is Silhouette Method. We will be using it to double check the results we obtained from the above Elbow method.</span>
-<span id="cb24-461"><a href="#cb24-461" aria-hidden="true" tabindex="-1"></a>The silhouette method calculates a coefficient (called silhouette coefficient) which is a measure of how similar a data point is within-cluster (cohesion) compared to other clusters (separation).<span class="co">[</span><span class="ot">@li2013application</span><span class="co">]</span></span>
-<span id="cb24-462"><a href="#cb24-462" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-463"><a href="#cb24-463" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-464"><a href="#cb24-464" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_nbclust</span>(customer_scaled, kmeans, <span class="at">method =</span> <span class="st">"silhouette"</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb24-465"><a href="#cb24-465" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Silhouette Method"</span>)</span>
+<span id="cb24-452"><a href="#cb24-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-453"><a href="#cb24-453" aria-hidden="true" tabindex="-1"></a><span class="fu">## Statistical Modeling</span></span>
+<span id="cb24-454"><a href="#cb24-454" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-455"><a href="#cb24-455" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optimal Number of Clusters (K)</span></span>
+<span id="cb24-456"><a href="#cb24-456" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-457"><a href="#cb24-457" aria-hidden="true" tabindex="-1"></a>One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).</span>
+<span id="cb24-458"><a href="#cb24-458" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-459"><a href="#cb24-459" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Elbow Method</span></span>
+<span id="cb24-460"><a href="#cb24-460" aria-hidden="true" tabindex="-1"></a>We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.<span class="co">[</span><span class="ot">@ste2011Choosing</span><span class="co">]</span></span>
+<span id="cb24-461"><a href="#cb24-461" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-462"><a href="#cb24-462" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-463"><a href="#cb24-463" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_nbclust</span>(customer_scaled, kmeans, <span class="at">method =</span> <span class="st">"wss"</span>) <span class="sc">+</span></span>
+<span id="cb24-464"><a href="#cb24-464" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span>, <span class="at">linetype =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb24-465"><a href="#cb24-465" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Elbow Method"</span>)</span>
 <span id="cb24-466"><a href="#cb24-466" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-467"><a href="#cb24-467" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-468"><a href="#cb24-468" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Gap Statistic Method</span></span>
+<span id="cb24-468"><a href="#cb24-468" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Silhouette Method</span></span>
 <span id="cb24-469"><a href="#cb24-469" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-470"><a href="#cb24-470" aria-hidden="true" tabindex="-1"></a>The basic idea of the Gap Statistics is to choose the number of K, where the biggest jump in within-cluster distance occurred, based on the overall behavior of uniformly drawn samples.<span class="co">[</span><span class="ot">@tibs2001Gap</span><span class="co">]</span></span>
-<span id="cb24-471"><a href="#cb24-471" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-472"><a href="#cb24-472" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-473"><a href="#cb24-473" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb24-474"><a href="#cb24-474" aria-hidden="true" tabindex="-1"></a>gap_stat <span class="ot">&lt;-</span> <span class="fu">clusGap</span>(customer_scaled, <span class="at">FUN =</span> kmeans, <span class="at">nstart =</span> <span class="dv">25</span>, <span class="at">K.max =</span> <span class="dv">10</span>, <span class="at">B =</span> <span class="dv">50</span>)</span>
-<span id="cb24-475"><a href="#cb24-475" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-476"><a href="#cb24-476" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_gap_stat</span>(gap_stat)</span>
-<span id="cb24-477"><a href="#cb24-477" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-478"><a href="#cb24-478" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-479"><a href="#cb24-479" aria-hidden="true" tabindex="-1"></a>From the above graphs for Elbow, Silhouette and Gap Statistics methods, we can observe the critical point is at '3'. So, we will pick 3 as our k value for number of clusters.</span>
-<span id="cb24-480"><a href="#cb24-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-481"><a href="#cb24-481" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div</span> <span class="er">style</span><span class="ot">=</span><span class="st">"border:1px solid #333"</span><span class="kw">&gt;</span></span>
-<span id="cb24-482"><a href="#cb24-482" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-483"><a href="#cb24-483" aria-hidden="true" tabindex="-1"></a>K = 3</span>
-<span id="cb24-484"><a href="#cb24-484" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-485"><a href="#cb24-485" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/div&gt;</span></span>
-<span id="cb24-486"><a href="#cb24-486" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-487"><a href="#cb24-487" aria-hidden="true" tabindex="-1"></a><span class="fu">### K-Means Model</span></span>
-<span id="cb24-488"><a href="#cb24-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-489"><a href="#cb24-489" aria-hidden="true" tabindex="-1"></a>Now, we will create the K-Means model with K = 3.</span>
+<span id="cb24-470"><a href="#cb24-470" aria-hidden="true" tabindex="-1"></a>Another way to find the optimal number of clusters in K-Means is Silhouette Method. We will be using it to double check the results we obtained from the above Elbow method.</span>
+<span id="cb24-471"><a href="#cb24-471" aria-hidden="true" tabindex="-1"></a>The silhouette method calculates a coefficient (called silhouette coefficient) which is a measure of how similar a data point is within-cluster (cohesion) compared to other clusters (separation).<span class="co">[</span><span class="ot">@li2013application</span><span class="co">]</span></span>
+<span id="cb24-472"><a href="#cb24-472" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-473"><a href="#cb24-473" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-474"><a href="#cb24-474" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_nbclust</span>(customer_scaled, kmeans, <span class="at">method =</span> <span class="st">"silhouette"</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb24-475"><a href="#cb24-475" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Silhouette Method"</span>)</span>
+<span id="cb24-476"><a href="#cb24-476" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-477"><a href="#cb24-477" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-478"><a href="#cb24-478" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Gap Statistic Method</span></span>
+<span id="cb24-479"><a href="#cb24-479" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-480"><a href="#cb24-480" aria-hidden="true" tabindex="-1"></a>The basic idea of the Gap Statistics is to choose the number of K, where the biggest jump in within-cluster distance occurred, based on the overall behavior of uniformly drawn samples.<span class="co">[</span><span class="ot">@tibs2001Gap</span><span class="co">]</span></span>
+<span id="cb24-481"><a href="#cb24-481" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-482"><a href="#cb24-482" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-483"><a href="#cb24-483" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb24-484"><a href="#cb24-484" aria-hidden="true" tabindex="-1"></a>gap_stat <span class="ot">&lt;-</span> <span class="fu">clusGap</span>(customer_scaled, <span class="at">FUN =</span> kmeans, <span class="at">nstart =</span> <span class="dv">25</span>, <span class="at">K.max =</span> <span class="dv">10</span>, <span class="at">B =</span> <span class="dv">50</span>)</span>
+<span id="cb24-485"><a href="#cb24-485" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-486"><a href="#cb24-486" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_gap_stat</span>(gap_stat)</span>
+<span id="cb24-487"><a href="#cb24-487" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-488"><a href="#cb24-488" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-489"><a href="#cb24-489" aria-hidden="true" tabindex="-1"></a>From the above graphs for Elbow, Silhouette and Gap Statistics methods, we can observe the critical point is at '3'. So, we will pick 3 as our k value for number of clusters.</span>
 <span id="cb24-490"><a href="#cb24-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-491"><a href="#cb24-491" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-492"><a href="#cb24-492" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute k-means with k = 3</span></span>
-<span id="cb24-493"><a href="#cb24-493" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb24-494"><a href="#cb24-494" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb24-495"><a href="#cb24-495" aria-hidden="true" tabindex="-1"></a>m1.kmean <span class="ot">&lt;-</span> customer_scaled <span class="sc">%&gt;%</span> <span class="fu">kmeans</span>(k, <span class="at">iter.max =</span> <span class="dv">20</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
-<span id="cb24-496"><a href="#cb24-496" aria-hidden="true" tabindex="-1"></a><span class="co">#nstart option that attempts multiple initial configurations and reports on the best one</span></span>
-<span id="cb24-497"><a href="#cb24-497" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-498"><a href="#cb24-498" aria-hidden="true" tabindex="-1"></a><span class="co">#Add Clusters to the original dataframe</span></span>
-<span id="cb24-499"><a href="#cb24-499" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Cluster <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(m1.kmean<span class="sc">$</span>cluster)</span>
-<span id="cb24-500"><a href="#cb24-500" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-501"><a href="#cb24-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-502"><a href="#cb24-502" aria-hidden="true" tabindex="-1"></a>The model results in 3 clusters as was decided and the clusters are formed with sizes 1807, 953, 914.</span>
-<span id="cb24-503"><a href="#cb24-503" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-504"><a href="#cb24-504" aria-hidden="true" tabindex="-1"></a>Now, we can extract the clusters and add to our initial data to do some descriptive statistics at the cluster level. Below table summarizes the original dataset grouped by clusters to show the mean of the variables:</span>
-<span id="cb24-505"><a href="#cb24-505" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-506"><a href="#cb24-506" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-491"><a href="#cb24-491" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div</span> <span class="er">style</span><span class="ot">=</span><span class="st">"border:1px solid #333"</span><span class="kw">&gt;</span></span>
+<span id="cb24-492"><a href="#cb24-492" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-493"><a href="#cb24-493" aria-hidden="true" tabindex="-1"></a>K = 3</span>
+<span id="cb24-494"><a href="#cb24-494" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-495"><a href="#cb24-495" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/div&gt;</span></span>
+<span id="cb24-496"><a href="#cb24-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-497"><a href="#cb24-497" aria-hidden="true" tabindex="-1"></a><span class="fu">### K-Means Model</span></span>
+<span id="cb24-498"><a href="#cb24-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-499"><a href="#cb24-499" aria-hidden="true" tabindex="-1"></a>Now, we will create the K-Means model with K = 3.</span>
+<span id="cb24-500"><a href="#cb24-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-501"><a href="#cb24-501" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-502"><a href="#cb24-502" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute k-means with k = 3</span></span>
+<span id="cb24-503"><a href="#cb24-503" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb24-504"><a href="#cb24-504" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb24-505"><a href="#cb24-505" aria-hidden="true" tabindex="-1"></a>m1.kmean <span class="ot">&lt;-</span> customer_scaled <span class="sc">%&gt;%</span> <span class="fu">kmeans</span>(k, <span class="at">iter.max =</span> <span class="dv">20</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
+<span id="cb24-506"><a href="#cb24-506" aria-hidden="true" tabindex="-1"></a><span class="co">#nstart option that attempts multiple initial configurations and reports on the best one</span></span>
 <span id="cb24-507"><a href="#cb24-507" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-508"><a href="#cb24-508" aria-hidden="true" tabindex="-1"></a>clustStats <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span></span>
-<span id="cb24-509"><a href="#cb24-509" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Cluster) <span class="sc">%&gt;%</span></span>
-<span id="cb24-510"><a href="#cb24-510" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="st">"mean"</span>)</span>
-<span id="cb24-511"><a href="#cb24-511" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-512"><a href="#cb24-512" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-513"><a href="#cb24-513" aria-hidden="true" tabindex="-1"></a>clustStats <span class="sc">%&gt;%</span></span>
-<span id="cb24-514"><a href="#cb24-514" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb24-515"><a href="#cb24-515" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">"hover"</span>, <span class="at">full_width =</span> T)</span>
-<span id="cb24-516"><a href="#cb24-516" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-517"><a href="#cb24-517" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-518"><a href="#cb24-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-519"><a href="#cb24-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-520"><a href="#cb24-520" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-521"><a href="#cb24-521" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,</span>
-<span id="cb24-522"><a href="#cb24-522" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>),</span>
-<span id="cb24-523"><a href="#cb24-523" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
-<span id="cb24-524"><a href="#cb24-524" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>,</span>
-<span id="cb24-525"><a href="#cb24-525" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb24-526"><a href="#cb24-526" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-508"><a href="#cb24-508" aria-hidden="true" tabindex="-1"></a><span class="co">#Add Clusters to the original dataframe</span></span>
+<span id="cb24-509"><a href="#cb24-509" aria-hidden="true" tabindex="-1"></a>customer<span class="sc">$</span>Cluster <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(m1.kmean<span class="sc">$</span>cluster)</span>
+<span id="cb24-510"><a href="#cb24-510" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-511"><a href="#cb24-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-512"><a href="#cb24-512" aria-hidden="true" tabindex="-1"></a>The model results in 3 clusters as was decided and the clusters are formed with sizes 1807, 953, 914.</span>
+<span id="cb24-513"><a href="#cb24-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-514"><a href="#cb24-514" aria-hidden="true" tabindex="-1"></a>Now, we can extract the clusters and add to our initial data to do some descriptive statistics at the cluster level. Below table summarizes the original dataset grouped by clusters to show the mean of the variables:</span>
+<span id="cb24-515"><a href="#cb24-515" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-516"><a href="#cb24-516" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-517"><a href="#cb24-517" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-518"><a href="#cb24-518" aria-hidden="true" tabindex="-1"></a>clustStats <span class="ot">&lt;-</span> customer <span class="sc">%&gt;%</span></span>
+<span id="cb24-519"><a href="#cb24-519" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb24-520"><a href="#cb24-520" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(<span class="st">"mean"</span>)</span>
+<span id="cb24-521"><a href="#cb24-521" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-522"><a href="#cb24-522" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-523"><a href="#cb24-523" aria-hidden="true" tabindex="-1"></a>clustStats <span class="sc">%&gt;%</span></span>
+<span id="cb24-524"><a href="#cb24-524" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb24-525"><a href="#cb24-525" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">"hover"</span>, <span class="at">full_width =</span> T)</span>
+<span id="cb24-526"><a href="#cb24-526" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-527"><a href="#cb24-527" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-528"><a href="#cb24-528" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-529"><a href="#cb24-529" aria-hidden="true" tabindex="-1"></a>The above graph shows the clusters created using all columns of customer dataframe using the first two principle components to define the X-Y coordinates of each observation.</span>
-<span id="cb24-530"><a href="#cb24-530" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-531"><a href="#cb24-531" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-532"><a href="#cb24-532" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-533"><a href="#cb24-533" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,<span class="at">choose.vars =</span> <span class="fu">c</span>(<span class="st">"LastSeen"</span>,<span class="st">"Amount"</span>),</span>
-<span id="cb24-534"><a href="#cb24-534" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>),</span>
-<span id="cb24-535"><a href="#cb24-535" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
-<span id="cb24-536"><a href="#cb24-536" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>,</span>
-<span id="cb24-537"><a href="#cb24-537" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb24-538"><a href="#cb24-538" aria-hidden="true" tabindex="-1"></a>             )</span>
-<span id="cb24-539"><a href="#cb24-539" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-540"><a href="#cb24-540" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-541"><a href="#cb24-541" aria-hidden="true" tabindex="-1"></a>The above graph shows that the clusters 1 and 3 are seen in the store often. Cluster 3 customers are spending more whenever they visit. Cluster 2 not seen recently so spend less.</span>
-<span id="cb24-542"><a href="#cb24-542" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-543"><a href="#cb24-543" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-544"><a href="#cb24-544" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-545"><a href="#cb24-545" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,<span class="at">choose.vars =</span> <span class="fu">c</span>(<span class="st">"Frequency"</span>,<span class="st">"Amount"</span>),</span>
-<span id="cb24-546"><a href="#cb24-546" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>),</span>
-<span id="cb24-547"><a href="#cb24-547" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
-<span id="cb24-548"><a href="#cb24-548" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>,</span>
-<span id="cb24-549"><a href="#cb24-549" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb24-550"><a href="#cb24-550" aria-hidden="true" tabindex="-1"></a>             )</span>
-<span id="cb24-551"><a href="#cb24-551" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-528"><a href="#cb24-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-529"><a href="#cb24-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-530"><a href="#cb24-530" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-531"><a href="#cb24-531" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,</span>
+<span id="cb24-532"><a href="#cb24-532" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>),</span>
+<span id="cb24-533"><a href="#cb24-533" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
+<span id="cb24-534"><a href="#cb24-534" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>,</span>
+<span id="cb24-535"><a href="#cb24-535" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb24-536"><a href="#cb24-536" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-537"><a href="#cb24-537" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-538"><a href="#cb24-538" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-539"><a href="#cb24-539" aria-hidden="true" tabindex="-1"></a>The above graph shows the clusters created using all columns of customer dataframe using the first two principle components to define the X-Y coordinates of each observation.</span>
+<span id="cb24-540"><a href="#cb24-540" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-541"><a href="#cb24-541" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-542"><a href="#cb24-542" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-543"><a href="#cb24-543" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,<span class="at">choose.vars =</span> <span class="fu">c</span>(<span class="st">"LastSeen"</span>,<span class="st">"Amount"</span>),</span>
+<span id="cb24-544"><a href="#cb24-544" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>),</span>
+<span id="cb24-545"><a href="#cb24-545" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
+<span id="cb24-546"><a href="#cb24-546" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>,</span>
+<span id="cb24-547"><a href="#cb24-547" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb24-548"><a href="#cb24-548" aria-hidden="true" tabindex="-1"></a>             )</span>
+<span id="cb24-549"><a href="#cb24-549" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-550"><a href="#cb24-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-551"><a href="#cb24-551" aria-hidden="true" tabindex="-1"></a>The above graph shows that the clusters 1 and 3 are seen in the store often. Cluster 3 customers are spending more whenever they visit. Cluster 2 not seen recently so spend less.</span>
 <span id="cb24-552"><a href="#cb24-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-553"><a href="#cb24-553" aria-hidden="true" tabindex="-1"></a>The above graph shows that the Cluster 3 are more frequently buying and hence spending more. Cluster 1 and 2 are almost having similar trends in terms of number of purchases and amount spent.</span>
+<span id="cb24-553"><a href="#cb24-553" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
 <span id="cb24-554"><a href="#cb24-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-555"><a href="#cb24-555" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-556"><a href="#cb24-556" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,<span class="at">choose.vars =</span> <span class="fu">c</span>(<span class="st">"LastSeen"</span>,<span class="st">"Frequency"</span>),</span>
-<span id="cb24-557"><a href="#cb24-557" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>), </span>
-<span id="cb24-558"><a href="#cb24-558" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
-<span id="cb24-559"><a href="#cb24-559" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>, </span>
-<span id="cb24-560"><a href="#cb24-560" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb24-561"><a href="#cb24-561" aria-hidden="true" tabindex="-1"></a>             )       </span>
-<span id="cb24-562"><a href="#cb24-562" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-563"><a href="#cb24-563" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-564"><a href="#cb24-564" aria-hidden="true" tabindex="-1"></a>The above graph shows that the Cluster 1 and 3 are seen buying often and whenever they are seen buying, they make lot of purchases.</span>
-<span id="cb24-565"><a href="#cb24-565" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-566"><a href="#cb24-566" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-567"><a href="#cb24-567" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#9f00e6"</span>, <span class="st">"#e69f00"</span>, <span class="st">"#00e69f"</span>)</span>
-<span id="cb24-568"><a href="#cb24-568" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> colors[<span class="fu">as.numeric</span>(m1.kmean<span class="sc">$</span>cluster)]</span>
-<span id="cb24-569"><a href="#cb24-569" aria-hidden="true" tabindex="-1"></a>s3d <span class="ot">&lt;-</span> <span class="fu">scatterplot3d</span>(customer_scaled, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">color=</span>colors)</span>
-<span id="cb24-570"><a href="#cb24-570" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"top"</span>,<span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">"Cluster"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
-<span id="cb24-571"><a href="#cb24-571" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span>  <span class="fu">c</span>(<span class="st">"#9f00e6"</span>, <span class="st">"#e69f00"</span>, <span class="st">"#00e69f"</span>), <span class="at">pch =</span> <span class="dv">16</span>)    </span>
-<span id="cb24-572"><a href="#cb24-572" aria-hidden="true" tabindex="-1"></a>centers <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(m1.kmean<span class="sc">$</span>centers)</span>
-<span id="cb24-573"><a href="#cb24-573" aria-hidden="true" tabindex="-1"></a>s3dp <span class="ot">&lt;-</span> s3d<span class="sc">$</span><span class="fu">points3d</span>(centers,</span>
-<span id="cb24-574"><a href="#cb24-574" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#000000"</span>,<span class="st">"#0e0a00"</span>,<span class="st">"#000e0a"</span>), <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">pch =</span> <span class="dv">8</span>)</span>
-<span id="cb24-575"><a href="#cb24-575" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-576"><a href="#cb24-576" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-577"><a href="#cb24-577" aria-hidden="true" tabindex="-1"></a>From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more, and they purchase frequently.</span>
-<span id="cb24-578"><a href="#cb24-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-579"><a href="#cb24-579" aria-hidden="true" tabindex="-1"></a>Customers in cluster 2 are of concern. They do not visit the website often but spend almost similar to cluster 1 and also purchase as frequently as cluster 1. So, we can either target cluster 1 to make them buy when they visit store (since they are visiting often but buying less) or make cluster 2 visit often as they are buying more when they visit but visiting less.</span>
-<span id="cb24-580"><a href="#cb24-580" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-581"><a href="#cb24-581" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-582"><a href="#cb24-582" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Amount, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()<span class="sc">+</span>  <span class="fu">theme_classic</span>()  <span class="sc">+</span> </span>
-<span id="cb24-583"><a href="#cb24-583" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on Amount Spent"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span>
-<span id="cb24-584"><a href="#cb24-584" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-585"><a href="#cb24-585" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-586"><a href="#cb24-586" aria-hidden="true" tabindex="-1"></a>Customers in Cluster# 3 are spending more whereas cluster 2 customers are spending the least.</span>
-<span id="cb24-587"><a href="#cb24-587" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-588"><a href="#cb24-588" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-589"><a href="#cb24-589" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Frequency, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
-<span id="cb24-590"><a href="#cb24-590" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on Number of transactions"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span>
-<span id="cb24-591"><a href="#cb24-591" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-592"><a href="#cb24-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-593"><a href="#cb24-593" aria-hidden="true" tabindex="-1"></a>Customers in Cluster# 3 are most frequent customers indicating that the frequent customers spend  the most.</span>
-<span id="cb24-594"><a href="#cb24-594" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-595"><a href="#cb24-595" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-596"><a href="#cb24-596" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>LastSeen, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
-<span id="cb24-597"><a href="#cb24-597" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on customer last seen shopping"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span>
-<span id="cb24-598"><a href="#cb24-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-599"><a href="#cb24-599" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-600"><a href="#cb24-600" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-601"><a href="#cb24-601" aria-hidden="true" tabindex="-1"></a>Customers in Cluster 2 have not been seen shopping recently. The most recently seen shoppers are in Cluster 3 and that also explains why they have spent more money and bought frequently.</span>
+<span id="cb24-555"><a href="#cb24-555" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,<span class="at">choose.vars =</span> <span class="fu">c</span>(<span class="st">"Frequency"</span>,<span class="st">"Amount"</span>),</span>
+<span id="cb24-556"><a href="#cb24-556" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>),</span>
+<span id="cb24-557"><a href="#cb24-557" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
+<span id="cb24-558"><a href="#cb24-558" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>,</span>
+<span id="cb24-559"><a href="#cb24-559" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb24-560"><a href="#cb24-560" aria-hidden="true" tabindex="-1"></a>             )</span>
+<span id="cb24-561"><a href="#cb24-561" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-562"><a href="#cb24-562" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-563"><a href="#cb24-563" aria-hidden="true" tabindex="-1"></a>The above graph shows that the Cluster 3 are more frequently buying and hence spending more. Cluster 1 and 2 are almost having similar trends in terms of number of purchases and amount spent.</span>
+<span id="cb24-564"><a href="#cb24-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-565"><a href="#cb24-565" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-566"><a href="#cb24-566" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(m1.kmean, <span class="at">data =</span> customer_scaled,<span class="at">choose.vars =</span> <span class="fu">c</span>(<span class="st">"LastSeen"</span>,<span class="st">"Frequency"</span>),</span>
+<span id="cb24-567"><a href="#cb24-567" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#2E9FDF"</span>, <span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>), </span>
+<span id="cb24-568"><a href="#cb24-568" aria-hidden="true" tabindex="-1"></a>             <span class="at">geom =</span> <span class="st">"point"</span>,</span>
+<span id="cb24-569"><a href="#cb24-569" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">"convex"</span>, </span>
+<span id="cb24-570"><a href="#cb24-570" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb24-571"><a href="#cb24-571" aria-hidden="true" tabindex="-1"></a>             )       </span>
+<span id="cb24-572"><a href="#cb24-572" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-573"><a href="#cb24-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-574"><a href="#cb24-574" aria-hidden="true" tabindex="-1"></a>The above graph shows that the Cluster 1 and 3 are seen buying often and whenever they are seen buying, they make lot of purchases.</span>
+<span id="cb24-575"><a href="#cb24-575" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-576"><a href="#cb24-576" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-577"><a href="#cb24-577" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#9f00e6"</span>, <span class="st">"#e69f00"</span>, <span class="st">"#00e69f"</span>)</span>
+<span id="cb24-578"><a href="#cb24-578" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> colors[<span class="fu">as.numeric</span>(m1.kmean<span class="sc">$</span>cluster)]</span>
+<span id="cb24-579"><a href="#cb24-579" aria-hidden="true" tabindex="-1"></a>s3d <span class="ot">&lt;-</span> <span class="fu">scatterplot3d</span>(customer_scaled, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">color=</span>colors)</span>
+<span id="cb24-580"><a href="#cb24-580" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"top"</span>,<span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">"Cluster"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
+<span id="cb24-581"><a href="#cb24-581" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span>  <span class="fu">c</span>(<span class="st">"#9f00e6"</span>, <span class="st">"#e69f00"</span>, <span class="st">"#00e69f"</span>), <span class="at">pch =</span> <span class="dv">16</span>)    </span>
+<span id="cb24-582"><a href="#cb24-582" aria-hidden="true" tabindex="-1"></a>centers <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(m1.kmean<span class="sc">$</span>centers)</span>
+<span id="cb24-583"><a href="#cb24-583" aria-hidden="true" tabindex="-1"></a>s3dp <span class="ot">&lt;-</span> s3d<span class="sc">$</span><span class="fu">points3d</span>(centers,</span>
+<span id="cb24-584"><a href="#cb24-584" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#000000"</span>,<span class="st">"#0e0a00"</span>,<span class="st">"#000e0a"</span>), <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">pch =</span> <span class="dv">8</span>)</span>
+<span id="cb24-585"><a href="#cb24-585" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-586"><a href="#cb24-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-587"><a href="#cb24-587" aria-hidden="true" tabindex="-1"></a>From the above graph that depicts all the three dimensions of the clustering, we can clearly see that the customers in cluster 3 are seen shopping often, they spend more, and they purchase frequently.</span>
+<span id="cb24-588"><a href="#cb24-588" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-589"><a href="#cb24-589" aria-hidden="true" tabindex="-1"></a>Customers in cluster 2 are of concern. They do not visit the website often but spend almost similar to cluster 1 and also purchase as frequently as cluster 1. So, we can either target cluster 1 to make them buy when they visit store (since they are visiting often but buying less) or make cluster 2 visit often as they are buying more when they visit but visiting less.</span>
+<span id="cb24-590"><a href="#cb24-590" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-591"><a href="#cb24-591" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-592"><a href="#cb24-592" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Amount, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()<span class="sc">+</span>  <span class="fu">theme_classic</span>()  <span class="sc">+</span> </span>
+<span id="cb24-593"><a href="#cb24-593" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on Amount Spent"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span>
+<span id="cb24-594"><a href="#cb24-594" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-595"><a href="#cb24-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-596"><a href="#cb24-596" aria-hidden="true" tabindex="-1"></a>Customers in Cluster# 3 are spending more whereas cluster 2 customers are spending the least.</span>
+<span id="cb24-597"><a href="#cb24-597" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-598"><a href="#cb24-598" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-599"><a href="#cb24-599" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>Frequency, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
+<span id="cb24-600"><a href="#cb24-600" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on Number of transactions"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span>
+<span id="cb24-601"><a href="#cb24-601" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-602"><a href="#cb24-602" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-603"><a href="#cb24-603" aria-hidden="true" tabindex="-1"></a><span class="fu">### Analysis</span></span>
-<span id="cb24-604"><a href="#cb24-604" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-605"><a href="#cb24-605" aria-hidden="true" tabindex="-1"></a><span class="al">![Image Source: ©Anand](RFM.png)</span></span>
-<span id="cb24-606"><a href="#cb24-606" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-607"><a href="#cb24-607" aria-hidden="true" tabindex="-1"></a>For this business, it is a matter of concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.</span>
+<span id="cb24-603"><a href="#cb24-603" aria-hidden="true" tabindex="-1"></a>Customers in Cluster# 3 are most frequent customers indicating that the frequent customers spend  the most.</span>
+<span id="cb24-604"><a href="#cb24-604" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-605"><a href="#cb24-605" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
+<span id="cb24-606"><a href="#cb24-606" aria-hidden="true" tabindex="-1"></a>customer <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Cluster, <span class="at">y=</span>LastSeen, <span class="at">fill=</span>Cluster)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
+<span id="cb24-607"><a href="#cb24-607" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Clusters based on customer last seen shopping"</span>, <span class="at">subtitle =</span> <span class="st">"K-Means Model m1.kmeans"</span>)</span>
 <span id="cb24-608"><a href="#cb24-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-609"><a href="#cb24-609" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
-<span id="cb24-610"><a href="#cb24-610" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-611"><a href="#cb24-611" aria-hidden="true" tabindex="-1"></a> For businesses, the customer segmentation play pivotal role in identifying the customers by grouping them based on their buying habits and patterns. With increasingly large volume of transactions and unprecedented business activities, a clustering algorithm like K-Means is a great tool to achieve the segmentation of customers with speed and accuracy. In this paper, we have tried a real-time online business data to show how K-Means helped the business in identifying customers who are at risk of switching to other stores. We have also explained that there are multiple steps in the data mining processes and it started with data selection, then to data preparation, visualization, and finally to model creation and interpretation. </span>
+<span id="cb24-609"><a href="#cb24-609" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-610"><a href="#cb24-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-611"><a href="#cb24-611" aria-hidden="true" tabindex="-1"></a>Customers in Cluster 2 have not been seen shopping recently. The most recently seen shoppers are in Cluster 3 and that also explains why they have spent more money and bought frequently.</span>
 <span id="cb24-612"><a href="#cb24-612" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-613"><a href="#cb24-613" aria-hidden="true" tabindex="-1"></a> We also understand that K-Means is not always accurate and is dependent on initial choice of centroids and optimal number of clusters chosen. However, there are some improved algorithms that can help overcome these shortcomings.</span>
-<span id="cb24-614"><a href="#cb24-614" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-615"><a href="#cb24-615" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span>
+<span id="cb24-613"><a href="#cb24-613" aria-hidden="true" tabindex="-1"></a><span class="fu">### Analysis</span></span>
+<span id="cb24-614"><a href="#cb24-614" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-615"><a href="#cb24-615" aria-hidden="true" tabindex="-1"></a><span class="al">![Image Source: ©Anand](RFM.png)</span></span>
 <span id="cb24-616"><a href="#cb24-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-617"><a href="#cb24-617" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-617"><a href="#cb24-617" aria-hidden="true" tabindex="-1"></a>For this business, it is a matter of concern that most of their customers (49%) are not finding what they want. The shop would need to revisit their strategy of what brand/item they should be selling in the online shop to convert visits into revenue.</span>
 <span id="cb24-618"><a href="#cb24-618" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-619"><a href="#cb24-619" aria-hidden="true" tabindex="-1"></a> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-619"><a href="#cb24-619" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
+<span id="cb24-620"><a href="#cb24-620" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-621"><a href="#cb24-621" aria-hidden="true" tabindex="-1"></a> For businesses, the customer segmentation play pivotal role in identifying the customers by grouping them based on their buying habits and patterns. With increasingly large volume of transactions and unprecedented business activities, a clustering algorithm like K-Means is a great tool to achieve the segmentation of customers with speed and accuracy. In this paper, we have tried a real-time online business data to show how K-Means helped the business in identifying customers who are at risk of switching to other stores. We have also explained that there are multiple steps in the data mining processes and it started with data selection, then to data preparation, visualization, and finally to model creation and interpretation. </span>
+<span id="cb24-622"><a href="#cb24-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-623"><a href="#cb24-623" aria-hidden="true" tabindex="-1"></a> We also understand that K-Means is not always accurate and is dependent on initial choice of centroids and optimal number of clusters chosen. However, there are some improved algorithms that can help overcome these shortcomings.</span>
+<span id="cb24-624"><a href="#cb24-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-625"><a href="#cb24-625" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span>
+<span id="cb24-626"><a href="#cb24-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-627"><a href="#cb24-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-628"><a href="#cb24-628" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-629"><a href="#cb24-629" aria-hidden="true" tabindex="-1"></a> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
