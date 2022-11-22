@@ -9,15 +9,36 @@ editor: visual
 
 ## K-Means Clustering
 
-Intro (this is just a very rough outline!)
+An unsupervised machine learning clustering algorithm
 
-- What is K-Means clustering? What is unsupervised learning?
-- Why is it useful?
-- What are limitations? 
-- What is our project focus? (customer segmentation)
-- What are we trying to accomplish?
+- Data is clustered based on feature similarity
+- Unsupervised: Data is unlabeled, groups are unknown
+- Find similar groups, glean insights
+- Dataset may be very large and highly dimensional
 
 To see the full project visit <http://kmean.scrib.ink>.
+
+## Uses
+
+- Identify distinct customer groups for targeted marketing (customer segmentation)
+- Image classification
+- Recommendation engines
+- Etc.
+
+## Limitations
+
+- Sometimes difficult to determine appropriate number of clusters (K-value) [@Sin2020Unsup]
+- Sensitive to initial centroid selection, noise and outliers [@Jie2020Review]
+  - Convergence at local minimum rather than global minimum.
+- Challenging to classify data that is not hyperspherically shaped [@Ahmed2020TheK]
+
+## Project Focus
+
+- Use the K-Means algorithm for customer segmentation
+- Determine similar customer groups for targeted marketing
+  - How often are customers shopping?
+  - How much are customers buying?
+
 
 
 ## Testing Including an Image
