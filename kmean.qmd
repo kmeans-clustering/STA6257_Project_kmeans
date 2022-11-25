@@ -1,0 +1,456 @@
+---
+title: "K-Means Clustering"
+subtitle: <div style="color:#ffbf00; margin-bottom:40px">An unsupervised learning algorithm</div>
+# title-slide-attributes:
+#   data-background-image: kmeans.png
+#   data-background-size: contain
+#   data-background-opacity: "0.5"
+author:
+  - <div style="color:#13f4ef">Anand Pandey</div>
+  - <div style="color:#13f4ef">Katie Hidden</div>
+  - <div style="color:#13f4ef">Akash Chandra</div>
+format: 
+  revealjs:
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    transition: slide
+    background-transition: fade
+    theme: styles.scss
+    footer: <http://kmean.scrib.ink/>
+---
+
+## Overview {background-image="intro.png" background-size="476px 512px" background-position="bottom 50px right 100px"}
+
+-   What is _K-Means Clustering_?
+
+-   Why would we need Clustering?
+
+-   Why clustering isn’t (always) the answer? - Limitations
+
+-   How can we create Clusters?
+
+-   What is our business usecase?
+
+-   What business value can we extract from the clusters?
+
+## K-Means Clustering
+
+::: columns
+::: {.column width="30%"}
+![~*<span style="font-size:12px">Image Source:©Anand</span>*~](cIDB3.png)
+:::
+
+::: {.column .r-fit-text width="70%"}
+::: {style="font-size:28px"}
+<br/>
+An unsupervised machine learning clustering algorithm
+
+-   Data is clustered based on feature similarity
+
+-   Unsupervised: Data is unlabeled, groups are unknown
+
+-   Find similar groups, glean insights
+
+-   Dataset may be very large and highly dimensional
+:::
+:::
+:::
+
+## Why would we need Clustering?
+
+::: columns
+::: {.column width="50%"}
+![~*<span style="font-size:12px">Image Source:©Anand</span>*~](uses.png)
+:::
+
+::: {.column .r-fit-text width="50%"}
+::: {style="font-size:28px"}
+<br/>
+**Main usecases**:
+
+-   A large unstructured dataset is to be clustered<br/> without any instructions
+
+-   No prior information on how many groups we<br/> might need to divide our data into
+:::
+:::
+:::
+
+##    Why clustering isn’t (always) the answer? 
+###   `Limitations`
+<br/>
+
+-   Sometimes difficult to determine appropriate number of clusters (K-value)
+
+-   Sensitive to initial centroid selection, noise and outliers
+
+-   Convergence at local minimum rather than global minimum
+
+-   Challenging to classify data that is not hyperspherically shaped
+
+##    How can we create Clusters?
+###   `The Algorithm`
+
+::: columns
+::: {.column width="50%"}
+![](kmean_s0.png)
+:::
+
+::: {.column .r-fit-text width="50%"}
+::: {style="font-size:28px;margin-left:60px"}
+![](flowchart.png)
+
+:::
+:::
+:::
+
+##    How can we create Clusters?
+###   `The algorithm in action`
+
+::: columns
+::: {.column width="60%"}
+![*<span style="font-size:12px">Image Source: http://shabal.in/</span>*](random.gif)
+:::
+
+::: {.column width="40%"}
+![](flowchart.png)
+:::
+:::
+
+##    How can we create Clusters?
+###   `The Math behind K-Means Algorithm`
+
+-   K-Means runs in an unsupervised environment and hence it measures the quality of the formed clusters by finding the variations within each cluster.
+
+
+::: {.callout-note icon=false}
+##    The goal will be to minimize this intra-cluster variation (also called WCSS)
+$$
+WCSS = \sum_{i = 1}^{k}\sum_{x ∈ C_i}|x-μ_i|^2
+$$
+:::
+Where, K is the # of disjoint cluster $C_i$, x is a data point in the cluster $C_i$, $μ_i$ is the mean of the data points in the cluster $C_i$.
+
+##    How can we create Clusters?
+###   `Distance measures`
+
+
+
+::: columns
+::: {.column width="50%"}
+![~*<span style="font-size:12px">Image Source:©Anand</span>*~](dist.png)
+:::
+
+::: {.column .r-fit-text width="50%"}
+::: {style="font-size:24px;margin-left:60px"}
+
+-   K-means calculates proximity between data points and centroids to place the data in appropriate cluster.
+
+-   Popular methods:
+    -   Euclidean distance
+        $$
+        D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+        $$
+
+    -   Manhattan distance
+        $$
+        D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
+        $$
+
+:::
+:::
+:::
+
+
+
+##    Our Business usecase
+###   `Customer Segmentation`
+
+::: columns
+::: {.column width="50%"}
+![~*<span style="font-size:12px">Image Source:©Anand</span>*~](slide1.png)
+:::
+
+::: {.column .r-fit-text width="50%"}
+-   Dividing customers into number of focused groups that are as dissimilar as possible across groups, but as similar as possible within each group in specific ways with shared buying characteristics that is relevant to marketing
+
+-   The chosen attributes will play a key role in deciding the groups.
+
+-   Algorithm is based around analyzing what we call RFM - customer recency, frequency, and monetary values
+:::
+:::
+
+
+##    Our Business usecase
+###   `The Dataset`
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+library(readxl)
+library(papeR)
+library(dplyr)
+library(tidyverse)
+library(kableExtra)
+library(cowplot)
+```
+```{r}
+#| warning: false
+#| echo: false
+filename <- "online_retail_II.xlsx"
+df = read_excel(filename)
+ 
+names(df)[names(df) == 'Customer ID'] <- 'CustomerID'
+```
+
+The data set contains the transactions from a UK-based online retail store between 01/12/2009 and 09/12/2011.
+
+::: {.panel-tabset}
+
+###   Data Definition
+<div style="font-size:14px">
+| Attribute | Type | Description
+|:----------|:-----|:-----------|
+| Invoice   | Nominal   | A 6-digit unique transaction #. If starts with `c`, indicates a cancellation.|
+| CustomerID| Numeric | A 5-digit unique customer Id. |
+| StockCode | Nominal | A 5-digit code uniquely assigned to each distinct product. |
+| Quantity     | Numeric  |   The quantities of each product (item) per transaction. |
+| InvoiceDate       | Numeric   |     The day and time when a transaction was generated. |
+| Price | Numeric | Product price per unit in sterling (£). |
+| Country | Nominal | The name of the country where a customer resides. |
+| Description | Nominal | Product name. |
+</div>
+
+###   Data Preview
+<!-- ![~*<span style="font-size:12px">Image Source:©Anand</span>*~](datapreview.png) -->
+
+```{r}
+#| warning: false
+#| echo: false
+head(df) %>%
+  kbl() %>%
+  kable_paper("hover", full_width = T)
+```
+
+###   Initial Observations
+
+-   There are 525461 records in the dataset
+
+-   107927 Customer Ids are missing (only 417534 customers are identifiable)
+
+
+:::
+
+##    Our Business usecase
+###   `Data Visualization`
+
+::: {.panel-tabset}
+###   Visualization
+```{r}
+#| warning: false
+#| echo: false
+df1=na.omit(df, cols="CustomerID")
+df1$QuantityRange <- cut(df1$Quantity, c(-Inf, 1, 5, 10, 20, 30, 50, Inf))
+g1 <- ggplot(df1,aes(QuantityRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Quantity Histogram")+xlab('Quantity')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+#g1
+df1$PriceRange <- cut(df1$Price, c(-Inf, 1, 2, 4, 6, 8, 10, 50, Inf))
+g2 <- ggplot(df1,aes(PriceRange))+geom_histogram(stat= "count", aes(fill = ..count..))+ labs(title="Price Histogram")+xlab('Price')+ylab('Count')+ theme(axis.text.y=element_blank(), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  #theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+#g2
+ 
+g3 <- df1 %>%
+    group_by(StockCode) %>%
+    summarise(count = n()) %>%
+    top_n(n = 5, wt = count)  %>% ggplot(aes(x=reorder(StockCode, -count), y=count, fill=StockCode))+geom_bar(stat= "identity")+ labs(title="Top 5 StockCode")+xlab('StockCode')+ylab('Count')+  theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+ 
+#g3
+ 
+g4 <- df1 %>%
+    group_by(Country) %>%
+    summarise(count = n()) %>%
+    top_n(n = 5, wt = count) %>%
+    ggplot(aes(x=reorder(Country, -count), y=count, fill=Country))+geom_bar(stat="identity")+ labs(title="Top 5 Country")+xlab('Country')+ylab('Count')+ theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+#g4
+ 
+plot_grid(g1, g2, g3, g4,
+          labels = c("A", "B", "C", "D"),
+          ncol = 2, nrow = 2)
+```
+###   Observations
+-   The Quantity is heavily skewed right and most of the transactions involved a quantity in the range of 1 to 5
+
+-   The unit Price is also skewed right and most of the items have unit price between 1 and 4
+
+-   The item with StockCode 85123A was sold most
+
+-   Most of the customers belong to United Kingdom
+:::
+
+##    Our Business usecase
+###   `Data Preparation`
+
+
+
+::: columns
+::: {.column .r-fit-text width="50%"}
+
+::: {style="font-size:18px; line-height:1.5"}
+1.    Remove missing values
+```{.r}
+df=na.omit(df, cols="CustomerID")
+```
+
+2.    Select only required attributes - CustomerID,<br/>Invoice, Quantity, InvoiceDate and Price
+```{.r}
+data = subset(df, select = -c(Description, Country, StockCode) )
+```
+
+3.    Create a new attribute Amount
+```{.r code-line-numbers="1"}
+data$Amount = data$Quantity * data$Price
+#Group by customer id and add amounts
+customer_monetary <- as.data.frame(data %>%
+  group_by(CustomerID) %>%
+  summarise(Amount = sum(Amount)))
+```
+
+4.    Group by customer id and count invoices
+```{.r code-line-numbers="1"}
+customer_frequency <- as.data.frame(data %>% group_by(CustomerID) 
+%>% summarise(Invoice = n()))
+```
+
+5.    Create a new attribute LastSeen
+```{.r code-line-numbers="1"}
+data$LastSeen =as.integer(difftime(max(data$InvoiceDate), 
+  data$InvoiceDate, units = "days"))
+#Group by customer id and take min of LastSeen
+customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID) 
+%>% summarise(LastSeen = min(LastSeen)))
+```
+
+:::
+:::
+
+::: {.column .r-fit-text width="50%"}
+::: {style="font-size:18px"}
+6.    Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store
+```{.r}
+customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
+customer <- merge(customer, customer_lastseen, by = 'CustomerID')
+```
+
+
+:::
+:::
+:::
+
+##    Our Business usecase
+###   `Target Dataset`
+
+
+
+##    Our Business usecase
+###   Statistical Modeling: `Optimal # of Clusters`
+
+::: {style="font-size:24px"}
+The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K)
+:::
+::: {.panel-tabset}
+
+### Elbow Method
+
+::: columns
+::: {.column width="50%"}
+<br/>
+
+```{.r code-line-numbers="1"}
+fviz_nbclust(customer, kmeans, method = "wss") 
+  + geom_vline(xintercept = 3, linetype = 2)
+  + labs(subtitle = "Elbow Method")
+```
+<br/>
+-   Calculates values of cost with changing K
+
+-   The larger number of clusters implies the data points are closer to the centroid
+
+-   The point where this distortion declines the most is the elbow point
+:::
+
+::: {.column .r-fit-text width="50%"}
+::: {style="font-size:28px;margin-left:60px"}
+![](elbow.png)
+
+:::
+:::
+:::
+
+
+### Silhouette Method
+
+
+::: columns
+::: {.column width="50%"}
+<br/>
+
+```{.r code-line-numbers="1"}
+fviz_nbclust(customer, kmeans, method = "silhouette")
+  + theme_classic()
+  + labs(subtitle = "Silhouette Method")
+```
+<br/>
+-   Calculates a coefficient which is a measure of how similar a data point is within-cluster (cohesion) compared to other clusters (separation)
+
+:::
+
+::: {.column .r-fit-text width="50%"}
+::: {style="font-size:28px;margin-left:60px"}
+![](silhouette.png)
+
+:::
+:::
+:::
+
+
+### Gap Statistic Method
+
+
+::: columns
+::: {.column width="50%"}
+<br/>
+
+```{.r}
+gap_stat <- clusGap(customer, FUN=kmeans, nstart=25,
+              K.max=10, B=50)
+fviz_gap_stat(gap_stat)
+```
+<br/>
+-   Gap Statistics relies on an approach where the number K is chosen based on the biggest fluctuation in the within-cluster distance
+:::
+
+::: {.column .r-fit-text width="50%"}
+::: {style="font-size:28px;margin-left:60px"}
+![](gap.png)
+
+:::
+:::
+:::
+
+:::
+
+
+##    Our Business usecase
+###   Statistical Modeling: `The K-Means Model`
+
+
+
+##    Our Business usecase
+###   Statistical Modeling: `The Results`
+
+
+
+##   What business value from the clusters?
+###    `Analysis`
+
+
+##   Conclusion
+
+

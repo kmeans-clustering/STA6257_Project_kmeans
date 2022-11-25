@@ -10,6 +10,7 @@ author:
 date: '`r Sys.Date()`'
 format:
   html:
+    link-external-icon: true
     code-block-bg: true
     code-block-border-left: "#31BAE9"
     code-overflow: wrap
@@ -20,8 +21,9 @@ course: STA 6257 - Advance Statistical Modeling
 bibliography: references.bib
 indent: true
 ---
- 
 ------
+
+[Presentation](https://kmean.scrib.ink/kmean){.external target="_blank"}
  
 # Introduction
  
