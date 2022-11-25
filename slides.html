@@ -351,26 +351,112 @@
 <li>Etc.</li>
 </ul>
 </section>
-<section id="limitations" class="slide level2">
-<h2>Limitations</h2>
-<ul>
-<li>Sometimes difficult to determine appropriate number of clusters (K-value) <span class="citation" data-cites="Sin2020Unsup">[@Sin2020Unsup]</span></li>
-<li>Sensitive to initial centroid selection, noise and outliers <span class="citation" data-cites="Jie2020Review">[@Jie2020Review]</span>
-<ul>
-<li>Convergence at local minimum rather than global minimum.</li>
-</ul></li>
-<li>Challenging to classify data that is not hyperspherically shaped <span class="citation" data-cites="Ahmed2020TheK">[@Ahmed2020TheK]</span></li>
-</ul>
-</section>
 <section id="project-focus" class="slide level2">
 <h2>Project Focus</h2>
 <ul>
 <li>Use the K-Means algorithm for customer segmentation</li>
-<li>Determine similar customer groups for targeted marketing
+<li>Identify similar customer groups
 <ul>
 <li>How often are customers shopping?</li>
 <li>How much are customers buying?</li>
 </ul></li>
+<li>Make targeted marketing approach for each group</li>
+</ul>
+</section>
+<section id="challenges-and-limitations" class="slide level2">
+<h2>Challenges and Limitations</h2>
+<p>Determining K-Value</p>
+<ul>
+<li>K-value: number of clusters</li>
+<li>Especially challenging for large and highly dimensional datasets
+<ul>
+<li>Difficult to visualize data</li>
+</ul></li>
+<li>Developed in the 1960s
+<ul>
+<li>Before advent of the internet and “big data”</li>
+<li>Not designed for datasets of such large scale <span class="citation" data-cites="Sin2020Unsup">[@Sin2020Unsup]</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="challenges-and-limitations-continued" class="slide level2">
+<h2>Challenges and Limitations (continued)</h2>
+<p>Convergence at Local Minimum/Local Optimum Solution</p>
+<ul>
+<li>The algorithm is sensitive to:
+<ul>
+<li>Initial centroid value selection</li>
+<li>Noise</li>
+<li>Outliers</li>
+</ul></li>
+<li>Clusers veer off and converge at local minimum rather than true global minimum</li>
+</ul>
+<p><span class="citation" data-cites="Jie2020Review">[@Jie2020Review]</span></p>
+</section>
+<section id="challenges-and-limitations-continued-1" class="slide level2">
+<h2>Challenges and Limitations (continued)</h2>
+<p>Shape of Data Clusters</p>
+<ul>
+<li>The algorithm classifies n-hyperspherically shaped data well…</li>
+<li>Less successful at classifying irregularly shaped clusters</li>
+</ul>
+<p><span class="citation" data-cites="Ahmed2020TheK">[@Ahmed2020TheK]</span></p>
+</section>
+<section id="solutionsimprovements" class="slide level2">
+<h2>Solutions/Improvements</h2>
+<p>Elbow method, silhouette method, gap statistic method</p>
+<ul>
+<li><p>Used to determine an appropriate K-value</p></li>
+<li><p>We used these methods to select the K-value for our dataset - more details later</p></li>
+</ul>
+<p>Modified K-means algorithms</p>
+<ul>
+<li>Researchers have developed many variations of the K-means algorithm to overcome limitations</li>
+</ul>
+</section>
+<section id="modified-k-means-algorithms" class="slide level2">
+<h2>Modified K-means algorithms</h2>
+<ul>
+<li>U-k-means: utilizes concept of entropy to determine K-value <span class="citation" data-cites="Sin2020Unsup">[@Sin2020Unsup]</span></li>
+<li>CLustering In QUEst (CLIQUE): data density for K-value selection and and removal of noise and outliers <span class="citation" data-cites="Xu2020AnImproved">[@Xu2020AnImproved]</span></li>
+<li>Clustering by Fast Search and Find of Density Peaks (CFSFDP): initial cluster centers determined by local density <span class="citation" data-cites="Xu2020AnImproved">[@Xu2020AnImproved]</span></li>
+</ul>
+</section>
+<section id="u-k-means" class="slide level2">
+<h2>U-k-means</h2>
+<p>A “novel unsupervised k-means (U-k-means) clustering algorithm”</p>
+<ul>
+<li>Created to overcome the challenge of selecting a K-value for very large datasets</li>
+<li>No parameter initialization required</li>
+<li>Built-in process determines K-value and performs K-means clustering using the concept of entropy
+<ul>
+<li>The K-value is initialized as the number of data points.</li>
+<li>Extra clusters are discarded until the “best” number of clusters is found <span class="citation" data-cites="Sin2020Unsup">[@Sin2020Unsup]</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="clustering-in-quest-clique" class="slide level2">
+<h2>CLustering In QUEst (CLIQUE)</h2>
+<p>Method to determine K-value and detect and remove outliers and noise.</p>
+<ul>
+<li>Regional density is calculated using a CLIQUE grid
+<ul>
+<li>Each dimension is divided into equal parts</li>
+</ul></li>
+<li>The number of data points is calculated within each cell
+<ul>
+<li>Cells with counts above a defined threshold are defined as <strong>dense units</strong>. Adjacent dense units are connected to determine regional density</li>
+<li>Noise in areas of low density is removed <span class="citation" data-cites="Xu2020AnImproved">[@Xu2020AnImproved]</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="clustering-by-fast-search-and-find-of-density-peaks-cfsfdp-algorithm" class="slide level2">
+<h2>Clustering by Fast Search and Find of Density Peaks (CFSFDP) Algorithm</h2>
+<p>Method to approximate better initial cluster centroids.</p>
+<ul>
+<li>Used in conjunction with CLIQUE</li>
+<li>Local density of each point is calculated to determine optimum initial cluster centers</li>
+<li>CLIQUE combined with CFSFDP can handle irregularly shaped clusters <span class="citation" data-cites="Xu2020AnImproved">[@Xu2020AnImproved]</span></li>
 </ul>
 </section>
 <section id="testing-including-an-image" class="slide level2">

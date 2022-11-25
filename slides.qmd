@@ -11,40 +11,109 @@ editor: visual
 
 An unsupervised machine learning clustering algorithm
 
-- Data is clustered based on feature similarity
-- Unsupervised: Data is unlabeled, groups are unknown
-- Find similar groups, glean insights
-- Dataset may be very large and highly dimensional
+-   Data is clustered based on feature similarity
+-   Unsupervised: Data is unlabeled, groups are unknown
+-   Find similar groups, glean insights
+-   Dataset may be very large and highly dimensional
 
 To see the full project visit <http://kmean.scrib.ink>.
 
 ## Uses
 
-- Identify distinct customer groups for targeted marketing (customer segmentation)
-- Image classification
-- Recommendation engines
-- Etc.
-
-## Limitations
-
-- Sometimes difficult to determine appropriate number of clusters (K-value) [@Sin2020Unsup]
-- Sensitive to initial centroid selection, noise and outliers [@Jie2020Review]
-  - Convergence at local minimum rather than global minimum.
-- Challenging to classify data that is not hyperspherically shaped [@Ahmed2020TheK]
+-   Identify distinct customer groups for targeted marketing (customer segmentation)
+-   Image classification
+-   Recommendation engines
+-   Etc.
 
 ## Project Focus
 
-- Use the K-Means algorithm for customer segmentation
-- Determine similar customer groups for targeted marketing
-  - How often are customers shopping?
-  - How much are customers buying?
+-   Use the K-Means algorithm for customer segmentation
+-   Identify similar customer groups
+    -   How often are customers shopping?
+    -   How much are customers buying?
+-   Make targeted marketing approach for each group
 
+## Challenges and Limitations
 
+Determining K-Value
+
+-   K-value: number of clusters
+-   Especially challenging for large and highly dimensional datasets
+    -   Difficult to visualize data
+-   Developed in the 1960s
+    -   Before advent of the internet and "big data"
+    -   Not designed for datasets of such large scale [@Sin2020Unsup]
+
+## Challenges and Limitations (continued)
+
+Convergence at Local Minimum/Local Optimum Solution
+
+-   The algorithm is sensitive to:
+    -   Initial centroid value selection
+    -   Noise
+    -   Outliers
+-   Clusers veer off and converge at local minimum rather than true global minimum
+
+[@Jie2020Review]
+
+## Challenges and Limitations (continued)
+
+Shape of Data Clusters
+
+-   The algorithm classifies n-hyperspherically shaped data well...
+-   Less successful at classifying irregularly shaped clusters
+
+[@Ahmed2020TheK]
+
+## Solutions/Improvements
+
+Elbow method, silhouette method, gap statistic method
+
+-   Used to determine an appropriate K-value
+
+-   We used these methods to select the K-value for our dataset - more details later
+
+Modified K-means algorithms
+
+-   Researchers have developed many variations of the K-means algorithm to overcome limitations
+
+## Modified K-means algorithms
+
+-   U-k-means: utilizes concept of entropy to determine K-value [@Sin2020Unsup]
+-   CLustering In QUEst (CLIQUE): data density for K-value selection and and removal of noise and outliers [@Xu2020AnImproved]
+-   Clustering by Fast Search and Find of Density Peaks (CFSFDP): initial cluster centers determined by local density [@Xu2020AnImproved]
+
+## U-k-means
+
+A "novel unsupervised k-means (U-k-means) clustering algorithm"
+
+-   Created to overcome the challenge of selecting a K-value for very large datasets
+-   No parameter initialization required
+-   Built-in process determines K-value and performs K-means clustering using the concept of entropy
+    -   The K-value is initialized as the number of data points.
+    -   Extra clusters are discarded until the "best" number of clusters is found [@Sin2020Unsup]
+
+## CLustering In QUEst (CLIQUE)
+
+Method to determine K-value and detect and remove outliers and noise.
+
+-   Regional density is calculated using a CLIQUE grid
+    -   Each dimension is divided into equal parts
+-   The number of data points is calculated within each cell
+    -   Cells with counts above a defined threshold are defined as **dense units**. Adjacent dense units are connected to determine regional density
+    -   Noise in areas of low density is removed [@Xu2020AnImproved]
+
+## Clustering by Fast Search and Find of Density Peaks (CFSFDP) Algorithm
+
+Method to approximate better initial cluster centroids.
+
+-   Used in conjunction with CLIQUE
+-   Local density of each point is calculated to determine optimum initial cluster centers
+-   CLIQUE combined with CFSFDP can handle irregularly shaped clusters [@Xu2020AnImproved]
 
 ## Testing Including an Image
 
 ![Image Source: ©Anand](kmeans.png)
-
 
 ## Testing Including some Code
 
