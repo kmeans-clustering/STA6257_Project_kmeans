@@ -24,15 +24,15 @@ format:
 
 -   What is _K-Means Clustering_?
 
--   Why and where would we need Clustering?
+-   Why and where would we need _K-Means Clustering_?
 
--   How can we create Clusters?
+-   How can we create _K-Means Clusters_?
 
 -   What is our business usecase?
 
 -   What business value can we extract from the clusters?
 
--   Why clustering isn’t (always) the answer?
+-   Why K-Means clustering isn’t (always) the answer?
 
 -   How can we do it better?
 
