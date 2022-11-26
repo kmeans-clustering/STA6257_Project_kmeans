@@ -406,11 +406,12 @@ Akash Chandra
 <h2>Overview</h2>
 <ul>
 <li><p>What is <em>K-Means Clustering</em>?</p></li>
-<li><p>Why would we need Clustering?</p></li>
-<li><p>Why clustering isn’t (always) the answer? - Limitations</p></li>
+<li><p>Why and where would we need Clustering?</p></li>
 <li><p>How can we create Clusters?</p></li>
 <li><p>What is our business usecase?</p></li>
 <li><p>What business value can we extract from the clusters?</p></li>
+<li><p>Why clustering isn’t (always) the answer?</p></li>
+<li><p>How can we do it better?</p></li>
 </ul>
 </section>
 <section id="k-means-clustering" class="slide level2">
@@ -457,20 +458,12 @@ Akash Chandra
 </div>
 </div>
 </section>
-<section id="why-clustering-isnt-always-the-answer" class="slide level2">
-<h2>Why clustering isn’t (always) the answer?</h2>
-<h3 id="limitations"><code>Limitations</code></h3>
-<p><br></p>
-<ul>
-<li><p>Sometimes difficult to determine appropriate number of clusters (K-value)</p></li>
-<li><p>Sensitive to initial centroid selection, noise and outliers</p></li>
-<li><p>Convergence at local minimum rather than global minimum</p></li>
-<li><p>Challenging to classify data that is not hyperspherically shaped</p></li>
-</ul>
-</section>
 <section id="how-can-we-create-clusters" class="slide level2">
 <h2>How can we create Clusters?</h2>
-<h3 id="the-algorithm"><code>The Algorithm</code></h3>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Algorithm</a></li><li><a href="#tabset-1-2">The algorithm in action</a></li><li><a href="#tabset-1-3">The Math</a></li><li><a href="#tabset-1-4">Distance Measures</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><img data-src="kmean_s0.png"></p>
@@ -480,10 +473,8 @@ Akash Chandra
 </div>
 </div>
 </div>
-</section>
-<section id="how-can-we-create-clusters-1" class="slide level2">
-<h2>How can we create Clusters?</h2>
-<h3 id="the-algorithm-in-action"><code>The algorithm in action</code></h3>
+</div>
+<div id="tabset-1-2">
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
@@ -496,10 +487,9 @@ Akash Chandra
 <p><img data-src="flowchart.png"></p>
 </div>
 </div>
-</section>
-<section id="how-can-we-create-clusters-2" class="slide level2">
-<h2>How can we create Clusters?</h2>
-<h3 id="the-math-behind-k-means-algorithm"><code>The Math behind K-Means Algorithm</code></h3>
+</div>
+<div id="tabset-1-3">
+<p>The Math behind K-Means Algorithm</p>
 <ul>
 <li>K-Means runs in an unsupervised environment and hence it measures the quality of the formed clusters by finding the variations within each cluster.</li>
 </ul>
@@ -516,10 +506,8 @@ WCSS = \sum_{i = 1}^{k}\sum_{x ∈ C_i}|x-μ_i|^2
 </div>
 </div>
 <p>Where, K is the # of disjoint cluster <span class="math inline">\(C_i\)</span>, x is a data point in the cluster <span class="math inline">\(C_i\)</span>, <span class="math inline">\(μ_i\)</span> is the mean of the data points in the cluster <span class="math inline">\(C_i\)</span>.</p>
-</section>
-<section id="how-can-we-create-clusters-3" class="slide level2">
-<h2>How can we create Clusters?</h2>
-<h3 id="distance-measures"><code>Distance measures</code></h3>
+</div>
+<div id="tabset-1-4">
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
@@ -529,19 +517,23 @@ WCSS = \sum_{i = 1}^{k}\sum_{x ∈ C_i}|x-μ_i|^2
 </figure>
 </div>
 </div><div class="column r-fit-text" style="width:50%;">
-<div style="font-size:24px;margin-left:60px">
+<div style="font-size: 20px">
 <ul>
-<li><p>K-means calculates proximity between data points and centroids to place the data in appropriate cluster.</p></li>
-<li><p>Popular methods:</p>
-<ul>
-<li><p>Euclidean distance <span class="math display">\[
-D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
-\]</span></p></li>
-<li><p>Manhattan distance <span class="math display">\[
-D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
-\]</span></p></li>
-</ul></li>
+<li><p>K-means calculates proximity between data points<br> and centroids to place the data in appropriate cluster.</p></li>
+<li><p>Euclidean distance</p></li>
 </ul>
+<p><span class="math display">\[
+D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+\]</span></p>
+<ul>
+<li>Manhattan distance</li>
+</ul>
+<p><span class="math display">\[
+D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
+\]</span></p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -577,9 +569,9 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 </div>
 <p>The data set contains the transactions from a UK-based online retail store between 01/12/2009 and 09/12/2011.</p>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Data Definition</a></li><li><a href="#tabset-1-2">Data Preview</a></li><li><a href="#tabset-1-3">Initial Observations</a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Data Definition</a></li><li><a href="#tabset-2-2">Data Preview</a></li><li><a href="#tabset-2-3">Initial Observations</a></li></ul>
 <div class="tab-content">
-<div id="tabset-1-1">
+<div id="tabset-2-1">
 <div style="font-size:14px">
 <table>
 <colgroup>
@@ -639,7 +631,7 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 </table>
 </div>
 </div>
-<div id="tabset-1-2">
+<div id="tabset-2-2">
 <!-- ![~*<span style="font-size:12px">Image Source:©Anand</span>*~](datapreview.png) -->
 <div class="cell">
 <div class="cell-output-display">
@@ -724,7 +716,7 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 </div>
 </div>
 </div>
-<div id="tabset-1-3">
+<div id="tabset-2-3">
 <ul>
 <li><p>There are 525461 records in the dataset</p></li>
 <li><p>107927 Customer Ids are missing (only 417534 customers are identifiable)</p></li>
@@ -737,16 +729,16 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <h2>Our Business usecase</h2>
 <h3 id="data-visualization"><code>Data Visualization</code></h3>
 <div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Visualization</a></li><li><a href="#tabset-2-2">Observations</a></li></ul>
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Visualization</a></li><li><a href="#tabset-3-2">Observations</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1">
+<div id="tabset-3-1">
 <div class="cell">
 <div class="cell-output-display">
 <p><img data-src="kmean_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
 </div>
 </div>
 </div>
-<div id="tabset-2-2">
+<div id="tabset-3-2">
 <ul>
 <li><p>The Quantity is heavily skewed right and most of the transactions involved a quantity in the range of 1 to 5</p></li>
 <li><p>The unit Price is also skewed right and most of the items have unit price between 1 and 4</p></li>
@@ -760,6 +752,10 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <section id="our-business-usecase-3" class="slide level2">
 <h2>Our Business usecase</h2>
 <h3 id="data-preparation"><code>Data Preparation</code></h3>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Cleanse data</a></li><li><a href="#tabset-4-2">Detect outliers</a></li><li><a href="#tabset-4-3">Code</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
 <div class="columns">
 <div class="column r-fit-text" style="width:50%;">
 <div style="font-size:18px; line-height:1.5">
@@ -767,18 +763,17 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <li>Remove missing values</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="2" type="1">
-<li>Select only required attributes - CustomerID,<br>Invoice, Quantity, InvoiceDate and Price</li>
-</ol>
+<p><br> 2. Select only required attributes - CustomerID,<br>Invoice, Quantity, InvoiceDate and Price</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>data <span class="ot">=</span> <span class="fu">subset</span>(df, <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(Description, Country, StockCode) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="3" type="1">
-<li>Create a new attribute Amount</li>
-</ol>
+<p><br> 3. Create a new attribute Amount</p>
 <div class="sourceCode" id="cb3" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>data<span class="sc">$</span>Amount <span class="ot">=</span> data<span class="sc">$</span>Quantity <span class="sc">*</span> data<span class="sc">$</span>Price</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co">#Group by customer id and add amounts</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>customer_monetary <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">group_by</span>(CustomerID) <span class="sc">%&gt;%</span></span>
 <span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">summarise</span>(<span class="at">Amount =</span> <span class="fu">sum</span>(Amount)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column r-fit-text" style="width:50%;">
+<div style="font-size:18px">
 <ol start="4" type="1">
 <li>Group by customer id and count invoices</li>
 </ol>
@@ -792,9 +787,6 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <span id="cb5-3"><a href="#cb5-3"></a><span class="co">#Group by customer id and take min of LastSeen</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) </span>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">LastSeen =</span> <span class="fu">min</span>(LastSeen)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div><div class="column r-fit-text" style="width:50%;">
-<div style="font-size:18px">
 <ol start="6" type="1">
 <li>Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store</li>
 </ol>
@@ -803,10 +795,148 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 </div>
 </div>
 </div>
+</div>
+<div id="tabset-4-2">
+<div style="text-align:center">
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="outliers_r.png"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="outlier1.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="outlier2.png"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-3">
+<div class="sourceCode" id="cb7" data-code-line-numbers="2-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># create detect outlier function</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>detect_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="co"># calculate first quantile</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>    Quantile1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="co"># calculate third quantile</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>    Quantile3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="co"># calculate inter quartile range</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>    IQR <span class="ot">=</span> Quantile3<span class="sc">-</span>Quantile1</span>
+<span id="cb7-9"><a href="#cb7-9"></a>    <span class="co"># return true or false</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>    x <span class="sc">&gt;</span> Quantile3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> x <span class="sc">&lt;</span> Quantile1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
+<span id="cb7-11"><a href="#cb7-11"></a>}</span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co"># create remove outlier function</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>remove_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe,</span>
+<span id="cb7-14"><a href="#cb7-14"></a>                            <span class="at">columns=</span><span class="fu">names</span>(dataframe)) {</span>
+<span id="cb7-15"><a href="#cb7-15"></a>    <span class="co"># for loop to traverse in columns vector</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>    <span class="cf">for</span> (col <span class="cf">in</span> columns) {</span>
+<span id="cb7-17"><a href="#cb7-17"></a>        <span class="co"># remove observation if it satisfies outlier function</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>        dataframe <span class="ot">&lt;-</span> dataframe[<span class="sc">!</span><span class="fu">detect_outlier</span>(dataframe[[col]]), ]</span>
+<span id="cb7-19"><a href="#cb7-19"></a>    }</span>
+<span id="cb7-20"><a href="#cb7-20"></a>    <span class="fu">return</span>(dataframe)</span>
+<span id="cb7-21"><a href="#cb7-21"></a>}</span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="co"># detect_outlier(customer$Amount)</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>customer <span class="ot">&lt;-</span> <span class="fu">remove_outlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Frequency'</span>,<span class="st">'LastSeen'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="our-business-usecase-4" class="slide level2">
 <h2>Our Business usecase</h2>
 <h3 id="target-dataset"><code>Target Dataset</code></h3>
+<div style="font-size:20px">
+<div class="cell-output-display">
+
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>Target Data Definition</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;"> Attribute </th>
+   <th style="text-align:center;font-weight: bold;color: white !important;background-color: #666666 !important;"> Type </th>
+   <th style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;"> Description </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> CustomerID </td>
+   <td style="text-align:center;"> Numeric </td>
+   <td style="text-align:left;"> Customer number. A 5-digit integral number uniquely assigned to each customer. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Amount </td>
+   <td style="text-align:center;"> Numeric </td>
+   <td style="text-align:left;"> Total Amount spent by each unique customer </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Frequency </td>
+   <td style="text-align:center;"> Numeric </td>
+   <td style="text-align:left;"> Number of times customer made purchases bases on their invoice. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LastSeen </td>
+   <td style="text-align:center;"> Numeric </td>
+   <td style="text-align:left;"> Days elapsed since the customer was last seen shopping. </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<p><br></p>
+<div class="cell-output-display">
+
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>Summary of Target Dataset (3674 Records)</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;">  </th>
+   <th style="text-align:center;font-weight: bold;color: white !important;background-color: #666666 !important;"> Mean </th>
+   <th style="text-align:center;font-weight: bold;color: white !important;background-color: #666666 !important;"> Min </th>
+   <th style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;"> Q1 </th>
+   <th style="text-align:center;font-weight: bold;color: white !important;background-color: #666666 !important;"> Median </th>
+   <th style="text-align:center;font-weight: bold;color: white !important;background-color: #666666 !important;"> Q3 </th>
+   <th style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;"> Max </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Amount </td>
+   <td style="text-align:center;"> 776.5 </td>
+   <td style="text-align:center;"> -1598.7 </td>
+   <td style="text-align:left;"> 241.5 </td>
+   <td style="text-align:center;"> 515.1 </td>
+   <td style="text-align:center;"> 1091.4 </td>
+   <td style="text-align:left;"> 3685.1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Frequency </td>
+   <td style="text-align:center;"> 48.15 </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:left;"> 15.0 </td>
+   <td style="text-align:center;"> 34.0 </td>
+   <td style="text-align:center;"> 70.0 </td>
+   <td style="text-align:left;"> 183.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> LastSeen </td>
+   <td style="text-align:center;"> 101.8 </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:left;"> 23.0 </td>
+   <td style="text-align:center;"> 62.0 </td>
+   <td style="text-align:center;"> 163.0 </td>
+   <td style="text-align:left;"> 373.0 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
 </section>
 <section id="our-business-usecase-5" class="slide level2">
 <h2>Our Business usecase</h2>
@@ -815,15 +945,15 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <p>The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K)</p>
 </div>
 <div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Elbow Method</a></li><li><a href="#tabset-3-2">Silhouette Method</a></li><li><a href="#tabset-3-3">Gap Statistic Method</a></li></ul>
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Elbow Method</a></li><li><a href="#tabset-5-2">Silhouette Method</a></li><li><a href="#tabset-5-3">Gap Statistic Method</a></li></ul>
 <div class="tab-content">
-<div id="tabset-3-1">
+<div id="tabset-5-1">
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><br></p>
-<div class="sourceCode" id="cb7" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">fviz_nbclust</span>(customer, kmeans, <span class="at">method =</span> <span class="st">"wss"</span>) </span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Elbow Method"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">fviz_nbclust</span>(customer, kmeans, <span class="at">method =</span> <span class="st">"wss"</span>) </span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Elbow Method"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br> - Calculates values of cost with changing K</p>
 <ul>
 <li><p>The larger number of clusters implies the data points are closer to the centroid</p></li>
@@ -836,13 +966,13 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 </div>
 </div>
 </div>
-<div id="tabset-3-2">
+<div id="tabset-5-2">
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><br></p>
-<div class="sourceCode" id="cb8" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">fviz_nbclust</span>(customer, kmeans, <span class="at">method =</span> <span class="st">"silhouette"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="sc">+</span> <span class="fu">theme_classic</span>()</span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Silhouette Method"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">fviz_nbclust</span>(customer, kmeans, <span class="at">method =</span> <span class="st">"silhouette"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="sc">+</span> <span class="fu">theme_classic</span>()</span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">"Silhouette Method"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br> - Calculates a coefficient which is a measure of how similar a data point is within-cluster (cohesion) compared to other clusters (separation)</p>
 </div><div class="column r-fit-text" style="width:50%;">
 <div style="font-size:28px;margin-left:60px">
@@ -851,13 +981,13 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 </div>
 </div>
 </div>
-<div id="tabset-3-3">
+<div id="tabset-5-3">
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><br></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>gap_stat <span class="ot">&lt;-</span> <span class="fu">clusGap</span>(customer, <span class="at">FUN=</span>kmeans, <span class="at">nstart=</span><span class="dv">25</span>,</span>
-<span id="cb9-2"><a href="#cb9-2"></a>              <span class="at">K.max=</span><span class="dv">10</span>, <span class="at">B=</span><span class="dv">50</span>)</span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">fviz_gap_stat</span>(gap_stat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>gap_stat <span class="ot">&lt;-</span> <span class="fu">clusGap</span>(customer, <span class="at">FUN=</span>kmeans, <span class="at">nstart=</span><span class="dv">25</span>,</span>
+<span id="cb10-2"><a href="#cb10-2"></a>              <span class="at">K.max=</span><span class="dv">10</span>, <span class="at">B=</span><span class="dv">50</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">fviz_gap_stat</span>(gap_stat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br> - Gap Statistics relies on an approach where the number K is chosen based on the biggest fluctuation in the within-cluster distance</p>
 </div><div class="column r-fit-text" style="width:50%;">
 <div style="font-size:28px;margin-left:60px">
@@ -872,17 +1002,191 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <section id="our-business-usecase-6" class="slide level2">
 <h2>Our Business usecase</h2>
 <h3 id="statistical-modeling-the-k-means-model">Statistical Modeling: <code>The K-Means Model</code></h3>
+<p><br> K-Means model with K = 3</p>
+<div class="sourceCode" id="cb11" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Compute k-means with k = 3</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>k <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>m1.kmean <span class="ot">&lt;-</span> customer_scaled <span class="sc">%&gt;%</span> <span class="fu">kmeans</span>(k, <span class="at">iter.max =</span> <span class="dv">20</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#nstart: Runs multiple initial configurations and returns the best one.</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a> </span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#Add Clusters to the original dataframe</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>customer<span class="sc">$</span>Cluster <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(m1.kmean<span class="sc">$</span>cluster)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The model results in 3 clusters as was decided and the clusters are formed with sizes 1807, 953, 914.</p>
 </section>
-<section id="our-business-usecase-7" class="slide level2">
-<h2>Our Business usecase</h2>
-<h3 id="statistical-modeling-the-results">Statistical Modeling: <code>The Results</code></h3>
+<section id="the-business-value" class="slide level2">
+<h2>The Business Value?</h2>
+<h3 id="results-and-analysis"><code>Results and Analysis</code></h3>
+<div class="panel-tabset">
+<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">2-D Analysis</a></li><li><a href="#tabset-6-2">3-D Analysis</a></li><li><a href="#tabset-6-3">Box Plots</a></li><li><a href="#tabset-6-4">Results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1">
+<div style="text-align:center;">
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="res1.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="res2.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="res3.png"></p>
+</div>
+</div>
+</div>
+</div>
+<div style="margin-top:-20px; font-size:20px">
+<ul>
+<li><p>The clusters 1 and 3 are seen in the store often. Cluster 3 customers are spending more whenever they visit. Cluster 2 not seen recently so spend less</p></li>
+<li><p>The Cluster 3 are more frequently buying and hence spending more. Cluster 1 and 2 are almost having similar trends in terms of number of purchases and amount spent</p></li>
+<li><p>The Cluster 1 and 3 are seen buying often and whenever they are seen buying, they make lot of purchases</p></li>
+</ul>
+</div>
+</div>
+<div id="tabset-6-2">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="res4.png"></p>
+</div><div class="column r-fit-text" style="width:50%;">
+<div style="font-size:20px;margin-left:20px">
+<ul>
+<li><p>The customers in cluster 3 are seen shopping often, they spend more,<br>and they purchase frequently</p></li>
+<li><p>Customers in cluster 2 are of concern. They do not visit the website<br>often but spend almost like cluster 1 and purchase as frequently as cluster 1.</p></li>
+</ul>
+<p>So, we can either target cluster 1 to make them buy when they visit store<br>(since they are visiting often but buying less) or make cluster 2 visit often<br>as they are buying more when they visit but visiting less.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-6-3">
+<div style="text-align:center">
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="res5.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="res6.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img data-src="res7.png"></p>
+</div>
+</div>
+</div>
+</div>
+<div style="margin-top:-20px; font-size:20px">
+<ul>
+<li><p>Customers in Cluster# 3 are spending more whereas cluster 2 customers are spending the least</p></li>
+<li><p>Customers in Cluster# 3 are most frequent customers indicating that the frequent customers spend the most</p></li>
+<li><p>Customers in Cluster 2 have not been seen shopping recently. The most recently seen shoppers are in Cluster 3 and that also explains why they have spent more money and bought frequently</p></li>
+</ul>
+</div>
+</div>
+<div id="tabset-6-4">
+<p><img data-src="RFM.png"></p>
+</div>
+</div>
+</div>
 </section>
-<section id="what-business-value-from-the-clusters" class="slide level2">
-<h2>What business value from the clusters?</h2>
-<h3 id="analysis"><code>Analysis</code></h3>
+<section id="why-clustering-isnt-always-the-answer" class="slide level2">
+<h2>Why clustering isn’t (always) the answer?</h2>
+<h3 id="limitations"><code>Limitations</code></h3>
+<div class="panel-tabset">
+<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">K-Value</a></li><li><a href="#tabset-7-2">Convergence at Local Minimum</a></li><li><a href="#tabset-7-3">Shape of clusters</a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1">
+<ul>
+<li><p>Challenging for large and highly dimensional datasets</p>
+<ul>
+<li>Difficult to visualize data</li>
+</ul></li>
+<li><p>Developed in the 1960s</p>
+<ul>
+<li><p>Before advent of the internet and “big data”</p></li>
+<li><p>Not designed for datasets of such large scale</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="tabset-7-2">
+<p>Convergence at Local Minimum/Local Optimum Solution</p>
+<ul>
+<li><p>The algorithm is sensitive to:</p>
+<ul>
+<li><p>Initial centroid value selection</p></li>
+<li><p>Noise</p></li>
+<li><p>Outliers</p></li>
+</ul></li>
+<li><p>Clusters veer off and converge at local minimum rather than true global minimum</p></li>
+</ul>
+</div>
+<div id="tabset-7-3">
+<p>Shape of Data Clusters</p>
+<ul>
+<li><p>The algorithm classifies n-hyperspherically shaped data well…</p></li>
+<li><p>Less successful at classifying irregularly shaped clusters</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="how-can-we-do-it-better" class="slide level2">
+<h2>How can we do it better?</h2>
+<h3 id="improvements"><code>Improvements</code></h3>
+<p>Researchers have developed many variations of the K-means algorithm to overcome limitations.</p>
+<div class="panel-tabset">
+<ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">U-k-means</a></li><li><a href="#tabset-8-2">CLustering In QUEst (CLIQUE)</a></li><li><a href="#tabset-8-3">CFSFDP</a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1">
+<p>A “novel unsupervised k-means (U-k-means) clustering algorithm”</p>
+<ul>
+<li><p>Created to overcome the challenge of selecting a K-value for very large datasets</p></li>
+<li><p>No parameter initialization required</p></li>
+<li><p>Built-in process determines K-value and performs K-means clustering using the concept of entropy</p>
+<ul>
+<li><p>The K-value is initialized as the number of data points</p></li>
+<li><p>Extra clusters are discarded until the “best” number of clusters is found</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="tabset-8-2">
+<p>Method to determine K-value and detect and remove outliers and noise.</p>
+<ul>
+<li><p>Regional density is calculated using a CLIQUE grid. Each dimension is divided into equal parts</p></li>
+<li><p>The number of data points is calculated within each cell</p>
+<ul>
+<li><p>Cells with counts above a defined threshold are defined as <strong>dense units</strong>. Adjacent dense units are connected to determine regional density</p></li>
+<li><p>Noise in areas of low density is removed</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="tabset-8-3">
+<p>Clustering by Fast Search and Find of Density Peaks. Method to approximate better initial cluster centroids.</p>
+<ul>
+<li><p>Used in conjunction with CLIQUE</p></li>
+<li><p>Local density of each point is calculated to determine optimum initial cluster centers</p></li>
+<li><p>CLIQUE combined with CFSFDP can handle irregularly shaped clusters</p></li>
+</ul>
+</div>
+</div>
+</div>
 </section>
 <section id="conclusion" class="slide level2">
 <h2>Conclusion</h2>
+<br>
+<div style="line-height:2">
+<ul>
+<li><p>K-Means clustering is a popular unsupervised learning algorithm</p></li>
+<li><p>K-Means can be a great tool to achieve the segmentation of customers with speed and accuracy</p></li>
+<li><p>K-Means is not always accurate and has some limitations</p></li>
+<li><p>There are some improved algorithms that can help overcome these shortcomings.</p></li>
+</ul>
+</div>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<div style="text-align:center; font-size: 48px; margin-top: 300px">
+<p>Thank You!</p>
+</div>
 <div class="footer footer-default">
 <p><a href="http://kmean.scrib.ink/" class="uri">http://kmean.scrib.ink/</a></p>
 </div>
