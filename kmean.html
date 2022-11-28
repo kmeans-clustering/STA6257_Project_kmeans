@@ -782,7 +782,7 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <ol start="5" type="1">
 <li>Create a new attribute LastSeen</li>
 </ol>
-<div class="sourceCode" id="cb5" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>data<span class="sc">$</span>LastSeen <span class="ot">=</span><span class="fu">as.integer</span>(<span class="fu">difftime</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate), </span>
+<div class="sourceCode" id="cb5" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>data<span class="sc">$</span>LastSeen <span class="ot">=</span><span class="fu">as.integer</span>(<span class="fu">difftime</span>(<span class="fu">max</span>(data<span class="sc">$</span>InvoiceDate), </span>
 <span id="cb5-2"><a href="#cb5-2"></a>  data<span class="sc">$</span>InvoiceDate, <span class="at">units =</span> <span class="st">"days"</span>))</span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="co">#Group by customer id and take min of LastSeen</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) </span>

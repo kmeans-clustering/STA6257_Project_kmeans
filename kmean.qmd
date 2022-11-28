@@ -329,7 +329,7 @@ customer_frequency <- as.data.frame(data %>% group_by(CustomerID)
 
 5.    Create a new attribute LastSeen
 
-```{.r code-line-numbers="1"}
+```{.r code-line-numbers="1-2"}
 data$LastSeen =as.integer(difftime(max(data$InvoiceDate), 
   data$InvoiceDate, units = "days"))
 #Group by customer id and take min of LastSeen
