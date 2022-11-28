@@ -788,7 +788,7 @@ D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
 <span id="cb5-4"><a href="#cb5-4"></a>customer_lastseen <span class="ot">&lt;-</span>  <span class="fu">as.data.frame</span>(data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(CustomerID) </span>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">LastSeen =</span> <span class="fu">min</span>(LastSeen)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol start="6" type="1">
-<li>Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store</li>
+<li>Merge the above data frames to get unique customer and their total amount,<br> frequency of visit to the store and the LastSeen shopping in the store</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer_monetary, customer_frequency, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>customer <span class="ot">&lt;-</span> <span class="fu">merge</span>(customer, customer_lastseen, <span class="at">by =</span> <span class="st">'CustomerID'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

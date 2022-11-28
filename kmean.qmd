@@ -337,7 +337,7 @@ customer_lastseen <-  as.data.frame(data %>% group_by(CustomerID)
 %>% summarise(LastSeen = min(LastSeen)))
 ```
 
-6.    Merge the above data frames to get unique customer and their total amount, frequency of visit to the store and the LastSeen shopping in the store
+6.    Merge the above data frames to get unique customer and their total amount,<br/> frequency of visit to the store and the LastSeen shopping in the store
 
 ```{.r}
 customer <- merge(customer_monetary, customer_frequency, by = 'CustomerID')
