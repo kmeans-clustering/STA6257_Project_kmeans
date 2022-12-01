@@ -137,7 +137,7 @@ m1.kmean <- customer_scaled %>% kmeans(k, iter.max = 10, nstart = 100)
 # m4.kmean <- customer_scaled$LastSeen %>% kmeans(k, iter.max = 20, nstart = 100)
 # m5.kmean <- c(customer_scaled$Amount, customer_scaled$Frequency) %>% kmeans(k, iter.max = 20, nstart = 100)
 
-m1.kmean
+m1.kmean$cluster
 m1.kmean$tot.withinss
 
 # 66%, 3725.543
@@ -289,5 +289,86 @@ my_kmeans <- function(df, k, n_iterations, init = c("kmeans++", "random")) {
   return(cluster_id)
 }
 
-m1.kmean <- my_kmeans(customer_scaled, 3, 10, "random")
-m1.kmean
+
+m2.kmean <- my_kmeans(customer_scaled, 3, 10, "kmeans++")
+m2.kmean
+m2 <- m2.kmean
+names(m2) <- c(1:length(m2))
+m1.kmean$cluster
+typeof(m2.kmean)
+
+m2 <- data.frame(cluster = m2.kmean)
+str(m1.kmean$cluster)
+length(m2)
+customer <- customer_details[,1:4]
+customer$Cluster <- as.factor(m2.kmean)
+customer_details$Cluster <- as.factor(m2.kmean)
+c1 <- c(1:3)
+names(c1) <- c("a","b", "c")
+
+
+m3.kmean <- list(cluster = m2.kmean)
+m3.kmean$cluster
+summary(customer)
+clustStats <- customer %>%
+  group_by(Cluster) %>%
+  summarise_all("mean")
+
+
+class(m1.kmean)
+
+clustStats %>%
+  kbl() %>%
+  kable_paper("hover", full_width = T)
+
+
+diss = dist(m2)
+m3.kmean <- pam(diss, 4)
+m3.kmean$cluster = m2
+
+head(customer_scaled)
+fviz_cluster(m3.kmean, data = customer_scaled,
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+)
+
+
+fviz_cluster(m2.kmean, data = customer_scaled,choose.vars = c("LastSeen","Amount"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+)
+
+fviz_cluster(m2.kmean, data = customer_scaled,choose.vars = c("Frequency","Amount"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+)
+
+fviz_cluster(m2.kmean, data = customer_scaled,choose.vars = c("LastSeen","Frequency"),
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+)         
+
+
+
+
+# head(customer_scaled)
+colors <- c("#9f00e6", "#e69f00", "#00e69f")
+colors <- colors[as.numeric(m2.kmean$cluster)]
+s3d <- scatterplot3d(customer_scaled, pch = 16, color=colors)
+legend("top",legend = paste("Cluster", 1:3),
+       col =  c("#9f00e6", "#e69f00", "#00e69f"), pch = 16)    
+# centers <- data.frame(m2.kmean$centers)
+# s3dp <- s3d$points3d(centers,
+#                      col = c("#000000","#0e0a00","#000e0a"), type = "h", pch = 8)
+
+
+distance <- get_dist(head(customer[,5:5]))
+fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))

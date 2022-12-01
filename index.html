@@ -9,7 +9,7 @@
 <meta name="author" content="Anand Pandey">
 <meta name="author" content="Katie Hidden">
 <meta name="author" content="Akash Chandra">
-<meta name="dcterms.date" content="2022-11-26">
+<meta name="dcterms.date" content="2022-12-01">
 <meta name="description" content="An unsupervised learning algorithm ">
 
 <title>K-Means Clustering</title>
@@ -156,7 +156,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 26, 2022</p>
+      <p class="date">December 1, 2022</p>
     </div>
   </div>
     
@@ -170,7 +170,7 @@ div.csl-indent {
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>We have often heard of training machine learning models with labeled data. Imagine if there is a massive volume of data with no labels and we want to come up with a scalable approach to process these data and find insights. Difficult as it may seem, this is possible with clustering algorithms like K-Means.</p>
-<p>Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labelled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern, or association of the data and that helps the model in clustering or grouping the data without any human intervention.</p>
+<p>Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labeled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern, or association of the data and that helps the model in clustering or grouping the data without any human intervention.</p>
 <p>The main goal of this paper is to discuss the concept and underlying methodology of one the unsupervised algorithm called K-Means clustering. We will also discuss how K-Means can be leveraged in real time applications like customer segmentation <span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span>. In this paper, we will also be discussing various limitations and bottlenecks of K-Means clustering algorithm and would suggest some improved algorithms to overcome these limitations.</p>
 <section id="k-means-clustering" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="k-means-clustering"><span class="header-section-number">1.1</span> K-Means Clustering</h2>
@@ -179,7 +179,7 @@ div.csl-indent {
 <section id="customer-segmentation" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="customer-segmentation"><span class="header-section-number">1.2</span> Customer Segmentation</h2>
 <p>Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category to maximize the profit by optimizing the services and products. It’s all about connecting the right products with the right consumer keeping business profitability in mind. Most of the segmentation algorithm is based around analyzing what we call RFM - customer recency (i.e.&nbsp;when the customer last visited the store), frequency (i.e.&nbsp;how many times customer bought the products), and monetary (i.e.&nbsp;how much money the customer spent) <span class="citation" data-cites="tab2022kmeans">(<a href="#ref-tab2022kmeans" role="doc-biblioref">Tabianan 2022</a>)</span>.</p>
-<p>Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue, and potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic<span class="citation" data-cites="tab2022kmeans">(<a href="#ref-tab2022kmeans" role="doc-biblioref">Tabianan 2022</a>)</span>. In this paper, customer behavioral factor has been primarily focused.</p>
+<p>Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. Customers can get really confused if we provide irrelevant information to them which has nothing to do with what products they are interested in or whatever purchasing habits they have. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue, and reputation. The customer segmentation using K-means clustering algorithm will help group customers as per their habits related to spending, purchasing or grouping them based on whatever product or brand the customers are interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic<span class="citation" data-cites="tab2022kmeans">(<a href="#ref-tab2022kmeans" role="doc-biblioref">Tabianan 2022</a>)</span>. In this paper, customer behavioral factor has been primarily focused.</p>
 <p><a href="#fig-1">Figure&nbsp;1</a> illustrates the overall process of customer segmentation starting from sourcing the data, selecting the variables, applying the K-Means clustering to creating the marketing strategy for a business.</p>
 <center>
 <div id="fig-1" class="quarto-figure quarto-figure-center anchored">
@@ -233,15 +233,15 @@ div.csl-indent {
 <p><em>Euclidean distance</em> measurement is the most general method used. However, there are several different calculations that can be used to measure inter and intra cluster proximities. Some of these methods are detailed below:</p>
 <p><em>Euclidean distance</em>:</p>
 <p><span class="math display">\[
-D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+D_{euclidean}(x_1, x_2) = \sqrt{\sum_{i = 1}^{n}{((x_1)_i - (x_2)_i)^2}}
 \]</span></p>
 <p><em>Manhattan distance</em>:</p>
 <p><span class="math display">\[
-D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
+D_{manhattan}(x_1, x_2) = \sum_{i = 1}^{n}|((x_1)_i - (x_2)_i)|
 \]</span></p>
-<p>Note: x and y are vectors with length n.</p>
+<p><span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span> are vectors of length n.</p>
 <p><strong>Algorithm</strong></p>
-<p>Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).</p>
+<p>Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).<span class="citation" data-cites="yul2020astudy">(<a href="#ref-yul2020astudy" role="doc-biblioref">Yulin 2020</a>)</span></p>
 <p><span class="math display">\[
 Z_j(I), j = 1, 2, 3...k.
 \]</span></p>
@@ -261,8 +261,8 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 </div>
 <section id="dataset-description" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="dataset-description"><span class="header-section-number">3.1</span> Dataset Description</h2>
-<p>For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion giftware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach<span class="citation" data-cites="online2010Chen">(<a href="#ref-online2010Chen" role="doc-biblioref">Chen 2010</a>)</span>.</p>
-<p>The customer transactions dataset has 8 variables as shown in below data definition table.</p>
+<p>For the customer segmentation, we will be using a data set that contains the transactions that has occurred for a UK-based non-brick-and-mortar online retail between 01/12/2009 and 09/12/2011. The company primarily offers unique gift-wares that can be used year-round on several occasions. Customers mostly buy from this store in wholesale. The company was established in 80s as a storefront and relied on direct mailing catalogs and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach<span class="citation" data-cites="online2010Chen">(<a href="#ref-online2010Chen" role="doc-biblioref">Chen 2010</a>)</span>.</p>
+<p>The customer transactions dataset has eight attributes as shown in below data definition table.</p>
 <div class="cell-output-display">
 
 <table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
@@ -278,51 +278,51 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
   <tr>
    <td style="text-align:left;"> Invoice </td>
    <td style="text-align:center;"> Nominal </td>
-   <td style="text-align:left;"> Invoice number. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter `c`, it indicates a cancellation. </td>
+   <td style="text-align:left;"> A 6-digit integral invoice number uniquely assigned to each transaction. A `c` prefix indicates a cancellation. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> StockCode </td>
    <td style="text-align:center;"> Nominal </td>
-   <td style="text-align:left;"> Product (item) code. A 5-digit integral number uniquely assigned to each distinct product. </td>
+   <td style="text-align:left;"> A 5-digit integral number uniquely assigned to each distinct product. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Description </td>
    <td style="text-align:center;"> Nominal </td>
-   <td style="text-align:left;"> Product (item) name. </td>
+   <td style="text-align:left;"> The detailed description of the product. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Quantity </td>
    <td style="text-align:center;"> Numeric </td>
-   <td style="text-align:left;"> The quantities of each product (item) per transaction. </td>
+   <td style="text-align:left;"> The quantities of each product  per transaction. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> InvoiceDate </td>
    <td style="text-align:center;"> Numeric </td>
-   <td style="text-align:left;"> Invoice timestamp. The day and time when a transaction was generated. </td>
+   <td style="text-align:left;"> The day and time when a transaction has occurred and the invoice was generated. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Price </td>
    <td style="text-align:center;"> Numeric </td>
-   <td style="text-align:left;"> Product price per unit in sterling (£). </td>
+   <td style="text-align:left;"> Unit price of the Product in sterling (£). </td>
   </tr>
   <tr>
    <td style="text-align:left;"> CustomerID </td>
    <td style="text-align:center;"> Numeric </td>
-   <td style="text-align:left;"> Customer number. A 5-digit integral number uniquely assigned to each customer. </td>
+   <td style="text-align:left;"> A 5-digit integral number uniquely assigned to each customer. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Country </td>
    <td style="text-align:center;"> Nominal </td>
-   <td style="text-align:left;"> Country name. The name of the country where a customer resides. </td>
+   <td style="text-align:left;"> The name of the country where the transaction was made from. </td>
   </tr>
 </tbody>
 </table>
 
 </div>
 </section>
-<section id="load-and-preview-data" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="load-and-preview-data"><span class="header-section-number">3.2</span> Load and Preview Data</h2>
-<p>Load the dataset and summarize column statistics.</p>
+<section id="load-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="load-data"><span class="header-section-number">3.2</span> Load Data</h2>
+<p>Read the data from excel, load it and then summarize the column statistics.</p>
 <div class="cell">
 <div class="cell-output-display">
 
@@ -493,7 +493,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove missing value</span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#remove missing values</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -508,7 +508,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 </details>
 </div>
 <ol start="3" type="1">
-<li>Create a new attribute <em>Amount</em>. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them</li>
+<li>Create a new attribute <em>Amount</em>. This will help in clustering these customers by the total money spent. Group the data by customer id to obtain each unique customer and the total amount spent by them</li>
 </ol>
 <div class="cell">
 <details open="">
@@ -575,30 +575,30 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create detect outlier function</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>detect_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate first quantile</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    Quantile1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate third quantile</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    Quantile3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate inter quartile range</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    IQR <span class="ot">=</span> Quantile3<span class="sc">-</span>Quantile1</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return true or false</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;</span> Quantile3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> x <span class="sc">&lt;</span> Quantile1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a method to detect outliers</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>detectOutliers <span class="ot">&lt;-</span> <span class="cf">function</span>(d) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate 25 percentile (Q1)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(d, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate 75 percentile (Q3)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(d, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine the IQR (Inter Quartile Range)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    IQR <span class="ot">=</span> Q3<span class="sc">-</span>Q1</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a Boolean if input falls out of range</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    d <span class="sc">&gt;</span> Q3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> d <span class="sc">&lt;</span> Q1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># create remove outlier function</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>remove_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe,</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">columns=</span><span class="fu">names</span>(dataframe)) {</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for loop to traverse in columns vector</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> columns) {</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># remove observation if it satisfies outlier function</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        dataframe <span class="ot">&lt;-</span> dataframe[<span class="sc">!</span><span class="fu">detect_outlier</span>(dataframe[[col]]), ]</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># create a method for eliminating outliers</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>eliminateOutlier <span class="ot">&lt;-</span> <span class="cf">function</span>(df,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cols=</span><span class="fu">names</span>(df)) {</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop through each column in the columns vector</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> cols) {</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># eliminate the item if detectOutliers returns true</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        df <span class="ot">&lt;-</span> df[<span class="sc">!</span><span class="fu">detectOutliers</span>(df[[col]]), ]</span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(dataframe)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(df)</span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co"># detect_outlier(customer$Amount)</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">remove_outlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Frequency'</span>,<span class="st">'LastSeen'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co"># detectOutliers(customer$Amount)</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">eliminateOutlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Frequency'</span>,<span class="st">'LastSeen'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.</p>
@@ -612,7 +612,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 </div>
 </div>
 <ol start="8" type="1">
-<li>Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.</li>
+<li>Scale the data. It is very important to standardize the data by scaling the columns as the K-Means algorithm utilizes the proximity of data points based on the Euclidean distance.</li>
 </ol>
 <div class="cell">
 <details open="">
@@ -644,7 +644,7 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
   <tr>
    <td style="text-align:left;"> CustomerID </td>
    <td style="text-align:center;"> Numeric </td>
-   <td style="text-align:left;"> Customer number. A 5-digit integral number uniquely assigned to each customer. </td>
+   <td style="text-align:left;"> A 5-digit integral number uniquely assigned to each customer. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Amount </td>
@@ -717,10 +717,10 @@ J = \sum_{j = 1}^{k}\sum_{k = 1}^{n_j}||X_k^{(j)}-Z_j(I)||^2
 <h2 data-number="3.5" class="anchored" data-anchor-id="statistical-modeling"><span class="header-section-number">3.5</span> Statistical Modeling</h2>
 <section id="optimal-number-of-clusters-k" class="level3" data-number="3.5.1">
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="optimal-number-of-clusters-k"><span class="header-section-number">3.5.1</span> Optimal Number of Clusters (K)</h3>
-<p>One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).</p>
+<p>One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the efficiency of the K-Means clustering algorithm is directly impacted by the choice of the number of clusters (K).</p>
 <section id="elbow-method" class="level4" data-number="3.5.1.1">
 <h4 data-number="3.5.1.1" class="anchored" data-anchor-id="elbow-method"><span class="header-section-number">3.5.1.1</span> Elbow Method</h4>
-<p>We will be using a popular method called <em>Elbow Method</em> to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.<span class="citation" data-cites="ste2011Choosing">(<a href="#ref-ste2011Choosing" role="doc-biblioref">STEINLEY 2011</a>)</span></p>
+<p>We will be using a popular method called <em>Elbow Method</em> to determine the optimal value of K. The underlying idea behind this method is that it calculates values of within cluster sum of squares (WCSS) with the changing value of K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. The point where a sudden drop in this distortion is detected, is the elbow point<span class="citation" data-cites="ste2011Choosing">(<a href="#ref-ste2011Choosing" role="doc-biblioref">STEINLEY 2011</a>)</span>. The name comes from the shape of the graph formed.</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -1202,7 +1202,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>We have often heard of training machine learning models with labeled data. Imagine if there is a massive volume of data with no labels and we want to come up with a scalable approach to process these data and find insights. Difficult as it may seem, this is possible with clustering algorithms like K-Means.</span>
 <span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labelled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern, or association of the data and that helps the model in clustering or grouping the data without any human intervention.</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labeled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern, or association of the data and that helps the model in clustering or grouping the data without any human intervention.</span>
 <span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>The main goal of this paper is to discuss the concept and underlying methodology of one the unsupervised algorithm called K-Means clustering. We will also discuss how K-Means can be leveraged in real time applications like customer segmentation <span class="co">[</span><span class="ot">@yul2020astudy</span><span class="co">]</span>. In this paper, we will also be discussing various limitations and bottlenecks of K-Means clustering algorithm and would suggest some improved algorithms to overcome these limitations.</span>
 <span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a> </span>
@@ -1214,7 +1214,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category to maximize the profit by optimizing the services and products. It's all about connecting the right products with the right consumer keeping business profitability in mind. Most of the segmentation algorithm is based around analyzing what we call RFM - customer recency (i.e. when the customer last visited the store), frequency (i.e. how many times customer bought the products), and monetary (i.e. how much money the customer spent) <span class="co">[</span><span class="ot">@tab2022kmeans</span><span class="co">]</span>.</span>
 <span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue, and potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic<span class="co">[</span><span class="ot">@tab2022kmeans</span><span class="co">]</span>. In this paper, customer behavioral factor has been primarily focused.</span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. Customers can get really confused if we provide irrelevant information to them which has nothing to do with what products they are interested in or whatever purchasing habits they have. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue, and reputation. The customer segmentation using K-means clustering algorithm will help group customers as per their habits related to spending, purchasing or grouping them based on whatever product or brand the customers are interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic<span class="co">[</span><span class="ot">@tab2022kmeans</span><span class="co">]</span>. In this paper, customer behavioral factor has been primarily focused.</span>
 <span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>@fig-1 illustrates the overall process of customer segmentation starting from sourcing the data, selecting the variables, applying the K-Means clustering to creating the marketing strategy for a business.</span>
 <span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a></span>
@@ -1272,21 +1272,21 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-98"><a href="#cb24-98" aria-hidden="true" tabindex="-1"></a>_Euclidean distance_:</span>
 <span id="cb24-99"><a href="#cb24-99" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-100"><a href="#cb24-100" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-101"><a href="#cb24-101" aria-hidden="true" tabindex="-1"></a>D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}</span>
+<span id="cb24-101"><a href="#cb24-101" aria-hidden="true" tabindex="-1"></a>D_{euclidean}(x_1, x_2) = \sqrt{\sum_{i = 1}^{n}{((x_1)_i - (x_2)_i)^2}}</span>
 <span id="cb24-102"><a href="#cb24-102" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb24-103"><a href="#cb24-103" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-104"><a href="#cb24-104" aria-hidden="true" tabindex="-1"></a>_Manhattan distance_:</span>
 <span id="cb24-105"><a href="#cb24-105" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-106"><a href="#cb24-106" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-107"><a href="#cb24-107" aria-hidden="true" tabindex="-1"></a>D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|</span>
+<span id="cb24-107"><a href="#cb24-107" aria-hidden="true" tabindex="-1"></a>D_{manhattan}(x_1, x_2) = \sum_{i = 1}^{n}|((x_1)_i - (x_2)_i)|</span>
 <span id="cb24-108"><a href="#cb24-108" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb24-109"><a href="#cb24-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-110"><a href="#cb24-110" aria-hidden="true" tabindex="-1"></a>Note: x and y are vectors with length n.</span>
+<span id="cb24-110"><a href="#cb24-110" aria-hidden="true" tabindex="-1"></a>$x_1$, $x_2$ are vectors of length n.</span>
 <span id="cb24-111"><a href="#cb24-111" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-112"><a href="#cb24-112" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-113"><a href="#cb24-113" aria-hidden="true" tabindex="-1"></a>**Algorithm**</span>
 <span id="cb24-114"><a href="#cb24-114" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-115"><a href="#cb24-115" aria-hidden="true" tabindex="-1"></a>Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).</span>
+<span id="cb24-115"><a href="#cb24-115" aria-hidden="true" tabindex="-1"></a>Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).<span class="co">[</span><span class="ot">@yul2020astudy</span><span class="co">]</span></span>
 <span id="cb24-116"><a href="#cb24-116" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-117"><a href="#cb24-117" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb24-118"><a href="#cb24-118" aria-hidden="true" tabindex="-1"></a>Z_j(I), j = 1, 2, 3...k.</span>
@@ -1355,23 +1355,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-181"><a href="#cb24-181" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-182"><a href="#cb24-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dataset Description</span></span>
 <span id="cb24-183"><a href="#cb24-183" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-184"><a href="#cb24-184" aria-hidden="true" tabindex="-1"></a>For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion giftware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach<span class="co">[</span><span class="ot">@online2010Chen</span><span class="co">]</span>. </span>
+<span id="cb24-184"><a href="#cb24-184" aria-hidden="true" tabindex="-1"></a>For the customer segmentation, we will be using a data set that contains the transactions that has occurred for a UK-based non-brick-and-mortar online retail between 01/12/2009 and 09/12/2011. The company primarily offers unique gift-wares that can be used year-round on several occasions. Customers mostly buy from this store in wholesale. The company was established in 80s as a storefront and relied on direct mailing catalogs and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach<span class="co">[</span><span class="ot">@online2010Chen</span><span class="co">]</span>. </span>
 <span id="cb24-185"><a href="#cb24-185" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-186"><a href="#cb24-186" aria-hidden="true" tabindex="-1"></a>The customer transactions dataset has 8 variables as shown in below data definition table.</span>
+<span id="cb24-186"><a href="#cb24-186" aria-hidden="true" tabindex="-1"></a>The customer transactions dataset has eight attributes as shown in below data definition table.</span>
 <span id="cb24-187"><a href="#cb24-187" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-188"><a href="#cb24-188" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-189"><a href="#cb24-189" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE, warning=FALSE, results = "asis"}</span></span>
 <span id="cb24-190"><a href="#cb24-190" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">vars =</span> <span class="fu">c</span>(<span class="st">'Invoice'</span>, <span class="st">'StockCode'</span>, <span class="st">'Description'</span>, <span class="st">'Quantity'</span>, <span class="st">'InvoiceDate'</span>, <span class="st">'Price'</span>, <span class="st">'CustomerID'</span>, <span class="st">'Country'</span>),</span>
 <span id="cb24-191"><a href="#cb24-191" aria-hidden="true" tabindex="-1"></a>               </span>
 <span id="cb24-192"><a href="#cb24-192" aria-hidden="true" tabindex="-1"></a>                <span class="at">DataType =</span> <span class="fu">c</span>(<span class="st">'Nominal'</span>, <span class="st">'Nominal'</span>, <span class="st">'Nominal'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>,<span class="st">'Numeric'</span>,<span class="st">'Nominal'</span>),</span>
-<span id="cb24-193"><a href="#cb24-193" aria-hidden="true" tabindex="-1"></a>                <span class="at">Description =</span> <span class="fu">c</span>(<span class="st">'Invoice number. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter `c`, it indicates a cancellation.'</span>,</span>
-<span id="cb24-194"><a href="#cb24-194" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.'</span>,</span>
-<span id="cb24-195"><a href="#cb24-195" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Product (item) name.'</span>,</span>
-<span id="cb24-196"><a href="#cb24-196" aria-hidden="true" tabindex="-1"></a>    <span class="st">'The quantities of each product (item) per transaction.'</span>,</span>
-<span id="cb24-197"><a href="#cb24-197" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Invoice timestamp. The day and time when a transaction was generated.'</span>,</span>
-<span id="cb24-198"><a href="#cb24-198" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Product price per unit in sterling (£).'</span>,</span>
-<span id="cb24-199"><a href="#cb24-199" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Customer number. A 5-digit integral number uniquely assigned to each customer.'</span>,</span>
-<span id="cb24-200"><a href="#cb24-200" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Country name. The name of the country where a customer resides.'</span>),</span>
+<span id="cb24-193"><a href="#cb24-193" aria-hidden="true" tabindex="-1"></a>                <span class="at">Description =</span> <span class="fu">c</span>(<span class="st">'A 6-digit integral invoice number uniquely assigned to each transaction. A `c` prefix indicates a cancellation.'</span>,</span>
+<span id="cb24-194"><a href="#cb24-194" aria-hidden="true" tabindex="-1"></a>    <span class="st">'A 5-digit integral number uniquely assigned to each distinct product.'</span>,</span>
+<span id="cb24-195"><a href="#cb24-195" aria-hidden="true" tabindex="-1"></a>    <span class="st">'The detailed description of the product.'</span>,</span>
+<span id="cb24-196"><a href="#cb24-196" aria-hidden="true" tabindex="-1"></a>    <span class="st">'The quantities of each product  per transaction.'</span>,</span>
+<span id="cb24-197"><a href="#cb24-197" aria-hidden="true" tabindex="-1"></a>    <span class="st">'The day and time when a transaction has occurred and the invoice was generated.'</span>,</span>
+<span id="cb24-198"><a href="#cb24-198" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Unit price of the Product in sterling (£).'</span>,</span>
+<span id="cb24-199"><a href="#cb24-199" aria-hidden="true" tabindex="-1"></a>    <span class="st">'A 5-digit integral number uniquely assigned to each customer.'</span>,</span>
+<span id="cb24-200"><a href="#cb24-200" aria-hidden="true" tabindex="-1"></a>    <span class="st">'The name of the country where the transaction was made from.'</span>),</span>
 <span id="cb24-201"><a href="#cb24-201" aria-hidden="true" tabindex="-1"></a>                <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb24-202"><a href="#cb24-202" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-203"><a href="#cb24-203" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(a,</span>
@@ -1383,9 +1383,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-209"><a href="#cb24-209" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-210"><a href="#cb24-210" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-211"><a href="#cb24-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-212"><a href="#cb24-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load and Preview Data</span></span>
+<span id="cb24-212"><a href="#cb24-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## Load Data</span></span>
 <span id="cb24-213"><a href="#cb24-213" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-214"><a href="#cb24-214" aria-hidden="true" tabindex="-1"></a>Load the dataset and summarize column statistics.</span>
+<span id="cb24-214"><a href="#cb24-214" aria-hidden="true" tabindex="-1"></a>Read the data from excel, load it and then summarize the column statistics.</span>
 <span id="cb24-215"><a href="#cb24-215" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-216"><a href="#cb24-216" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning = FALSE, echo=FALSE}</span></span>
 <span id="cb24-217"><a href="#cb24-217" aria-hidden="true" tabindex="-1"></a>filename <span class="ot">&lt;-</span> <span class="st">"online_retail_II.xlsx"</span></span>
@@ -1478,7 +1478,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-304"><a href="#cb24-304" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customers before starting our analysis. After removing these customers with no ids, the total records are 417, 534.</span>
 <span id="cb24-305"><a href="#cb24-305" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-306"><a href="#cb24-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-307"><a href="#cb24-307" aria-hidden="true" tabindex="-1"></a><span class="co">#remove missing value</span></span>
+<span id="cb24-307"><a href="#cb24-307" aria-hidden="true" tabindex="-1"></a><span class="co">#remove missing values</span></span>
 <span id="cb24-308"><a href="#cb24-308" aria-hidden="true" tabindex="-1"></a>df<span class="ot">=</span><span class="fu">na.omit</span>(df, <span class="at">cols=</span><span class="st">"CustomerID"</span>)</span>
 <span id="cb24-309"><a href="#cb24-309" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-310"><a href="#cb24-310" aria-hidden="true" tabindex="-1"></a> </span>
@@ -1489,7 +1489,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-315"><a href="#cb24-315" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">subset</span>(df, <span class="at">select =</span> <span class="sc">-</span><span class="fu">c</span>(Description, Country, StockCode) )</span>
 <span id="cb24-316"><a href="#cb24-316" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-317"><a href="#cb24-317" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-318"><a href="#cb24-318" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them</span>
+<span id="cb24-318"><a href="#cb24-318" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Create a new attribute *Amount*. This will help in clustering these customers by the total money spent. Group the data by customer id to obtain each unique customer and the total amount spent by them</span>
 <span id="cb24-319"><a href="#cb24-319" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-320"><a href="#cb24-320" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
 <span id="cb24-321"><a href="#cb24-321" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a new attribute Amount</span></span>
@@ -1539,39 +1539,39 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-365"><a href="#cb24-365" aria-hidden="true" tabindex="-1"></a>Above graph shows that there are outliers that need to be addressed to get accurate clustering results.</span>
 <span id="cb24-366"><a href="#cb24-366" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-367"><a href="#cb24-367" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
-<span id="cb24-368"><a href="#cb24-368" aria-hidden="true" tabindex="-1"></a><span class="co"># create detect outlier function</span></span>
-<span id="cb24-369"><a href="#cb24-369" aria-hidden="true" tabindex="-1"></a>detect_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb24-370"><a href="#cb24-370" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate first quantile</span></span>
-<span id="cb24-371"><a href="#cb24-371" aria-hidden="true" tabindex="-1"></a>    Quantile1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
-<span id="cb24-372"><a href="#cb24-372" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate third quantile</span></span>
-<span id="cb24-373"><a href="#cb24-373" aria-hidden="true" tabindex="-1"></a>    Quantile3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
-<span id="cb24-374"><a href="#cb24-374" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate inter quartile range</span></span>
-<span id="cb24-375"><a href="#cb24-375" aria-hidden="true" tabindex="-1"></a>    IQR <span class="ot">=</span> Quantile3<span class="sc">-</span>Quantile1</span>
-<span id="cb24-376"><a href="#cb24-376" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return true or false</span></span>
-<span id="cb24-377"><a href="#cb24-377" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;</span> Quantile3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> x <span class="sc">&lt;</span> Quantile1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
+<span id="cb24-368"><a href="#cb24-368" aria-hidden="true" tabindex="-1"></a><span class="co"># create a method to detect outliers</span></span>
+<span id="cb24-369"><a href="#cb24-369" aria-hidden="true" tabindex="-1"></a>detectOutliers <span class="ot">&lt;-</span> <span class="cf">function</span>(d) {</span>
+<span id="cb24-370"><a href="#cb24-370" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate 25 percentile (Q1)</span></span>
+<span id="cb24-371"><a href="#cb24-371" aria-hidden="true" tabindex="-1"></a>    Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(d, <span class="at">probs=</span>.<span class="dv">25</span>)</span>
+<span id="cb24-372"><a href="#cb24-372" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate 75 percentile (Q3)</span></span>
+<span id="cb24-373"><a href="#cb24-373" aria-hidden="true" tabindex="-1"></a>    Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(d, <span class="at">probs=</span>.<span class="dv">75</span>)</span>
+<span id="cb24-374"><a href="#cb24-374" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine the IQR (Inter Quartile Range)</span></span>
+<span id="cb24-375"><a href="#cb24-375" aria-hidden="true" tabindex="-1"></a>    IQR <span class="ot">=</span> Q3<span class="sc">-</span>Q1</span>
+<span id="cb24-376"><a href="#cb24-376" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a Boolean if input falls out of range</span></span>
+<span id="cb24-377"><a href="#cb24-377" aria-hidden="true" tabindex="-1"></a>    d <span class="sc">&gt;</span> Q3 <span class="sc">+</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>) <span class="sc">|</span> d <span class="sc">&lt;</span> Q1 <span class="sc">-</span> (IQR<span class="sc">*</span><span class="fl">1.5</span>)</span>
 <span id="cb24-378"><a href="#cb24-378" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb24-379"><a href="#cb24-379" aria-hidden="true" tabindex="-1"></a><span class="co"># create remove outlier function</span></span>
-<span id="cb24-380"><a href="#cb24-380" aria-hidden="true" tabindex="-1"></a>remove_outlier <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe,</span>
-<span id="cb24-381"><a href="#cb24-381" aria-hidden="true" tabindex="-1"></a>                            <span class="at">columns=</span><span class="fu">names</span>(dataframe)) {</span>
-<span id="cb24-382"><a href="#cb24-382" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for loop to traverse in columns vector</span></span>
-<span id="cb24-383"><a href="#cb24-383" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> columns) {</span>
-<span id="cb24-384"><a href="#cb24-384" aria-hidden="true" tabindex="-1"></a>        <span class="co"># remove observation if it satisfies outlier function</span></span>
-<span id="cb24-385"><a href="#cb24-385" aria-hidden="true" tabindex="-1"></a>        dataframe <span class="ot">&lt;-</span> dataframe[<span class="sc">!</span><span class="fu">detect_outlier</span>(dataframe[[col]]), ]</span>
+<span id="cb24-379"><a href="#cb24-379" aria-hidden="true" tabindex="-1"></a><span class="co"># create a method for eliminating outliers</span></span>
+<span id="cb24-380"><a href="#cb24-380" aria-hidden="true" tabindex="-1"></a>eliminateOutlier <span class="ot">&lt;-</span> <span class="cf">function</span>(df,</span>
+<span id="cb24-381"><a href="#cb24-381" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cols=</span><span class="fu">names</span>(df)) {</span>
+<span id="cb24-382"><a href="#cb24-382" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop through each column in the columns vector</span></span>
+<span id="cb24-383"><a href="#cb24-383" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (col <span class="cf">in</span> cols) {</span>
+<span id="cb24-384"><a href="#cb24-384" aria-hidden="true" tabindex="-1"></a>        <span class="co"># eliminate the item if detectOutliers returns true</span></span>
+<span id="cb24-385"><a href="#cb24-385" aria-hidden="true" tabindex="-1"></a>        df <span class="ot">&lt;-</span> df[<span class="sc">!</span><span class="fu">detectOutliers</span>(df[[col]]), ]</span>
 <span id="cb24-386"><a href="#cb24-386" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb24-387"><a href="#cb24-387" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(dataframe)</span>
+<span id="cb24-387"><a href="#cb24-387" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(df)</span>
 <span id="cb24-388"><a href="#cb24-388" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb24-389"><a href="#cb24-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-390"><a href="#cb24-390" aria-hidden="true" tabindex="-1"></a><span class="co"># detect_outlier(customer$Amount)</span></span>
-<span id="cb24-391"><a href="#cb24-391" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">remove_outlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Frequency'</span>,<span class="st">'LastSeen'</span>))</span>
+<span id="cb24-390"><a href="#cb24-390" aria-hidden="true" tabindex="-1"></a><span class="co"># detectOutliers(customer$Amount)</span></span>
+<span id="cb24-391"><a href="#cb24-391" aria-hidden="true" tabindex="-1"></a>customer <span class="ot">&lt;-</span> <span class="fu">eliminateOutlier</span>(customer, <span class="fu">c</span>(<span class="st">'Amount'</span>,<span class="st">'Frequency'</span>,<span class="st">'LastSeen'</span>))</span>
 <span id="cb24-392"><a href="#cb24-392" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-393"><a href="#cb24-393" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb24-393"><a href="#cb24-393" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-394"><a href="#cb24-394" aria-hidden="true" tabindex="-1"></a>Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.</span>
 <span id="cb24-395"><a href="#cb24-395" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-396"><a href="#cb24-396" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE, message=FALSE}</span></span>
 <span id="cb24-397"><a href="#cb24-397" aria-hidden="true" tabindex="-1"></a><span class="fu">melt</span>(customer[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>variable, <span class="at">y=</span>value)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill=</span>variable), <span class="at">outlier.colour =</span> <span class="cn">NULL</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span>
 <span id="cb24-398"><a href="#cb24-398" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-399"><a href="#cb24-399" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-400"><a href="#cb24-400" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.</span>
+<span id="cb24-400"><a href="#cb24-400" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Scale the data. It is very important to standardize the data by scaling the columns as the K-Means algorithm utilizes the proximity of data points based on the Euclidean distance.</span>
 <span id="cb24-401"><a href="#cb24-401" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-402"><a href="#cb24-402" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
 <span id="cb24-403"><a href="#cb24-403" aria-hidden="true" tabindex="-1"></a><span class="co">#copy customer dataset into a new dataset customer_details</span></span>
@@ -1592,7 +1592,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-418"><a href="#cb24-418" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-419"><a href="#cb24-419" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">vars =</span> <span class="fu">c</span>(<span class="st">'CustomerID'</span>, <span class="st">'Amount'</span>, <span class="st">'Frequency'</span>, <span class="st">'LastSeen'</span>),               </span>
 <span id="cb24-420"><a href="#cb24-420" aria-hidden="true" tabindex="-1"></a>                <span class="at">DataType =</span> <span class="fu">c</span>(<span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>, <span class="st">'Numeric'</span>),</span>
-<span id="cb24-421"><a href="#cb24-421" aria-hidden="true" tabindex="-1"></a>                <span class="at">Description =</span> <span class="fu">c</span>(<span class="st">'Customer number. A 5-digit integral number uniquely assigned to each customer.'</span>,</span>
+<span id="cb24-421"><a href="#cb24-421" aria-hidden="true" tabindex="-1"></a>                <span class="at">Description =</span> <span class="fu">c</span>(<span class="st">'A 5-digit integral number uniquely assigned to each customer.'</span>,</span>
 <span id="cb24-422"><a href="#cb24-422" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Total Amount spent by each unique customer'</span>,</span>
 <span id="cb24-423"><a href="#cb24-423" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Number of times customer made purchases bases on their invoice.'</span>,</span>
 <span id="cb24-424"><a href="#cb24-424" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Days elapsed since the customer was last seen shopping.'</span>),</span>
@@ -1630,10 +1630,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-456"><a href="#cb24-456" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-457"><a href="#cb24-457" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optimal Number of Clusters (K)</span></span>
 <span id="cb24-458"><a href="#cb24-458" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb24-459"><a href="#cb24-459" aria-hidden="true" tabindex="-1"></a>One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).</span>
+<span id="cb24-459"><a href="#cb24-459" aria-hidden="true" tabindex="-1"></a>One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the efficiency of the K-Means clustering algorithm is directly impacted by the choice of the number of clusters (K).</span>
 <span id="cb24-460"><a href="#cb24-460" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-461"><a href="#cb24-461" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Elbow Method</span></span>
-<span id="cb24-462"><a href="#cb24-462" aria-hidden="true" tabindex="-1"></a>We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.<span class="co">[</span><span class="ot">@ste2011Choosing</span><span class="co">]</span></span>
+<span id="cb24-462"><a href="#cb24-462" aria-hidden="true" tabindex="-1"></a>We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of within cluster sum of squares (WCSS) with the changing value of K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. The point where a sudden drop in this distortion is detected, is the elbow point<span class="co">[</span><span class="ot">@ste2011Choosing</span><span class="co">]</span>. The name comes from the shape of the graph formed.</span>
 <span id="cb24-463"><a href="#cb24-463" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb24-464"><a href="#cb24-464" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, echo=TRUE}</span></span>
 <span id="cb24-465"><a href="#cb24-465" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_nbclust</span>(customer_scaled, kmeans, <span class="at">method =</span> <span class="st">"wss"</span>) <span class="sc">+</span></span>

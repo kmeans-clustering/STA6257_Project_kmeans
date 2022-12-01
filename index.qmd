@@ -29,7 +29,7 @@ indent: true
  
 We have often heard of training machine learning models with labeled data. Imagine if there is a massive volume of data with no labels and we want to come up with a scalable approach to process these data and find insights. Difficult as it may seem, this is possible with clustering algorithms like K-Means.
  
-Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labelled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern, or association of the data and that helps the model in clustering or grouping the data without any human intervention.
+Unsupervised machine learning is a type of algorithm that works on detecting patterns from a dataset when outcomes are not known or labeled. In unsupervised learning models it is not possible to train the algorithm the way we would normally do in case of supervised learning. The main reason for this is the kind of data available - a data set that is not labeled or classified and the algorithm must work on its own without any supervision. An unsupervised algorithm works on discovering the underlying hidden structure, pattern, or association of the data and that helps the model in clustering or grouping the data without any human intervention.
  
 The main goal of this paper is to discuss the concept and underlying methodology of one the unsupervised algorithm called K-Means clustering. We will also discuss how K-Means can be leveraged in real time applications like customer segmentation [@yul2020astudy]. In this paper, we will also be discussing various limitations and bottlenecks of K-Means clustering algorithm and would suggest some improved algorithms to overcome these limitations.
  
@@ -41,7 +41,7 @@ K-means clustering is used for grouping similar observations together by minimiz
  
 Customer segmentation helps divide customers into different groups based on their common set of characteristics (like age, gender, spending habit, credit score, etc.) that helps in targeting those customers for marketing purposes. The primary focus of customer segmentation is to come up with strategies that helps in identifying customers in each category to maximize the profit by optimizing the services and products. It's all about connecting the right products with the right consumer keeping business profitability in mind. Most of the segmentation algorithm is based around analyzing what we call RFM - customer recency (i.e. when the customer last visited the store), frequency (i.e. how many times customer bought the products), and monetary (i.e. how much money the customer spent) [@tab2022kmeans].
  
-Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. If customers receive too much information which is not related to their regular purchase or their interest on the products, it can cause confusion on deciding their needs. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue, and potential customers. The clustering analysis will help to categorize the customer according to their spending habit, purchase habit or specific product or brand the customers interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic[@tab2022kmeans]. In this paper, customer behavioral factor has been primarily focused.
+Customer segmentation is not only helpful for business but also helps customers by providing them information relevant to their needs. Customers can get really confused if we provide irrelevant information to them which has nothing to do with what products they are interested in or whatever purchasing habits they have. Unnecessary communications might cause customer attrition and may eventually lead to loss in business, revenue, and reputation. The customer segmentation using K-means clustering algorithm will help group customers as per their habits related to spending, purchasing or grouping them based on whatever product or brand the customers are interested in. Customer segmentation can be broadly divided into four factors - demographic psychographic, behavioral, and geographic[@tab2022kmeans]. In this paper, customer behavioral factor has been primarily focused.
 
 @fig-1 illustrates the overall process of customer segmentation starting from sourcing the data, selecting the variables, applying the K-Means clustering to creating the marketing strategy for a business.
 
@@ -99,21 +99,21 @@ _Euclidean distance_ measurement is the most general method used. However, there
 _Euclidean distance_:
  
 $$
-D_{euc}(x, y) = \sqrt{\sum_{i = 1}^{n}{(x_i - y_i)^2}}
+D_{euclidean}(x_1, x_2) = \sqrt{\sum_{i = 1}^{n}{((x_1)_i - (x_2)_i)^2}}
 $$
 
 _Manhattan distance_:
 
 $$
-D_{man}(x, y) = \sum_{i = 1}^{n}|(x_i - y_i)|
+D_{manhattan}(x_1, x_2) = \sum_{i = 1}^{n}|((x_1)_i - (x_2)_i)|
 $$
 
-Note: x and y are vectors with length n.
+$x_1$, $x_2$ are vectors of length n.
 
 
 **Algorithm**
  
-Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).
+Suppose there is a dataset D that contains n data points and it was decided that there will be k clusters (and hence k initial cluster centers).[@yul2020astudy]
  
 $$
 Z_j(I), j = 1, 2, 3...k.
@@ -182,23 +182,23 @@ library(cluster)
 
 ## Dataset Description
  
-For the customer segmentation, we will be using a data set that contains all the transactions that has occurred for a UK-based non-store online retail between 01/12/2009 and 09/12/2011. The company mainly sells unique all-occasion giftware. Many customers of the company are wholesalers. The company was established in 80s as a storefront and relied on direct mailing catalogues and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach[@online2010Chen]. 
+For the customer segmentation, we will be using a data set that contains the transactions that has occurred for a UK-based non-brick-and-mortar online retail between 01/12/2009 and 09/12/2011. The company primarily offers unique gift-wares that can be used year-round on several occasions. Customers mostly buy from this store in wholesale. The company was established in 80s as a storefront and relied on direct mailing catalogs and taken order over phone. In recent years, the company launched a website and shifted completely to a web based online retail to take technological advantage of customer-centric targeted marketing approach[@online2010Chen]. 
  
-The customer transactions dataset has 8 variables as shown in below data definition table.
+The customer transactions dataset has eight attributes as shown in below data definition table.
  
 
 ```{r, echo=FALSE, warning=FALSE, results = "asis"}
 a <- data.frame(vars = c('Invoice', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'Price', 'CustomerID', 'Country'),
                
                 DataType = c('Nominal', 'Nominal', 'Nominal', 'Numeric', 'Numeric', 'Numeric','Numeric','Nominal'),
-                Description = c('Invoice number. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter `c`, it indicates a cancellation.',
-    'Product (item) code. A 5-digit integral number uniquely assigned to each distinct product.',
-    'Product (item) name.',
-    'The quantities of each product (item) per transaction.',
-    'Invoice timestamp. The day and time when a transaction was generated.',
-    'Product price per unit in sterling (£).',
-    'Customer number. A 5-digit integral number uniquely assigned to each customer.',
-    'Country name. The name of the country where a customer resides.'),
+                Description = c('A 6-digit integral invoice number uniquely assigned to each transaction. A `c` prefix indicates a cancellation.',
+    'A 5-digit integral number uniquely assigned to each distinct product.',
+    'The detailed description of the product.',
+    'The quantities of each product  per transaction.',
+    'The day and time when a transaction has occurred and the invoice was generated.',
+    'Unit price of the Product in sterling (£).',
+    'A 5-digit integral number uniquely assigned to each customer.',
+    'The name of the country where the transaction was made from.'),
                 stringsAsFactors = FALSE)
  
 kable(a,
@@ -210,9 +210,9 @@ kable(a,
 ```
  
 
-## Load and Preview Data
+## Load Data
  
-Load the dataset and summarize column statistics.
+Read the data from excel, load it and then summarize the column statistics.
  
 ```{r, warning = FALSE, echo=FALSE}
 filename <- "online_retail_II.xlsx"
@@ -305,7 +305,7 @@ For conducting our analysis, we will be applying below listed data pre-processin
 1. The CustomerID contains unique Id for each unique Customer. However, we have 107,927 customers with no customer ids. We will be removing these customers before starting our analysis. After removing these customers with no ids, the total records are 417, 534.
 
 ```{r, warning=FALSE, echo=TRUE}
-#remove missing value
+#remove missing values
 df=na.omit(df, cols="CustomerID")
 ```
  
@@ -316,7 +316,7 @@ df=na.omit(df, cols="CustomerID")
 data = subset(df, select = -c(Description, Country, StockCode) )
 ```
  
-3. Create a new attribute *Amount*. This will help in clustering these customers by the total amount spent. Group the data by customer id to get each unique customer and the total amount spent by them
+3. Create a new attribute *Amount*. This will help in clustering these customers by the total money spent. Group the data by customer id to obtain each unique customer and the total amount spent by them
  
 ```{r, warning=FALSE, echo=TRUE}
 #Create a new attribute Amount
@@ -366,39 +366,39 @@ melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fil
 Above graph shows that there are outliers that need to be addressed to get accurate clustering results.
  
 ```{r, warning=FALSE, echo=TRUE}
-# create detect outlier function
-detect_outlier <- function(x) {
-    # calculate first quantile
-    Quantile1 <- quantile(x, probs=.25)
-    # calculate third quantile
-    Quantile3 <- quantile(x, probs=.75)
-    # calculate inter quartile range
-    IQR = Quantile3-Quantile1
-    # return true or false
-    x > Quantile3 + (IQR*1.5) | x < Quantile1 - (IQR*1.5)
+# create a method to detect outliers
+detectOutliers <- function(d) {
+    # calculate 25 percentile (Q1)
+    Q1 <- quantile(d, probs=.25)
+    # calculate 75 percentile (Q3)
+    Q3 <- quantile(d, probs=.75)
+    # Determine the IQR (Inter Quartile Range)
+    IQR = Q3-Q1
+    # Return a Boolean if input falls out of range
+    d > Q3 + (IQR*1.5) | d < Q1 - (IQR*1.5)
 }
-# create remove outlier function
-remove_outlier <- function(dataframe,
-                            columns=names(dataframe)) {
-    # for loop to traverse in columns vector
-    for (col in columns) {
-        # remove observation if it satisfies outlier function
-        dataframe <- dataframe[!detect_outlier(dataframe[[col]]), ]
+# create a method for eliminating outliers
+eliminateOutlier <- function(df,
+                            cols=names(df)) {
+    # Loop through each column in the columns vector
+    for (col in cols) {
+        # eliminate the item if detectOutliers returns true
+        df <- df[!detectOutliers(df[[col]]), ]
     }
-    return(dataframe)
+    return(df)
 }
 
-# detect_outlier(customer$Amount)
-customer <- remove_outlier(customer, c('Amount','Frequency','LastSeen'))
+# detectOutliers(customer$Amount)
+customer <- eliminateOutlier(customer, c('Amount','Frequency','LastSeen'))
 ```
- 
+
 Now, after removing outliers and cleaning up the data, we see normal distribution of the Amount, Frequency and LastSeen columns.
  
 ```{r, warning=FALSE, echo=TRUE, message=FALSE}
 melt(customer[,2:4]) %>% ggplot(aes(x=variable, y=value)) + geom_boxplot(aes(fill=variable), outlier.colour = NULL) + theme(legend.position="none")
 ```
  
-8. Scale the data. Since K-Means utilizes the proximity of data points based on Euclidean distance, it is important to reconcile all dimensions into a standard scale.
+8. Scale the data. It is very important to standardize the data by scaling the columns as the K-Means algorithm utilizes the proximity of data points based on the Euclidean distance.
  
 ```{r, warning=FALSE, echo=TRUE}
 #copy customer dataset into a new dataset customer_details
@@ -419,7 +419,7 @@ We started our analysis with total 525461 records but after preparing and cleans
  
 a <- data.frame(vars = c('CustomerID', 'Amount', 'Frequency', 'LastSeen'),               
                 DataType = c('Numeric', 'Numeric', 'Numeric', 'Numeric'),
-                Description = c('Customer number. A 5-digit integral number uniquely assigned to each customer.',
+                Description = c('A 5-digit integral number uniquely assigned to each customer.',
     'Total Amount spent by each unique customer',
     'Number of times customer made purchases bases on their invoice.',
     'Days elapsed since the customer was last seen shopping.'),
@@ -457,10 +457,10 @@ kable(a,
  
 ### Optimal Number of Clusters (K)
  
-One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the performance of a clustering algorithm is directly affected by the initial choice of the number of clusters (K).
+One of the challenges in the K-Means clustering is determining initial value of K to ensure the resulting solution actually represents the underlying structure in the data. The reliability and the efficiency of the K-Means clustering algorithm is directly impacted by the choice of the number of clusters (K).
  
 #### Elbow Method
-We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of cost with changing K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. So, the point where this distortion declines the most is the elbow point.[@ste2011Choosing]
+We will be using a popular method called *Elbow Method* to determine the optimal value of K. The underlying idea behind this method is that it calculates values of within cluster sum of squares (WCSS) with the changing value of K. As the value of K increases, the cluster will have fewer data points and the distortion (within cluster sum of square) will decrease. The larger number of clusters (and hence the lesser number of data points within the cluster) implies the data points are closer to the centroid. The point where a sudden drop in this distortion is detected, is the elbow point[@ste2011Choosing]. The name comes from the shape of the graph formed.
  
 ```{r, warning=FALSE, echo=TRUE}
 fviz_nbclust(customer_scaled, kmeans, method = "wss") +
